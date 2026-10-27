@@ -65,9 +65,13 @@ Referência (21st + sites) registrada em `docs/02-base-visual/inspiracoes/` → 
 | Antigravity CLI `agy` + Gemini | skills próprias abaixo |
 
 ### Skills próprias (obrigatórias)
-Definidas em `docs/00-contexto-zero/skills/` (automação: plugin `leonardo-skills`).
+Definidas em `docs/00-contexto-zero/skills/`; plugin local `leonardo-skills` (`C:/projects/leonardo-skills`, habilitado em `.claude/settings.json`). Papéis: **o agente implementa e testa; o Gemini critica.** A Revisão Gemini requer `agy` (Antigravity CLI) com login; rode com timeout ≥ 10 min.
 - **Revisão Gemini** — ao fim de **toda** tarefa, antes do commit. Aprovado só com nota ≥ 9.0 e sem crítica `critica`/`alta`; caso contrário, corrigir e nova rodada.
-- **Bancada de testes** — dev sênior, usuário caótico, hacker e usuário-alvo; ao fim de cada fase relevante e antes de todo release. Somente contra o build local, nunca produção.
+  ```bash
+  node C:/projects/leonardo-skills/scripts/revisao.mjs --session <task-NN-nome> --lente codigo|visual|documento \
+    --objetivo-file <md> --tarefa-file <md> --contexto-file <md> --arquivos a,b,c --testes-cmd "npm run check"
+  ```
+- **Bancada de testes** — **executada pelo próprio agente**, uma persona por vez: usuário caótico, hacker, usuário-alvo (recrutador, neste projeto; avalia também visual genérico / "AI slop") e dev sênior, com Playwright e acesso ao código, seguindo `docs/00-contexto-zero/skills/bancada-de-testes/`. Ao fim de cada fase relevante e antes de todo release. Somente contra o build local, nunca produção. Saídas em `.revisoes/bancada/` (fora do git).
 
 ## 7. Convenções de código
 - TypeScript estrito; sem `any`. Um componente por arquivo, nome em PascalCase.
@@ -79,3 +83,13 @@ Definidas em `docs/00-contexto-zero/skills/` (automação: plugin `leonardo-skil
 
 ## 8. Projeto novo a partir deste modelo
 Copie `AGENTS.md`, `CLAUDE.md`, `.claude/settings.json`, `docs/README.md`, `docs/00-contexto-zero/`, `docs/01-stacks/catalogo.md` e `docs/04-testes/`. Crie `docs/01-stacks/projeto-atual.md`, `docs/02-base-visual/` e `docs/03-memoria/` vazios seguindo esta estrutura, e o mesmo bloco `docs/**` no `.gitignore`.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+## This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
