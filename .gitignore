@@ -1,0 +1,22 @@
+# Dependências e build
+node_modules/
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+
+# Testes
+test-results/
+playwright-report/
+
+# Ferramentas de agentes (locais)
+.superpowers/
+.playwright-mcp/
+.revisoes/
+
+# Ambiente
+.env*
+
+# Docs: só o mapa é público; contexto pessoal, specs, planos e memória ficam locais
+docs/**
+!docs/README.md
