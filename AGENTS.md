@@ -83,3 +83,13 @@ Definidas em `docs/00-contexto-zero/skills/`; plugin local `leonardo-skills` (`C
 
 ## 8. Projeto novo a partir deste modelo
 Copie `AGENTS.md`, `CLAUDE.md`, `.claude/settings.json`, `docs/README.md`, `docs/00-contexto-zero/`, `docs/01-stacks/catalogo.md` e `docs/04-testes/`. Crie `docs/01-stacks/projeto-atual.md`, `docs/02-base-visual/` e `docs/03-memoria/` vazios seguindo esta estrutura, e o mesmo bloco `docs/**` no `.gitignore`.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+## This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
