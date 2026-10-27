@@ -65,18 +65,13 @@ Referência (21st + sites) registrada em `docs/02-base-visual/inspiracoes/` → 
 | Antigravity CLI `agy` + Gemini | skills próprias abaixo |
 
 ### Skills próprias (obrigatórias)
-Definidas em `docs/00-contexto-zero/skills/`; automação no plugin local `leonardo-skills` (`C:/projects/leonardo-skills`, habilitado em `.claude/settings.json`). Requer `agy` (Antigravity CLI) com login. Rode os comandos com timeout ≥ 10 min.
+Definidas em `docs/00-contexto-zero/skills/`; plugin local `leonardo-skills` (`C:/projects/leonardo-skills`, habilitado em `.claude/settings.json`). Papéis: **o agente implementa e testa; o Gemini critica.** A Revisão Gemini requer `agy` (Antigravity CLI) com login; rode com timeout ≥ 10 min.
 - **Revisão Gemini** — ao fim de **toda** tarefa, antes do commit. Aprovado só com nota ≥ 9.0 e sem crítica `critica`/`alta`; caso contrário, corrigir e nova rodada.
   ```bash
   node C:/projects/leonardo-skills/scripts/revisao.mjs --session <task-NN-nome> --lente codigo|visual|documento \
     --objetivo-file <md> --tarefa-file <md> --contexto-file <md> --arquivos a,b,c --testes-cmd "npm run check"
   ```
-- **Bancada de testes** — dev sênior, usuário caótico, hacker e usuário-alvo; ao fim de cada fase relevante e antes de todo release. Somente contra o build local, nunca produção.
-  ```bash
-  node C:/projects/leonardo-skills/scripts/bancada.mjs --personas dev-senior,usuario-caotico,hacker,usuario-alvo \
-    --produto-file <md> --escopo-file <md> --url http://localhost:4173/ --arquivos a,b,c
-  ```
-  Saídas em `.revisoes/` (local, fora do git). Personas com navegador dependem de liberar o Playwright no `agy` (ver `bancada-de-testes/SKILL.md`).
+- **Bancada de testes** — **executada pelo próprio agente**, uma persona por vez: usuário caótico, hacker, usuário-alvo (recrutador, neste projeto; avalia também visual genérico / "AI slop") e dev sênior, com Playwright e acesso ao código, seguindo `docs/00-contexto-zero/skills/bancada-de-testes/`. Ao fim de cada fase relevante e antes de todo release. Somente contra o build local, nunca produção. Saídas em `.revisoes/bancada/` (fora do git).
 
 ## 7. Convenções de código
 - TypeScript estrito; sem `any`. Um componente por arquivo, nome em PascalCase.
