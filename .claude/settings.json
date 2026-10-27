@@ -1,7 +1,13 @@
 {
+  "extraKnownMarketplaces": {
+    "leonardo-local": {
+      "source": { "source": "directory", "path": "C:/projects/leonardo-skills" }
+    }
+  },
   "enabledPlugins": {
     "superpowers@anthropic-plugin-directory": true,
     "frontend-design@anthropic-plugin-directory": true,
-    "playwright@claude-plugins-official": true
+    "playwright@claude-plugins-official": true,
+    "leonardo-skills@leonardo-local": true
   }
 }
