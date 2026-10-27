@@ -37,7 +37,7 @@ export const timeline: TimelineEntry[] = [
   },
   {
     id: "unifei",
-    // TODO(conteúdo): confirmar mês de ingresso na UNIFEI com o Leonardo.
+    // Ingresso em 10/03/2025 (confirmado pelo Leonardo).
     start: "2025-03",
     role: {
       pt: "Engenharia de Computação — formatura prevista dez/2029",

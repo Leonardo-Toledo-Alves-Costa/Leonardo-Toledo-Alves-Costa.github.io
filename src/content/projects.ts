@@ -1,7 +1,7 @@
 import type { Project } from "./types";
 
-// Fonte: currículos (out/2026). Projetos de cliente/pesquisa: código privado, sem links.
-// TODO(conteúdo): confirmar com o Leonardo o que pode ser mostrado de cada projeto (texto, imagens) e a stack do ArborizAI.
+// Fonte: currículos (out/2026). Projetos de cliente/pesquisa: código privado, sem links; textos só do currículo (decisão do Leonardo).
+// Stacks confirmadas pelo Leonardo (27/10/2026): Asimov = Flutter + Riverpod; ArborizAI usa WebGIS e LiDAR do iOS.
 export const projects: Project[] = [
   {
     id: "arborizai",
@@ -11,7 +11,7 @@ export const projects: Project[] = [
       pt: "Case incubado na INCIT/UNIFEI: solução tecnológica escalável para inventário e mapeamento geoespacial de árvores.",
       en: "Case incubated at INCIT/UNIFEI: a scalable technology solution for geospatial tree mapping and inventory.",
     },
-    skills: [],
+    skills: ["webgis", "lidar"],
     award: { pt: "Vencedor mundial JEWC/ENEJ — Projeto de Impacto", en: "Global Winner JEWC/ENEJ — Impact Project" },
     visibility: "private",
   },
@@ -23,7 +23,7 @@ export const projects: Project[] = [
       pt: "App em Flutter/Dart integrado a APIs e Firebase: módulo financeiro (contratos, recebíveis e tributos) e fluxo completo de cadastros.",
       en: "Flutter/Dart app integrated with REST APIs and Firebase: financial module (contracts, receivables and taxes) and complete customer workflows.",
     },
-    skills: ["flutter", "firebase"],
+    skills: ["flutter", "riverpod", "firebase"],
     visibility: "private",
   },
   {
@@ -34,7 +34,7 @@ export const projects: Project[] = [
       pt: "Fase crítica de depuração, homologação e entrega final; controle de acesso por cargos (RBAC), formulários dinâmicos ligados ao banco e exportação de dashboards em PDF.",
       en: "Critical debugging, QA stabilization and final production delivery; role-based access control (RBAC), dynamic database-driven forms and PDF dashboard export.",
     },
-    skills: ["flutter"],
+    skills: ["flutter", "riverpod"],
     visibility: "private",
   },
   {

@@ -106,3 +106,20 @@ test("formatPeriod rejeita data inválida", () => {
   expect(() => formatPeriod({ start: "2026-13" }, "pt")).toThrow(RangeError);
   expect(() => formatPeriod({ start: "abc" }, "en")).toThrow(RangeError);
 });
+
+test("stacks confirmadas pelo Leonardo nos projetos", () => {
+  const stack = (id: string) => projects.find((p) => p.id === id)?.skills ?? [];
+  expect(stack("dip-mobile")).toEqual(expect.arrayContaining(["flutter", "riverpod", "firebase"]));
+  expect(stack("softcare-mobile")).toEqual(expect.arrayContaining(["flutter", "riverpod"]));
+  expect(stack("arborizai")).toEqual(expect.arrayContaining(["webgis", "lidar"]));
+});
+
+test("estudo atual: C e C++ para lógica e estruturas de dados", () => {
+  expect(learning[0]?.id).toBe("c-cpp");
+  expect(learning[0]?.why.pt).toMatch(/estruturas de dados/);
+});
+
+test("bancos de dados usados na Asimov aparecem na stack", () => {
+  const ids = skills.map((s) => s.id);
+  expect(ids).toEqual(expect.arrayContaining(["mongodb", "supabase", "firebase", "riverpod"]));
+});
