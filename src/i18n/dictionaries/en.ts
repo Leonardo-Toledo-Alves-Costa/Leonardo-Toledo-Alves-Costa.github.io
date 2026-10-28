@@ -66,6 +66,19 @@ export const en: Dictionary = {
     slotTitle: "Free slot",
     slotBody: "Next module in development…",
   },
+  learning: {
+    intro: "What is building right now — and why.",
+    compiling: "compiling…",
+    progress: "progress",
+  },
+  contact: {
+    intro: "I reply by email or LinkedIn. Prefer to see code? GitHub is right below.",
+    command: "connect --to leonardo",
+    email: "email",
+    copy: "copy",
+    copied: "copied",
+    cv: "résumé",
+  },
   levels: {
     learning: "learning",
     used: "used in projects",

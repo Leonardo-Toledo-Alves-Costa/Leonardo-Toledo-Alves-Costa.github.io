@@ -179,3 +179,8 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* Controles que só funcionam com JavaScript ficam ocultos sem ele (html[data-js] vem do script no head). */
+html:not([data-js]) [data-requires-js] {
+  display: none;
+}

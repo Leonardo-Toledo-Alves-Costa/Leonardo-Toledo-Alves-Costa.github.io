@@ -65,3 +65,10 @@ export function slotsToFillGrid(projectCount: number, cols: number, extraCells: 
   const cells = Math.max(cols, Math.ceil((projectCount + extraCells) / cols) * cols);
   return cells - extraCells;
 }
+
+/** Barra de build em células: progresso limitado a 0..100. */
+export function formatProgressBar(progress: number, cells = 20): { filled: number; empty: number; percent: number } {
+  const percent = Math.min(100, Math.max(0, Math.round(progress)));
+  const filled = Math.round((percent / 100) * cells);
+  return { filled, empty: cells - filled, percent };
+}

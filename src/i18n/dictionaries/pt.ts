@@ -65,6 +65,19 @@ export const pt = {
     slotTitle: "Slot livre",
     slotBody: "Próximo módulo em desenvolvimento…",
   },
+  learning: {
+    intro: "O que está em build agora — e por quê.",
+    compiling: "compilando…",
+    progress: "progresso",
+  },
+  contact: {
+    intro: "Respondo por e-mail ou LinkedIn. Prefere ver código? O GitHub está logo abaixo.",
+    command: "connect --to leonardo",
+    email: "e-mail",
+    copy: "copiar",
+    copied: "copiado",
+    cv: "currículo",
+  },
   levels: {
     learning: "estudando",
     used: "usei em projeto",
