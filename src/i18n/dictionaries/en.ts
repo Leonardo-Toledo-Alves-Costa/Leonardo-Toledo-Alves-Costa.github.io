@@ -13,6 +13,21 @@ export const en: Dictionary = {
     projects: "projects",
     learning: "now",
     contact: "contact",
+    label: "Main navigation",
+    menu: "Open menu",
+    close: "Close menu",
+  },
+  sections: {
+    about: "About",
+    stack: "Stack",
+    timeline: "Journey",
+    projects: "Projects",
+    learning: "Now compiling…",
+    contact: "Contact",
+  },
+  footer: {
+    made: "built with Next.js",
+    code: "source on GitHub",
   },
   common: {
     skipToContent: "Skip to content",

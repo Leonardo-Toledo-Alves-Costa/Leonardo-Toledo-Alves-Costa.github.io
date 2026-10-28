@@ -12,6 +12,21 @@ export const pt = {
     projects: "projetos",
     learning: "agora",
     contact: "contato",
+    label: "Navegação principal",
+    menu: "Abrir menu",
+    close: "Fechar menu",
+  },
+  sections: {
+    about: "Sobre",
+    stack: "Stack",
+    timeline: "Trajetória",
+    projects: "Projetos",
+    learning: "Agora compilando…",
+    contact: "Contato",
+  },
+  footer: {
+    made: "feito com Next.js",
+    code: "código no GitHub",
   },
   common: {
     skipToContent: "Pular para o conteúdo",

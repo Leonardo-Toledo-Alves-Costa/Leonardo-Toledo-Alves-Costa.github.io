@@ -18,7 +18,9 @@ export function GlassPanel({ as: Tag = "div", className, children, ...rest }: Gl
       ref={ref as never}
       data-glass=""
       className={cn(
-        "glass relative overflow-hidden rounded-panel",
+        "glass relative overflow-hidden",
+        // Raio padrão só quando quem usa não define outro (evita disputa de classes rounded-*).
+        !/\brounded-/.test(className ?? "") && "rounded-panel",
         "before:pointer-events-none before:absolute before:inset-0 before:content-['']",
         "before:bg-[radial-gradient(240px_circle_at_var(--mx,30%)_var(--my,0%),rgb(255_255_255/0.18),transparent_50%)]",
         className,
