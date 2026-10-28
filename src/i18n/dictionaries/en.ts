@@ -43,6 +43,19 @@ export const en: Dictionary = {
     ctaEmail: "email",
     awardLabel: "Global award",
   },
+  stack: {
+    intro: "Each technology lights up by level. Select one to see where it was used.",
+    legend: "Level legend",
+    level: "Level",
+    usedIn: "Used in",
+    noProjects: "No project listed here yet.",
+    categories: {
+      software: "Software",
+      cloud: "Cloud & DevOps",
+      engineering: "Engineering & methods",
+      hardwareAi: "Hardware · AI · XR",
+    },
+  },
   levels: {
     learning: "learning",
     used: "used in projects",

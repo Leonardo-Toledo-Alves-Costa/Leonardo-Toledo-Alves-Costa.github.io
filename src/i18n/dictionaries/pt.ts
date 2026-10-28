@@ -42,6 +42,19 @@ export const pt = {
     ctaEmail: "e-mail",
     awardLabel: "Prêmio mundial",
   },
+  stack: {
+    intro: "Cada tecnologia acende conforme o nível. Selecione uma para ver onde foi usada.",
+    legend: "Legenda dos níveis",
+    level: "Nível",
+    usedIn: "Usado em",
+    noProjects: "Sem projeto listado aqui ainda.",
+    categories: {
+      software: "Software",
+      cloud: "Nuvem & DevOps",
+      engineering: "Engenharia & métodos",
+      hardwareAi: "Hardware · IA · XR",
+    },
+  },
   levels: {
     learning: "estudando",
     used: "usei em projeto",
