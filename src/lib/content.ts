@@ -1,4 +1,4 @@
-import type { Project, Skill, SkillCategory, TimelineEntry } from "@/content/types";
+import type { Localized, Project, Skill, SkillCategory, TimelineEntry } from "@/content/types";
 import type { Locale } from "@/i18n/config";
 
 export const skillCategories: readonly SkillCategory[] = ["software", "cloud", "engineering", "hardware-ai"];
@@ -37,6 +37,6 @@ export function formatPeriod(entry: Pick<TimelineEntry, "start" | "end">, locale
 }
 
 /** Resolve um texto que pode ser único ou bilíngue. */
-export function localize(text: string | { pt: string; en: string }, locale: Locale): string {
+export function localize(text: string | Localized, locale: Locale): string {
   return typeof text === "string" ? text : text[locale];
 }
