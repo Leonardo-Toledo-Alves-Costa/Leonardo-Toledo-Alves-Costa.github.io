@@ -26,7 +26,7 @@ export function ProjectCard({ project, locale, dict, featured }: { project: Proj
         )}
         <header>
           {/* Faixa de metadados: mesma altura em todos os cards da fileira. */}
-          <div className="flex min-h-7 flex-wrap items-center justify-between gap-2">
+          <div className="flex min-h-8 flex-wrap items-center justify-between gap-2">
             {project.award ? (
               <p
                 data-award=""
