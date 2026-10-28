@@ -5,7 +5,7 @@ import { projects } from "@/content/projects";
 import { skills } from "@/content/skills";
 import { timeline } from "@/content/timeline";
 import type { Project, TimelineEntry } from "@/content/types";
-import { formatPeriod, localize, projectSlots, skillsByCategory } from "@/lib/content";
+import { formatPeriod, localize, projectSlots, skillsByCategory, splitSpec } from "@/lib/content";
 
 const p1 = { id: "p1" } as Project;
 const p2 = { id: "p2" } as Project;
@@ -122,4 +122,9 @@ test("estudo atual: C e C++ para lógica e estruturas de dados", () => {
 test("bancos de dados usados na Asimov aparecem na stack", () => {
   const ids = skills.map((s) => s.id);
   expect(ids).toEqual(expect.arrayContaining(["mongodb", "supabase", "firebase", "riverpod"]));
+});
+
+test("splitSpec separa principal e complemento pelo último ' · '", () => {
+  expect(splitSpec("Eng. de Computação · UNIFEI")).toEqual({ main: "Eng. de Computação", sub: "UNIFEI" });
+  expect(splitSpec("Sem complemento")).toEqual({ main: "Sem complemento" });
 });

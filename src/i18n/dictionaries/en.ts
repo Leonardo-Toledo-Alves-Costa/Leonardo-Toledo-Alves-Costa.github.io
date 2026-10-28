@@ -18,12 +18,12 @@ export const en: Dictionary = {
     close: "Close menu",
   },
   sections: {
-    about: "About",
-    stack: "Stack",
-    timeline: "Journey",
-    projects: "Projects",
-    learning: "Now compiling…",
-    contact: "Contact",
+    about: "Engineering, leadership, delivery",
+    stack: "Tools, by level of mastery",
+    timeline: "From apprentice to director",
+    projects: "Delivered and award-winning projects",
+    learning: "What I'm studying now",
+    contact: "Open to software engineering internships",
   },
   footer: {
     made: "built with Next.js",

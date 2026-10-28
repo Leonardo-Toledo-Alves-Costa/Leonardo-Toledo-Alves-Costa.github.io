@@ -17,12 +17,12 @@ export const pt = {
     close: "Fechar menu",
   },
   sections: {
-    about: "Sobre",
-    stack: "Stack",
-    timeline: "Trajetória",
-    projects: "Projetos",
-    learning: "Agora compilando…",
-    contact: "Contato",
+    about: "Engenharia, liderança e entrega",
+    stack: "Ferramentas, por nível de domínio",
+    timeline: "Do primeiro estágio à diretoria",
+    projects: "Projetos entregues e premiados",
+    learning: "O que estou estudando agora",
+    contact: "Aberto a estágio em engenharia de software",
   },
   footer: {
     made: "feito com Next.js",

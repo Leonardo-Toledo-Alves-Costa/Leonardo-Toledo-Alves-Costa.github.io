@@ -40,3 +40,9 @@ export function formatPeriod(entry: Pick<TimelineEntry, "start" | "end">, locale
 export function localize(text: string | Localized, locale: Locale): string {
   return typeof text === "string" ? text : text[locale];
 }
+
+/** "Eng. de Computação · UNIFEI" → { main, sub }; sem " · ", só { main }. */
+export function splitSpec(text: string): { main: string; sub?: string } {
+  const at = text.lastIndexOf(" · ");
+  return at < 0 ? { main: text } : { main: text.slice(0, at), sub: text.slice(at + 3) };
+}

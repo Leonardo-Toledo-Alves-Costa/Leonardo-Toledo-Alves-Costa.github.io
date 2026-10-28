@@ -184,3 +184,12 @@ test("anel de foco dos controles da nav fica dentro do vidro (não é cortado)",
   const offset = await logo.evaluate((el) => parseFloat(getComputedStyle(el).outlineOffset));
   expect(offset).toBeLessThan(0);
 });
+
+test("títulos das seções não repetem o rótulo de serigrafia", async ({ page }) => {
+  await page.goto("/pt/");
+  for (const id of ["about", "stack", "timeline", "projects", "learning", "contact"]) {
+    const label = (await page.locator(`#${id} .silkscreen`).first().textContent())?.replace(/^\d+ · /, "").trim().toLowerCase();
+    const title = (await page.locator(`#${id} h2`).first().textContent())?.trim().toLowerCase();
+    expect(title, id).not.toBe(label);
+  }
+});

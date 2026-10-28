@@ -18,16 +18,18 @@ export function GlassPanel({ as: Tag = "div", className, children, ...rest }: Gl
       ref={ref as never}
       data-glass=""
       className={cn(
-        "glass relative overflow-hidden",
+        // isolate + reflexo em -z-10: a luz fica atrás do conteúdo sem precisar de uma div extra
+        // (que quebraria estruturas como dl > div > dt/dd).
+        "glass relative isolate overflow-hidden",
         // Raio padrão só quando quem usa não define outro (evita disputa de classes rounded-*).
         !/\brounded-/.test(className ?? "") && "rounded-panel",
-        "before:pointer-events-none before:absolute before:inset-0 before:content-['']",
+        "before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:content-['']",
         "before:bg-[radial-gradient(240px_circle_at_var(--mx,30%)_var(--my,0%),rgb(255_255_255/0.18),transparent_50%)]",
         className,
       )}
       {...rest}
     >
-      <div className="relative">{children}</div>
+      {children}
     </Tag>
   );
 }
