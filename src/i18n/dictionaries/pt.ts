@@ -55,6 +55,9 @@ export const pt = {
       hardwareAi: "Hardware · IA · XR",
     },
   },
+  timeline: {
+    intro: "Formação e experiência no formato de um git log: o commit mais recente no topo.",
+  },
   levels: {
     learning: "estudando",
     used: "usei em projeto",

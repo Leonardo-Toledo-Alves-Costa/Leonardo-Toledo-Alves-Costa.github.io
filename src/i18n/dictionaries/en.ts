@@ -56,6 +56,9 @@ export const en: Dictionary = {
       hardwareAi: "Hardware · AI · XR",
     },
   },
+  timeline: {
+    intro: "Education and experience as a git log: the latest commit on top.",
+  },
   levels: {
     learning: "learning",
     used: "used in projects",

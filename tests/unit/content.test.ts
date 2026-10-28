@@ -5,7 +5,7 @@ import { projects } from "@/content/projects";
 import { skills } from "@/content/skills";
 import { timeline } from "@/content/timeline";
 import type { Project, TimelineEntry } from "@/content/types";
-import { formatPeriod, localize, projectSlots, skillsByCategory, splitSpec } from "@/lib/content";
+import { formatPeriod, localize, projectSlots, shortHash, skillsByCategory, splitSpec } from "@/lib/content";
 
 const p1 = { id: "p1" } as Project;
 const p2 = { id: "p2" } as Project;
@@ -127,4 +127,12 @@ test("bancos de dados usados na Asimov aparecem na stack", () => {
 test("splitSpec separa principal e complemento pelo último ' · '", () => {
   expect(splitSpec("Eng. de Computação · UNIFEI")).toEqual({ main: "Eng. de Computação", sub: "UNIFEI" });
   expect(splitSpec("Sem complemento")).toEqual({ main: "Sem complemento" });
+});
+
+test("shortHash: 7 caracteres hex, estável e diferente entre ids", () => {
+  const h = shortHash("asimov-director");
+  expect(h).toMatch(/^[0-9a-f]{7}$/);
+  expect(shortHash("asimov-director")).toBe(h);
+  const all = timeline.map((t) => shortHash(t.id));
+  expect(new Set(all).size).toBe(all.length);
 });

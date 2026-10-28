@@ -46,3 +46,13 @@ export function splitSpec(text: string): { main: string; sub?: string } {
   const at = text.lastIndexOf(" · ");
   return at < 0 ? { main: text } : { main: text.slice(0, at), sub: text.slice(at + 3) };
 }
+
+/** Hash curto estilo git (7 hex) e determinístico para um id — FNV-1a de 32 bits. */
+export function shortHash(id: string): string {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < id.length; i++) {
+    h ^= id.charCodeAt(i);
+    h = Math.imul(h, 0x01000193);
+  }
+  return (h >>> 0).toString(16).padStart(8, "0").slice(0, 7);
+}
