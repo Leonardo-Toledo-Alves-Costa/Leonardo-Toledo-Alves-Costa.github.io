@@ -38,6 +38,10 @@ export const en: Dictionary = {
     boot2: "loading modules: software, hardware, ai",
     boot3: "bridging hw ⇄ sw",
     bootStatus: "ok",
+    ctaCv: "Download résumé",
+    ctaProjects: "See projects",
+    ctaEmail: "email",
+    awardLabel: "Global award",
   },
   levels: {
     learning: "learning",

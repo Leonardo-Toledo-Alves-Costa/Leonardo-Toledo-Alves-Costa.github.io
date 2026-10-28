@@ -37,6 +37,10 @@ export const pt = {
     boot2: "carregando módulos: software, hardware, ia",
     boot3: "estabelecendo ponte hw ⇄ sw",
     bootStatus: "ok",
+    ctaCv: "Baixar currículo",
+    ctaProjects: "Ver projetos",
+    ctaEmail: "e-mail",
+    awardLabel: "Prêmio mundial",
   },
   levels: {
     learning: "estudando",
