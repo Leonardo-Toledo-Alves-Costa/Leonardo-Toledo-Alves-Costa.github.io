@@ -99,7 +99,71 @@
   mask-composite: exclude;
 }
 
+/* ---------- Motion: luz, não pulo ---------- */
+
+/* Reflexo cromado passando pelo título (assinatura do hero, ref. Apple iPhone 18 Pro). */
+@keyframes chrome-sheen {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+
+/* w-fit: o gradiente é dimensionado pelo texto (não pelo container), então o verde passa sobre o nome. */
+@utility chrome-text {
+  width: fit-content;
+  background-image: linear-gradient(
+    100deg,
+    var(--color-led-off) 0%,
+    var(--color-text) 18%,
+    #8d8d93 32%,
+    #ffffff 48%,
+    var(--color-signal) 54%,
+    var(--color-led-dim) 60%,
+    #8d8d93 80%,
+    var(--color-text) 100%
+  );
+  background-size: 250% 100%;
+  background-clip: text;
+  color: transparent;
+  animation: chrome-sheen 6s ease-in-out infinite alternate;
+}
+
+/* Pulso de energia correndo pela trilha (ref. 21st Circuit Board #18245): traço curto em pathLength=100. */
+@keyframes trace-pulse {
+  from {
+    stroke-dashoffset: 100;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Com JS ativo, o boot fica invisível até começar a digitar (sem JS, o texto completo aparece). */
+[data-js] [data-boot][data-state="pending"] {
+  visibility: hidden;
+}
+
+@media (forced-colors: active) {
+  .chrome-text {
+    color: CanvasText;
+    background: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  /* Desliga de verdade (não só encurta) os efeitos contínuos; o reflexo verde fica parado sobre o nome. */
+  .chrome-text {
+    animation: none;
+    /* Fundo 2,5× a largura do texto: 40% põe a faixa verde (54% do gradiente) sobre o sobrenome. */
+    background-position: 40% 0;
+  }
+  [data-pulse] {
+    display: none;
+  }
+
   *,
   *::before,
   *::after {

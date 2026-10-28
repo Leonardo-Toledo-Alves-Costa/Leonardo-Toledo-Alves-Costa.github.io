@@ -8,6 +8,10 @@ import { GlassPanel } from "@/components/ui/GlassPanel";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { SpotlightCard } from "@/components/ui/SpotlightCard";
 import { Terminal } from "@/components/ui/Terminal";
+import { BootSequence } from "@/components/motion/BootSequence";
+import { ChromeText } from "@/components/motion/ChromeText";
+import { CircuitTraces } from "@/components/motion/CircuitTraces";
+import { Reveal } from "@/components/motion/Reveal";
 import { learning } from "@/content/learning";
 import { profile } from "@/content/profile";
 import { projects } from "@/content/projects";
@@ -192,6 +196,31 @@ export default async function DesignSystemPage({ params }: PageProps<"/[locale]/
 
         <Block id="terminal" index="07" title={t.terminal}>
           <Terminal className="max-w-md">connect --to leonardo</Terminal>
+        </Block>
+
+        <Block id="motion" index="08" title={t.motion}>
+          <p className="max-w-[60ch] text-sm text-text-2">{t.motionNote}</p>
+          <div className="relative mt-8 overflow-hidden rounded-panel border border-line bg-bg p-6 sm:p-10">
+            <div aria-hidden className="pcb-grid absolute inset-0 [mask-image:radial-gradient(ellipse_at_60%_40%,#000_20%,transparent_70%)]" />
+            {/* Brilho ambiente verde no alto à direita (protótipo aprovado). */}
+            <div aria-hidden className="absolute -top-1/2 left-2/5 size-[520px] rounded-full bg-[radial-gradient(circle,rgb(124_255_107/0.18),transparent_60%)] blur-[10px]" />
+            <CircuitTraces variant="hero" className="absolute inset-0 opacity-60 [mask-image:radial-gradient(ellipse_at_75%_50%,#000_30%,transparent_80%)]" />
+            <div className="relative">
+              <BootSequence lines={[dict.hero.boot1, dict.hero.boot2, dict.hero.boot3]} status={dict.hero.bootStatus} />
+              <ChromeText as="p" className="mt-4 text-[clamp(44px,8vw,96px)] font-bold leading-[0.98] tracking-[-0.045em] sm:leading-[0.9]">
+                {profile.name}
+              </ChromeText>
+            </div>
+          </div>
+          <div className="mt-8 aspect-[5/2] w-full rounded-panel border border-line bg-surface-1 p-4">
+            <CircuitTraces variant="board" activeIds={["software"]} />
+          </div>
+          <p className="mt-3 text-sm text-text-2">{t.motionBoard}</p>
+          <Reveal className="mt-8">
+            <GlassPanel className="p-5">
+              <p className="text-sm">{t.motionReveal}</p>
+            </GlassPanel>
+          </Reveal>
         </Block>
       </Container>
     </main>

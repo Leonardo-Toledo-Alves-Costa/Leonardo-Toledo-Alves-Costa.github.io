@@ -18,6 +18,12 @@ export const en: Dictionary = {
     skipToContent: "Skip to content",
     switchLanguage: "Ver em português",
   },
+  hero: {
+    boot1: "initializing leonardo.sys",
+    boot2: "loading modules: software, hardware, ai",
+    boot3: "bridging hw ⇄ sw",
+    bootStatus: "ok",
+  },
   levels: {
     learning: "learning",
     used: "used in projects",
@@ -47,5 +53,9 @@ export const en: Dictionary = {
     spotlight: "Light card",
     spotlightBody: "The border lights up green under the pointer. Base for project cards.",
     terminal: "Terminal",
+    motion: "Motion",
+    motionNote: "Light, not bounce: chrome sheen, typed boot and pulses along the traces. Everything stops with \"reduce motion\"; without JavaScript, text shows in full.",
+    motionBoard: "The selected category trace lights up (here: software).",
+    motionReveal: "This block eases in as it reaches the screen.",
   },
 };

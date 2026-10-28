@@ -17,6 +17,12 @@ export const pt = {
     skipToContent: "Pular para o conteúdo",
     switchLanguage: "Ver em inglês",
   },
+  hero: {
+    boot1: "inicializando leonardo.sys",
+    boot2: "carregando módulos: software, hardware, ia",
+    boot3: "estabelecendo ponte hw ⇄ sw",
+    bootStatus: "ok",
+  },
   levels: {
     learning: "estudando",
     used: "usei em projeto",
@@ -46,5 +52,9 @@ export const pt = {
     spotlight: "Card com luz",
     spotlightBody: "A borda acende em verde sob o ponteiro. Base dos cards de projeto.",
     terminal: "Terminal",
+    motion: "Movimento",
+    motionNote: "Luz, não pulo: reflexo cromado, boot digitado e pulsos nas trilhas. Tudo para com \"reduzir movimento\"; sem JavaScript, o texto aparece completo.",
+    motionBoard: "Trilha da categoria selecionada acende (aqui: software).",
+    motionReveal: "Este bloco entra suavemente quando chega à tela.",
   },
 };

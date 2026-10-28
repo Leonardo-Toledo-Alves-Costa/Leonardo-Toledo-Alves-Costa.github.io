@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-const SECTIONS = ["colors", "type", "buttons", "chips", "glass", "spotlight", "terminal"];
+const SECTIONS = ["colors", "type", "buttons", "chips", "glass", "spotlight", "terminal", "motion"];
 
 test.describe("página /design-system", () => {
   test.beforeEach(async ({ page }) => {

@@ -25,7 +25,11 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   return (
-    <html lang={htmlLang[locale]} className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+    <html lang={htmlLang[locale]} className={`${geistSans.variable} ${geistMono.variable} antialiased`} suppressHydrationWarning>
+      <head>
+        {/* Marca que há JavaScript antes de pintar: efeitos que escondem texto só agem com JS (sem JS, tudo visível). */}
+        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.dataset.js=''" }} />
+      </head>
       <body>{children}</body>
     </html>
   );
