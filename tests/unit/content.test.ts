@@ -5,7 +5,7 @@ import { projects } from "@/content/projects";
 import { skills } from "@/content/skills";
 import { timeline } from "@/content/timeline";
 import type { Project, TimelineEntry } from "@/content/types";
-import { formatPeriod, localize, projectSlots, skillsByCategory } from "@/lib/content";
+import { formatPeriod, formatProgressBar, localize, projectSlots, shortHash, skillsByCategory, slotsToFillGrid, splitSpec } from "@/lib/content";
 
 const p1 = { id: "p1" } as Project;
 const p2 = { id: "p2" } as Project;
@@ -122,4 +122,33 @@ test("estudo atual: C e C++ para lógica e estruturas de dados", () => {
 test("bancos de dados usados na Asimov aparecem na stack", () => {
   const ids = skills.map((s) => s.id);
   expect(ids).toEqual(expect.arrayContaining(["mongodb", "supabase", "firebase", "riverpod"]));
+});
+
+test("splitSpec separa principal e complemento pelo último ' · '", () => {
+  expect(splitSpec("Eng. de Computação · UNIFEI")).toEqual({ main: "Eng. de Computação", sub: "UNIFEI" });
+  expect(splitSpec("Sem complemento")).toEqual({ main: "Sem complemento" });
+});
+
+test("shortHash: 7 caracteres hex, estável e diferente entre ids", () => {
+  const h = shortHash("asimov-director");
+  expect(h).toMatch(/^[0-9a-f]{7}$/);
+  expect(shortHash("asimov-director")).toBe(h);
+  const all = timeline.map((t) => shortHash(t.id));
+  expect(new Set(all).size).toBe(all.length);
+});
+
+test("slotsToFillGrid completa a última linha de 3 colunas (destaque ocupa 2)", () => {
+  expect(slotsToFillGrid(4, 3, 1)).toBe(5); // 4 projetos + 1 célula extra do destaque = 5 → 6 células
+  expect(slotsToFillGrid(5, 3, 1)).toBe(5); // 6 células: grade cheia, nenhum slot
+  expect(slotsToFillGrid(1, 3, 1)).toBe(2); // destaque (2) + 1 slot
+  expect(slotsToFillGrid(0, 3, 0)).toBe(3); // sem projetos: uma linha de slots
+});
+
+test("formatProgressBar: células cheias/vazias e percentual com limite 0..100", () => {
+  expect(formatProgressBar(0)).toEqual({ filled: 0, empty: 20, percent: 0 });
+  expect(formatProgressBar(40)).toEqual({ filled: 8, empty: 12, percent: 40 });
+  expect(formatProgressBar(100)).toEqual({ filled: 20, empty: 0, percent: 100 });
+  expect(formatProgressBar(150)).toEqual({ filled: 20, empty: 0, percent: 100 });
+  expect(formatProgressBar(-5)).toEqual({ filled: 0, empty: 20, percent: 0 });
+  expect(formatProgressBar(50, 10)).toEqual({ filled: 5, empty: 5, percent: 50 });
 });

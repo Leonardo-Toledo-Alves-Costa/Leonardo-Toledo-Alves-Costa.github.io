@@ -12,12 +12,14 @@ const TRACES: Record<"hero" | "board", Trace[]> = {
     { id: "h3", d: "M420 0 V130 L470 180 V400" },
     { id: "h4", d: "M820 400 V300 L870 250 H1000" },
   ],
-  // Cada categoria da stack tem uma trilha até o barramento central (onde fica o painel de detalhe).
+  // Cada categoria da stack sai com um pad na borda interna da sua zona, dobra a 45° no corredor
+  // e entra no painel central (o trecho sob o painel opaco fica escondido). Calibrado para o grid
+  // lg da placa (colunas 1fr · 0.9fr · 1fr, gap 64px).
   board: [
-    { id: "software" satisfies SkillCategory, d: "M60 60 H300 L360 120 H440 L500 180" },
-    { id: "cloud" satisfies SkillCategory, d: "M940 60 H700 L640 120 H560 L500 180" },
-    { id: "engineering" satisfies SkillCategory, d: "M60 340 H300 L360 280 H440 L500 220" },
-    { id: "hardware-ai" satisfies SkillCategory, d: "M940 340 H700 L640 280 H560 L500 220" },
+    { id: "software" satisfies SkillCategory, d: "M310 86 H322 L362 126 H500" },
+    { id: "cloud" satisfies SkillCategory, d: "M690 86 H678 L638 126 H500" },
+    { id: "engineering" satisfies SkillCategory, d: "M310 314 H322 L362 274 H500" },
+    { id: "hardware-ai" satisfies SkillCategory, d: "M690 314 H678 L638 274 H500" },
   ],
 };
 

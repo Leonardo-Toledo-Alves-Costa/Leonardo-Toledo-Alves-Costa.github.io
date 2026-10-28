@@ -46,8 +46,13 @@
     color: var(--color-text);
   }
 
+  /* Dentro do vidro (overflow-hidden), o anel vai para dentro do controle para não ser cortado. */
+  [data-glass] :focus-visible {
+    outline-offset: -2px;
+  }
+
   /* Foco por teclado sempre visível: anel de sinal com folga. */
-  :focus-visible {
+  :where(:focus-visible) {
     outline: 2px solid var(--color-signal);
     outline-offset: 3px;
   }
@@ -102,12 +107,13 @@
 /* ---------- Motion: luz, não pulo ---------- */
 
 /* Reflexo cromado passando pelo título (assinatura do hero, ref. Apple iPhone 18 Pro). */
+/* Percurso de 85% a 32%: a faixa verde (54% do gradiente, fundo 2,5× o texto) fica sempre sobre o nome. */
 @keyframes chrome-sheen {
   from {
-    background-position: 100% 0;
+    background-position: 85% 0;
   }
   to {
-    background-position: 0 0;
+    background-position: 32% 0;
   }
 }
 
@@ -172,4 +178,9 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Controles que só funcionam com JavaScript ficam ocultos sem ele (html[data-js] vem do script no head). */
+html:not([data-js]) [data-requires-js] {
+  display: none;
 }

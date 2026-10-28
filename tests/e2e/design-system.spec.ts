@@ -147,3 +147,9 @@ test("borda do card de luz é só um anel (mask-composite exclude)", async ({ pa
   // Um valor por camada da máscara: "exclude, exclude". Antes da correção vinha "add, add".
   expect(composite).toMatch(/^exclude(, exclude)*$/);
 });
+
+test("GlassPanel com rounded-* próprio não recebe o raio padrão", async ({ page }) => {
+  await page.goto("/pt/");
+  const cls = await page.getByTestId("site-nav").getAttribute("class");
+  expect(cls).not.toMatch(/(^|\s)rounded-panel(\s|$)/);
+});
