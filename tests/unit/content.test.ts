@@ -5,7 +5,7 @@ import { projects } from "@/content/projects";
 import { skills } from "@/content/skills";
 import { timeline } from "@/content/timeline";
 import type { Project, TimelineEntry } from "@/content/types";
-import { formatPeriod, localize, projectSlots, shortHash, skillsByCategory, splitSpec } from "@/lib/content";
+import { formatPeriod, localize, projectSlots, shortHash, skillsByCategory, slotsToFillGrid, splitSpec } from "@/lib/content";
 
 const p1 = { id: "p1" } as Project;
 const p2 = { id: "p2" } as Project;
@@ -135,4 +135,11 @@ test("shortHash: 7 caracteres hex, estável e diferente entre ids", () => {
   expect(shortHash("asimov-director")).toBe(h);
   const all = timeline.map((t) => shortHash(t.id));
   expect(new Set(all).size).toBe(all.length);
+});
+
+test("slotsToFillGrid completa a última linha de 3 colunas (destaque ocupa 2)", () => {
+  expect(slotsToFillGrid(4, 3, 1)).toBe(5); // 4 projetos + 1 célula extra do destaque = 5 → 6 células
+  expect(slotsToFillGrid(5, 3, 1)).toBe(5); // 6 células: grade cheia, nenhum slot
+  expect(slotsToFillGrid(1, 3, 1)).toBe(2); // destaque (2) + 1 slot
+  expect(slotsToFillGrid(0, 3, 0)).toBe(3); // sem projetos: uma linha de slots
 });

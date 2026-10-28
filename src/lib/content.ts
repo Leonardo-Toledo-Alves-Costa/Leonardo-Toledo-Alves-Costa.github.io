@@ -56,3 +56,12 @@ export function shortHash(id: string): string {
   }
   return (h >>> 0).toString(16).padStart(8, "0").slice(0, 7);
 }
+
+/**
+ * Quantos itens (projetos + slots livres) completam a última linha da grade.
+ * `extraCells` = células a mais ocupadas por destaques (ex.: um card que ocupa 2 colunas soma 1).
+ */
+export function slotsToFillGrid(projectCount: number, cols: number, extraCells: number): number {
+  const cells = Math.max(cols, Math.ceil((projectCount + extraCells) / cols) * cols);
+  return cells - extraCells;
+}

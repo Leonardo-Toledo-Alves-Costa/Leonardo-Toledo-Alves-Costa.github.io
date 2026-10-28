@@ -58,6 +58,13 @@ export const pt = {
   timeline: {
     intro: "Formação e experiência no formato de um git log: o commit mais recente no topo.",
   },
+  projects: {
+    intro: "Projetos de cliente e de pesquisa: o código é privado, então o que vale aqui é o que foi entregue.",
+    privateCode: "Código privado",
+    stack: "Stack",
+    slotTitle: "Slot livre",
+    slotBody: "Próximo módulo em desenvolvimento…",
+  },
   levels: {
     learning: "estudando",
     used: "usei em projeto",

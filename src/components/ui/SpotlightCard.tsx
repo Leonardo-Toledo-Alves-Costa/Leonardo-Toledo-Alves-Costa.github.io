@@ -16,19 +16,21 @@ export function SpotlightCard({ className, children }: { className?: string; chi
       ref={ref}
       data-spotlight=""
       className={cn(
-        "group relative overflow-hidden rounded-card border border-line bg-surface-1 p-6",
+        // isolate + luzes em -z-10: ficam atrás do conteúdo sem div interna, então o layout de quem
+        // usa (flex, gap, mt-auto) se aplica direto aos filhos.
+        "group relative isolate overflow-hidden rounded-card border border-line bg-surface-1 p-6",
         // Borda que acende: anel de 1px (padding) mascarado, dentro da caixa para não ser recortado.
-        "before:pointer-events-none before:absolute before:inset-0 before:rounded-card before:content-[''] before:ring-mask",
+        "before:pointer-events-none before:absolute before:inset-0 before:-z-10 before:rounded-card before:content-[''] before:ring-mask",
         "before:bg-[radial-gradient(220px_circle_at_var(--mx,25%)_var(--my,0%),rgb(124_255_107/0.7),transparent_60%)]",
         "before:opacity-45 before:transition-opacity before:duration-300 hover:before:opacity-100 focus-within:before:opacity-100",
         // Luz interna.
-        "after:pointer-events-none after:absolute after:inset-0 after:content-['']",
+        "after:pointer-events-none after:absolute after:inset-0 after:-z-10 after:content-['']",
         "after:bg-[radial-gradient(320px_circle_at_var(--mx,25%)_var(--my,0%),rgb(255_255_255/0.06),transparent_50%)]",
         "after:opacity-45 after:transition-opacity after:duration-300 hover:after:opacity-100",
         className,
       )}
     >
-      <div className="relative z-10">{children}</div>
+      {children}
     </div>
   );
 }

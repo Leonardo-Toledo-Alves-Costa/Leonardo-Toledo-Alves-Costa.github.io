@@ -33,7 +33,8 @@ for (const locale of ["pt", "en"] as const) {
 
     test("rodapé com ano e link do código", async ({ page }) => {
       await page.goto(`/${locale}/`);
-      const footer = page.locator("footer");
+      // O rodapé da página é o único com papel contentinfo (os <footer> dos cards não contam).
+      const footer = page.getByRole("contentinfo");
       await expect(footer).toContainText(String(new Date().getFullYear()));
       await expect(footer.locator('a[href*="github.com/Leonardo-Toledo-Alves-Costa"]')).toHaveCount(1);
     });

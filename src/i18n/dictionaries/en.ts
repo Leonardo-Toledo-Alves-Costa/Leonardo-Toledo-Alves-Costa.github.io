@@ -21,7 +21,7 @@ export const en: Dictionary = {
     about: "Engineering, leadership, delivery",
     stack: "Tools, by level of mastery",
     timeline: "From apprentice to director",
-    projects: "Delivered and award-winning projects",
+    projects: "Delivered and award‑winning projects",
     learning: "What I'm studying now",
     contact: "Open to software engineering internships",
   },
@@ -58,6 +58,13 @@ export const en: Dictionary = {
   },
   timeline: {
     intro: "Education and experience as a git log: the latest commit on top.",
+  },
+  projects: {
+    intro: "Client and research projects: the code is private, so what counts here is what was delivered.",
+    privateCode: "Private code",
+    stack: "Stack",
+    slotTitle: "Free slot",
+    slotBody: "Next module in development…",
   },
   levels: {
     learning: "learning",
