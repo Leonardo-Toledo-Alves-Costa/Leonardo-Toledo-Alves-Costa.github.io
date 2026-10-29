@@ -97,3 +97,11 @@ test("slot livre com borda tracejada legível", async ({ page }) => {
   // Mais visível que a linha padrão (branco 8%).
   expect(color).not.toMatch(/0\.08\)/);
 });
+
+test("tablet (768px): cards de projeto com largura confortável (2 colunas)", async ({ page, isMobile }) => {
+  test.skip(isMobile, "largura definida no teste");
+  await page.setViewportSize({ width: 768, height: 1024 });
+  await page.goto("/pt/#projects");
+  const w = (await page.locator('#projects [data-project-card="dip-mobile"]').boundingBox())!.width;
+  expect(w).toBeGreaterThanOrEqual(300);
+});

@@ -41,6 +41,12 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  /* Toque: sem o atraso de duplo toque para zoom em links e botões. */
+  a,
+  button {
+    touch-action: manipulation;
+  }
+
   ::selection {
     background: rgb(124 255 107 / 0.3);
     color: var(--color-text);

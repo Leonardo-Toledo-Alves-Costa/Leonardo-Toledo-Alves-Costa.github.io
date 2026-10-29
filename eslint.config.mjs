@@ -18,6 +18,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Saídas locais de revisão e bancada (fora do git).
+    ".revisoes/**",
+    ".superpowers/**",
   ]),
 ]);
 

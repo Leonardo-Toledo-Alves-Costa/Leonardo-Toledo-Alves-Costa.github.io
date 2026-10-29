@@ -56,5 +56,7 @@ export interface Profile {
   /** Só com PDF sem telefone; até lá o botão de CV fica oculto. */
   cv?: { pt?: string; en?: string };
   specs: { label: Localized; value: Localized }[];
+  /** Situação atual, mostrada na primeira dobra (nível + o que busca). */
+  status: Localized;
   award: Localized;
 }

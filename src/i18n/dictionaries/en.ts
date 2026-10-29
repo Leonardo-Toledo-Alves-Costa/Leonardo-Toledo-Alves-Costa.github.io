@@ -2,9 +2,17 @@ import type { Dictionary } from "../get-dictionary";
 
 export const en: Dictionary = {
   meta: {
-    title: "Leonardo Tolêdo — Computer Engineering · software ⇄ hardware",
+    title: "Leonardo Tolêdo — Computer Engineering (UNIFEI) · software and hardware",
     description:
       "Portfolio of Leonardo Tolêdo, Computer Engineering student at UNIFEI: projects, technologies and a path between software and hardware.",
+  },
+  share: {
+    ogAlt: "Leonardo Tolêdo — Computer Engineering · software ⇄ hardware",
+  },
+  notFound: {
+    title: "Page not found",
+    body: "This address does not exist or has moved.",
+    back: "Go to the portfolio",
   },
   nav: {
     about: "about",

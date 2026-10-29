@@ -194,3 +194,23 @@ test("títulos das seções não repetem o rótulo de serigrafia", async ({ page
     expect(title, id).not.toBe(label);
   }
 });
+
+test("nome acessível do logo e da troca de idioma contém o texto visível (WCAG 2.5.3)", async ({ page }) => {
+  await page.goto("/pt/");
+  const nav = page.getByTestId("site-nav");
+  for (const el of [nav.locator('a[href="#hero"]'), page.getByTestId("locale-switch").first()]) {
+    const { visible, label } = await el.evaluate((e) => ({ visible: (e.textContent ?? "").replace(/[^\p{L}\p{N}]/gu, ""), label: e.getAttribute("aria-label") ?? "" }));
+    expect(visible.length).toBeGreaterThan(0);
+    expect(label.replace(/[^\p{L}\p{N}]/gu, "")).toContain(visible);
+  }
+});
+
+test("sem rolagem lateral em larguras intermediárias (tablet e notebook pequeno)", async ({ page, isMobile }) => {
+  test.skip(isMobile, "percorre as larguras num só projeto");
+  for (const width of [320, 640, 768, 1024, 1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/pt/");
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    expect(overflow, `largura ${width}`).toBeLessThanOrEqual(0);
+  }
+});

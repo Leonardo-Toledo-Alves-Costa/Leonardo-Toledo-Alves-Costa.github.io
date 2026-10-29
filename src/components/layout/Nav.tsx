@@ -91,7 +91,8 @@ export function Nav({ locale, items, labels }: NavProps) {
           <a
             href="#hero"
             onClick={close}
-            aria-label="Leonardo Tolêdo"
+            // O nome acessível começa pelo texto visível (WCAG 2.5.3: quem usa voz diz "LT").
+            aria-label="LT, Leonardo Tolêdo"
             className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-pill px-2 font-mono text-sm font-medium text-signal"
           >
             LT_
