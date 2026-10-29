@@ -1,7 +1,7 @@
 /** Textos de interface em português — o formato deste objeto é o contrato que o inglês precisa seguir. */
 export const pt = {
   meta: {
-    title: "Leonardo Tolêdo — Engenharia de Computação · software ⇄ hardware",
+    title: "Leonardo Tolêdo — Engenharia de Computação (UNIFEI) · software e hardware",
     description:
       "Portfólio de Leonardo Tolêdo, estudante de Engenharia de Computação na UNIFEI: projetos, tecnologias e trajetória entre software e hardware.",
   },
@@ -38,7 +38,8 @@ export const pt = {
   },
   common: {
     skipToContent: "Pular para o conteúdo",
-    switchLanguage: "Ver em inglês",
+    // No idioma de destino (o link tem lang="en"): quem não lê português reconhece.
+    switchLanguage: "View in English",
   },
   hero: {
     boot1: "inicializando leonardo.sys",

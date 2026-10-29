@@ -2,7 +2,7 @@ import type { Dictionary } from "../get-dictionary";
 
 export const en: Dictionary = {
   meta: {
-    title: "Leonardo Tolêdo — Computer Engineering · software ⇄ hardware",
+    title: "Leonardo Tolêdo — Computer Engineering (UNIFEI) · software and hardware",
     description:
       "Portfolio of Leonardo Tolêdo, Computer Engineering student at UNIFEI: projects, technologies and a path between software and hardware.",
   },

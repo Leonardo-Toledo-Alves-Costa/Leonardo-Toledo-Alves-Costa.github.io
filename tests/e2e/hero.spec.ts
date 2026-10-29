@@ -63,3 +63,13 @@ for (const [locale, boot, headline, cta] of [
     await expect(page.locator('#hero a[href="#projects"]')).toHaveText(cta);
   });
 }
+
+test("hero diz o status na primeira dobra: UNIFEI e estágio (PT e EN)", async ({ page }) => {
+  for (const [locale, re] of [["pt", /UNIFEI.*estágio/], ["en", /UNIFEI.*internship/]] as const) {
+    await page.goto(`/${locale}/`);
+    const status = page.locator("#hero [data-status]");
+    await expect(status).toHaveText(re);
+    const box = (await status.boundingBox())!;
+    expect(box.y + box.height).toBeLessThanOrEqual(page.viewportSize()!.height);
+  }
+});

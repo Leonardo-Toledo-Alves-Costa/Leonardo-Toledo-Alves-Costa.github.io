@@ -25,7 +25,8 @@ export function LocaleSwitch({ locale, label, className }: { locale: Locale; lab
       href={href}
       hrefLang={htmlLang[target]}
       lang={htmlLang[target]}
-      aria-label={label}
+      // Começa pelo texto visível (WCAG 2.5.3): quem usa comando de voz diz "EN"/"PT".
+      aria-label={`${target.toUpperCase()}, ${label}`}
       onClick={onClick}
       className={cn(
         // Cinza: o verde da nav é reservado ao logo e à seção ativa.

@@ -17,11 +17,13 @@ type SectionProps = {
 
 /** Casca padrão das seções: âncora, rótulo de serigrafia e título h2 ligado por aria-labelledby. */
 export function Section({ id, index, label, title, tone = "base", className, children }: SectionProps) {
+  // overflow-x-clip: brilhos decorativos que passam da borda não criam rolagem lateral (sem cortar na vertical).
   return (
     <section
       id={id}
       aria-labelledby={`${id}-title`}
-      className={cn("scroll-mt-24 border-t border-line py-16 sm:py-24 lg:py-32", tone === "raised" && "bg-surface-2", className)}
+      className={cn(
+        "scroll-mt-24 overflow-x-clip border-t border-line py-16 sm:py-24 lg:py-32", tone === "raised" && "bg-surface-2", className)}
     >
       <Container>
         <SectionLabel index={index}>{label}</SectionLabel>

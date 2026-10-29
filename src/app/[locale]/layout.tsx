@@ -1,16 +1,19 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
-import { htmlLang, isLocale, locales } from "@/i18n/config";
+import { JsFlag } from "@/components/layout/JsFlag";
 import { profile } from "@/content/profile";
+import { htmlLang, isLocale, locales } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
-import { SITE_URL } from "@/lib/site";
+import { SITE_URL, THEME_COLOR } from "@/lib/site";
 import "@/styles/globals.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const dynamicParams = false;
+
+export const viewport: Viewport = { themeColor: THEME_COLOR, colorScheme: "dark" };
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -53,7 +56,10 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
         {/* Marca que há JavaScript antes de pintar: efeitos que escondem texto só agem com JS (sem JS, tudo visível). */}
         <script dangerouslySetInnerHTML={{ __html: "document.documentElement.dataset.js=''" }} />
       </head>
-      <body>{children}</body>
+      <body>
+        <JsFlag locale={locale} />
+        {children}
+      </body>
     </html>
   );
 }

@@ -89,6 +89,13 @@ export function Hero({ locale, dict }: SectionProps) {
           <span className="whitespace-nowrap font-medium text-text">{headline.focus}</span>
         </p>
 
+        {/* Nível e o que busca, já na primeira dobra. O LED aceso = disponível.
+            Sem borda de pílula: não é botão (a pílula com borda verde é o "> e-mail"). */}
+        <p data-status="" className="mt-5 flex items-baseline gap-2.5 font-mono text-xs text-text sm:text-sm">
+          <span aria-hidden className="size-1.5 shrink-0 translate-y-[-1px] rounded-full bg-signal shadow-[0_0_8px_var(--color-signal)]" />
+          {profile.status[locale]}
+        </p>
+
         <div className="mt-10 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <div className="flex flex-wrap items-center gap-3">{heroCtas({ cvHref: profile.cv?.[locale] }).map(cta)}</div>
 

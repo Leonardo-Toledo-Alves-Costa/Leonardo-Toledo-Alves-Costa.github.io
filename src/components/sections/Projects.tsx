@@ -5,20 +5,21 @@ import { ProjectCard } from "./projects/ProjectCard";
 import { Section } from "./Section";
 import type { SectionProps } from "./types";
 
-const COLS = 3;
+// 2 colunas no tablet e 3 no desktop: as células fecham em múltiplos de 6 para as duas grades ficarem completas.
+const GRID_CELLS = 6;
 
 /** Projetos como módulos da placa: o premiado em destaque (2 colunas) e "slots livres" fechando a grade. */
 export function Projects({ locale, dict }: SectionProps) {
   const t = dict.projects;
   const featuredId = projects.find((p) => p.award)?.id;
-  const items = projectSlots(projects, slotsToFillGrid(projects.length, COLS, featuredId ? 1 : 0));
+  const items = projectSlots(projects, slotsToFillGrid(projects.length, GRID_CELLS, featuredId ? 1 : 0));
 
   return (
     <Section id="projects" index="05" label={dict.nav.projects} title={dict.sections.projects}>
       <p className="mt-6 max-w-[60ch] text-lg text-text-2">{t.intro}</p>
       {/* Um Reveal para a grade inteira: cards não são sequência. */}
       <Reveal className="mt-12">
-        <ul className="grid gap-4 md:grid-flow-dense md:grid-cols-3">
+        <ul className="grid gap-4 md:grid-flow-dense md:grid-cols-2 lg:grid-cols-3">
           {items.map((project, i) =>
             project ? (
               <li key={project.id} className={project.id === featuredId ? "md:col-span-2" : undefined}>

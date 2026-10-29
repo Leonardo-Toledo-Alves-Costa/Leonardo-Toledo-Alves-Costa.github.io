@@ -1,10 +1,9 @@
 import { expect, test } from "@playwright/test";
-
-const SITE = "https://leonardo-toledo-alves-costa.github.io";
+import { SITE_URL as SITE } from "../../src/lib/site";
 
 for (const [locale, title, desc] of [
-  ["pt", /Leonardo Tolêdo — Engenharia de Computação/, /Portfólio de Leonardo Tolêdo/],
-  ["en", /Leonardo Tolêdo — Computer Engineering/, /Portfolio of Leonardo Tolêdo/],
+  ["pt", /Leonardo Tolêdo — Engenharia de Computação \(UNIFEI\)/, /Portfólio de Leonardo Tolêdo/],
+  ["en", /Leonardo Tolêdo — Computer Engineering \(UNIFEI\)/, /Portfolio of Leonardo Tolêdo/],
 ] as const) {
   test(`title e description em /${locale}/`, async ({ page }) => {
     await page.goto(`/${locale}/`);
@@ -92,4 +91,12 @@ test("página raiz (redirecionamento) não é indexada", async ({ request }) => 
   // Lê o HTML servido (o navegador redirecionaria antes de dar para inspecionar o DOM).
   const html = await (await request.get("/")).text();
   expect(html).toMatch(/<meta name="robots" content="noindex/);
+});
+
+test("theme-color preto e color-scheme escuro (barra do navegador no celular)", async ({ page }) => {
+  for (const path of ["/pt/", "/nao-existe/"]) {
+    await page.goto(path);
+    await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute("content", "#000000");
+    await expect(page.locator('meta[name="color-scheme"]')).toHaveAttribute("content", "dark");
+  }
 });

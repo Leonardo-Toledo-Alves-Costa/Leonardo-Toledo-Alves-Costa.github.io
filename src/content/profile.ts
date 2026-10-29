@@ -36,6 +36,10 @@ export const profile: Profile = {
       value: { pt: "Diretor de Projetos · Asimov Jr. (~30 devs)", en: "Director of Projects · Asimov Jr. (~30 devs)" },
     },
   ],
+  status: {
+    pt: "Estudante na UNIFEI · aberto a estágio em engenharia de software",
+    en: "UNIFEI student · open to software engineering internships",
+  },
   award: {
     pt: "Vencedor mundial JEWC/ENEJ — Projeto de Impacto",
     en: "Global Winner JEWC/ENEJ — Impact Project",

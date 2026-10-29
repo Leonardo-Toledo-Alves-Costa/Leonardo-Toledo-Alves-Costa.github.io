@@ -5,15 +5,24 @@ import { setTimeout as wait } from "node:timers/promises";
 import { chromium } from "@playwright/test";
 
 const PORT = 4199;
-const server = spawn("npx", ["serve", "out", "-l", String(PORT), "--config", "../serve.json"], { shell: true, stdio: "ignore" });
+const server = spawn("npx", ["serve", "out", "-l", String(PORT), "--config", "../serve.json"], {
+  shell: true,
+  stdio: "ignore",
+  // Fora do Windows: grupo de processos próprio, para encerrar o shell e o serve juntos.
+  detached: process.platform !== "win32",
+});
 
-/** No Windows, `kill` derruba só o shell; o `serve` filho ficaria segurando a porta. */
+/** `kill` simples derruba só o shell; o `serve` filho ficaria segurando a porta. Encerra a árvore inteira. */
 function stopServer() {
   if (process.platform === "win32" && server.pid) {
     try {
       execSync(`taskkill /pid ${server.pid} /T /F`, { stdio: "ignore" });
     } catch {}
-  } else server.kill();
+  } else if (server.pid) {
+    try {
+      process.kill(-server.pid);
+    } catch {}
+  }
 }
 
 async function waitForServer() {
