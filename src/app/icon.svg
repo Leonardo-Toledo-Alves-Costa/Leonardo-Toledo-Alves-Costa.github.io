@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>LT_</title>
+  <rect width="64" height="64" rx="14" fill="#000"/>
+  <rect x="1.5" y="1.5" width="61" height="61" rx="12.5" fill="none" stroke="#7CFF6B" stroke-opacity=".75" stroke-width="3"/>
+  <text x="32" y="41" text-anchor="middle" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="24" font-weight="700" fill="#7CFF6B">LT_</text>
+</svg>

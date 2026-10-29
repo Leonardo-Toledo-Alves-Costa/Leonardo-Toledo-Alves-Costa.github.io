@@ -5,6 +5,14 @@ export const pt = {
     description:
       "Portfólio de Leonardo Tolêdo, estudante de Engenharia de Computação na UNIFEI: projetos, tecnologias e trajetória entre software e hardware.",
   },
+  share: {
+    ogAlt: "Leonardo Tolêdo — Engenharia de Computação · software ⇄ hardware",
+  },
+  notFound: {
+    title: "Página não encontrada",
+    body: "O endereço não existe ou mudou.",
+    back: "Ir para o portfólio",
+  },
   nav: {
     about: "sobre",
     stack: "stack",
