@@ -52,7 +52,7 @@ test("nenhum telefone em PDFs de public/", async () => {
 });
 
 // Prova de que o detector funciona em PDF de verdade: os currículos-fonte (locais, fora do git) TÊM telefone.
-const CV_DIR = "docs/00-contexto-zero/curriculo";
+const CV_DIR = "docs/02-base-visual/autor/curriculo";
 test.skipIf(!existsSync(CV_DIR))("detector acha o telefone nos currículos-fonte locais", async () => {
   const cvs = readdirSync(CV_DIR).filter((f) => extname(f) === ".pdf");
   expect(cvs.length).toBeGreaterThan(0);

@@ -4,9 +4,9 @@ Mapa da documentação do projeto. **Só este arquivo é público** — o conte�
 
 | Pasta | Camada | Escopo | O que guarda |
 |---|---|---|---|
-| `00-contexto-zero/` | 1 · Contexto zero | Global (igual em todo projeto) | Quem é o autor, preferências, fluxo de trabalho, skills próprias |
+| `00-contexto-zero/` | 1 · Contexto zero | Global (igual em todo projeto) | Preferências e papéis (autor = arquiteto, agente = pedreiro), fluxo de trabalho, skills próprias — **sem dados pessoais** |
 | `01-stacks/` | 2 · Stacks | Global + projeto | Catálogo de tudo que já foi usado + o que este projeto usa |
-| `02-base-visual/` | 3 · Base visual | Por projeto | Brief, design system, inspirações, protótipos, screenshots |
+| `02-base-visual/` | 3 · Base visual | Por projeto | Brief, design system, inspirações, protótipos, screenshots; `autor/` (perfil e currículos) só quando o projeto precisa saber quem é o autor |
 | `03-memoria/` | 4 · Memória | Por projeto | STATUS, log de sessões, decisões, specs, planos, revisões e backlog |
 | `04-testes/` | (reservado) | Global | Padrão de testes reutilizável |
 
