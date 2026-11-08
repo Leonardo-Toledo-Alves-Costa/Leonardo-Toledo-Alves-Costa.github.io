@@ -52,7 +52,7 @@ tests/unit · tests/e2e        Vitest · Playwright
 | `bugFix/<nome>` | `develop` | `develop` | patch |
 | `hotFix/<nome>` | `main` | `main` + merge de volta na `develop` | patch |
 
-Nunca commite direto em `main`/`develop`. Commits em português. Merge de PR só com OK do autor. Antes do 1.0.0, cada fase do plano sobe `0.x.0` (tabela nas Global Constraints do plano).
+Nunca commite direto em `main`/`develop`. Commits em português. Merge de PR só com OK do autor. Toda mudança entra por PR, mesmo quando o autor autoriza o merge direto (`gh pr create` → `gh pr merge`). A branch de trabalho (`feat/`, `bugFix/`, `hotFix/`) só existe enquanto a mudança está em desenvolvimento: no merge, **apague a branch** (local e remota; `gh pr merge --delete-branch`). `hotFix/*`: depois do PR na `main`, levar a `main` para a `develop` (não a branch já apagada). Mudança só de documentação/contexto não sobe versão. Antes do 1.0.0, cada fase do plano sobe `0.x.0` (tabela nas Global Constraints do plano).
 
 ## 5. Fluxo de trabalho
 **Pensar antes, quebrar em tarefas, depois construir.** Nenhum projeto ou bloco novo começa pelo código.
@@ -77,10 +77,10 @@ Referência (21st + React Bits + sites) registrada em `docs/02-base-visual/inspi
 | Antigravity CLI `agy` + Gemini | skills próprias abaixo |
 
 ### Skills próprias (obrigatórias)
-Definidas em `docs/00-contexto-zero/skills/`; plugin local `leonardo-skills` (`C:/projects/leonardo-skills`, habilitado em `.claude/settings.json`). Papéis: **o agente implementa e testa; o Gemini critica.** A Revisão Gemini requer `agy` (Antigravity CLI) com login; rode com timeout ≥ 10 min.
+Definidas em `docs/00-contexto-zero/skills/`; plugin local `internal-skills` (`C:/projects/internal-skills`, habilitado em `.claude/settings.json`). Papéis: **o agente implementa e testa; o Gemini critica.** A Revisão Gemini requer `agy` (Antigravity CLI) com login; rode com timeout ≥ 10 min.
 - **Revisão Gemini** — ao fim de **toda** tarefa, antes do commit. Aprovado só com nota ≥ 9.0 e sem crítica `critica`/`alta`; caso contrário, corrigir e nova rodada.
   ```bash
-  node C:/projects/leonardo-skills/scripts/revisao.mjs --session <task-NN-nome> --lente codigo|visual|documento \
+  node C:/projects/internal-skills/scripts/revisao.mjs --session <task-NN-nome> --lente codigo|visual|documento \
     --objetivo-file <md> --tarefa-file <md> --contexto-file <md> --arquivos a,b,c --testes-cmd "npm run check"
   ```
 - **Bancada de testes** — **executada pelo próprio agente**, uma persona por vez: usuário caótico, hacker, usuário-alvo (recrutador, neste projeto; avalia também visual genérico / "AI slop") e dev sênior, com Playwright e acesso ao código, seguindo `docs/00-contexto-zero/skills/bancada-de-testes/`. Ao fim de cada fase relevante e antes de todo release. Somente contra o build local, nunca produção. Saídas em `.revisoes/bancada/` (fora do git).
