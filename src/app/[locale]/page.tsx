@@ -3,7 +3,9 @@ import { Footer } from "@/components/layout/Footer";
 import { Nav, type NavItem } from "@/components/layout/Nav";
 import { About } from "@/components/sections/About";
 import { Contact } from "@/components/sections/Contact";
+import { Expansion } from "@/components/sections/Expansion";
 import { Hero } from "@/components/sections/Hero";
+import { OpeningStage } from "@/components/sections/OpeningStage";
 import { Learning } from "@/components/sections/Learning";
 import { Projects } from "@/components/sections/Projects";
 import { Stack } from "@/components/sections/Stack";
@@ -34,7 +36,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
         labels={{ nav: dict.nav.label, menu: dict.nav.menu, close: dict.nav.close, switchLanguage: dict.common.switchLanguage }}
       />
       <main id="conteudo" tabIndex={-1} className="outline-none">
-        <Hero locale={locale} dict={dict} />
+        <OpeningStage hero={<Hero locale={locale} dict={dict} />} expansion={<Expansion text={dict.statements.f1} />} />
         <About locale={locale} dict={dict} />
         <Stack locale={locale} dict={dict} />
         <Timeline locale={locale} dict={dict} />

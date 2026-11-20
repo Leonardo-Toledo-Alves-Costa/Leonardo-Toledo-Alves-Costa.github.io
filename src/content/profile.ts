@@ -3,13 +3,14 @@ import type { Profile } from "./types";
 // Fonte: currículos "Software" PT/EN (out/2026). Sem telefone — nunca.
 export const profile: Profile = {
   name: "Leonardo Tolêdo",
+  // {{ }} = trecho apagado (contexto); o resto acende (spec §4.2).
   headline: {
-    pt: "Engenharia de Computação · software ⇄ hardware",
-    en: "Computer Engineering · software ⇄ hardware",
+    pt: "{{Engenharia de Computação.}} software ⇄ hardware.",
+    en: "{{Computer Engineering.}} software ⇄ hardware.",
   },
   bio: {
-    pt: "Estudante de Engenharia de Computação na UNIFEI em busca de estágio em desenvolvimento de software. Experiência prática no ciclo completo de aplicações — do requisito à entrega —, em infraestrutura em nuvem e na liderança de equipes ágeis.",
-    en: "Computer Engineering undergraduate at UNIFEI seeking a software engineering internship. Hands-on experience across the full feature lifecycle — from requirements to production —, cloud infrastructure, and leading agile engineering squads.",
+    pt: "Estudante de Engenharia de Computação na UNIFEI {{em busca de estágio em desenvolvimento de software.}} Experiência prática no ciclo completo de aplicações {{— do requisito à entrega —,}} em infraestrutura em nuvem {{e}} na liderança de equipes ágeis.",
+    en: "Computer Engineering undergraduate at UNIFEI {{seeking a software engineering internship.}} Hands-on experience across the full feature lifecycle {{— from requirements to production —,}} cloud infrastructure, {{and}} leading agile engineering squads.",
   },
   location: "Itajubá, MG",
   email: "ltoledo.alves@gmail.com",

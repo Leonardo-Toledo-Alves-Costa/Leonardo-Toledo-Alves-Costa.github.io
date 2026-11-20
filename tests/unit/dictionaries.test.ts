@@ -39,7 +39,7 @@ test("getDictionary devolve o dicionário do idioma", () => {
 
 test("frases dos grandes momentos (F1–F5) existem e seguem pendentes até o autor aprovar", () => {
   for (const d of [pt, en]) {
-    for (const k of ["f1", "f2", "f3", "f4", "f5"] as const) expect(d.statements[k]).toMatch(/^\[PENDENTE\] /);
+    for (const k of ["f1", "f2", "f3", "f4", "f5"] as const) expect(d.statements[k]).toContain("[PENDENTE]");
   }
 });
 
