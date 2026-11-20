@@ -16,7 +16,7 @@ export function ProjectCard({ project, locale, dict, featured }: { project: Proj
 
   return (
     <article data-project-card={project.id} className="h-full">
-      <SpotlightCard className={cn("flex h-full flex-col gap-5 sm:p-7", featured && "border-signal/30 before:opacity-80")}>
+      <SpotlightCard className={cn("flex h-full flex-col gap-5 sm:p-7", featured && "border-accent-hi/30 before:opacity-80")}>
         {/* Destaque: a placa aparece no canto do card (preenche o miolo de 2 colunas com intenção). */}
         {featured && (
           <div
@@ -30,7 +30,7 @@ export function ProjectCard({ project, locale, dict, featured }: { project: Proj
             {project.award ? (
               <p
                 data-award=""
-                className="silkscreen inline-flex w-fit items-center rounded-2xl border border-signal/35 bg-signal/10 px-3.5 py-1.5 text-signal sm:rounded-pill"
+                className="silkscreen inline-flex w-fit items-center rounded-2xl border border-accent-hi/35 bg-accent-hi/10 px-3.5 py-1.5 text-accent-hi sm:rounded-pill"
               >
                 {project.award[locale]}
               </p>
@@ -38,15 +38,15 @@ export function ProjectCard({ project, locale, dict, featured }: { project: Proj
               <span />
             )}
             {project.visibility === "private" && (
-              <span data-private="" className="font-mono text-xs text-text-2">
+              <span data-private="" className="font-mono text-xs text-ink-dim">
                 {t.privateCode}
               </span>
             )}
           </div>
           <h3 className={cn("mt-3 font-bold tracking-[-0.02em]", featured ? "text-3xl sm:text-4xl" : "text-2xl")}>{project.name}</h3>
-          <p className="mt-1 text-text-2">{project.tagline[locale]}</p>
+          <p className="mt-1 text-ink-dim">{project.tagline[locale]}</p>
         </header>
-        <p className={cn("leading-relaxed text-pretty text-text/85", featured && "max-w-[60ch] sm:text-lg")}>{project.description[locale]}</p>
+        <p className={cn("leading-relaxed text-pretty text-ink/85", featured && "max-w-[60ch] sm:text-lg")}>{project.description[locale]}</p>
         <footer className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-3 pt-2">
           {stack.length > 0 && (
             <ul aria-label={t.stack} className="flex flex-wrap gap-2">
@@ -64,7 +64,7 @@ export function ProjectCard({ project, locale, dict, featured }: { project: Proj
                   href={project.links.repo}
                   aria-label={`GitHub — ${project.name}`}
                   {...external}
-                  className="inline-flex min-h-11 items-center text-sm text-text underline underline-offset-4"
+                  className="inline-flex min-h-11 items-center text-sm text-ink underline underline-offset-4"
                 >
                   GitHub
                 </a>
@@ -74,7 +74,7 @@ export function ProjectCard({ project, locale, dict, featured }: { project: Proj
                   href={project.links.demo}
                   aria-label={`Demo — ${project.name}`}
                   {...external}
-                  className="inline-flex min-h-11 items-center text-sm text-text underline underline-offset-4"
+                  className="inline-flex min-h-11 items-center text-sm text-ink underline underline-offset-4"
                 >
                   Demo
                 </a>

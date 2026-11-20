@@ -11,20 +11,27 @@ test.describe("página /design-system", () => {
     for (const s of SECTIONS) await expect(page.getByTestId(`ds-${s}`)).toBeVisible();
   });
 
+  test("amostra dos grandes momentos em Instrument Serif, em pé", async ({ page }) => {
+    const serif = page.locator('[data-type-level="serif"] dd');
+    await expect(serif).toBeVisible();
+    await expect(serif).toHaveCSS("font-family", /Instrument Serif/);
+    await expect(serif).toHaveCSS("font-style", "normal");
+  });
+
   test("tokens aplicados no body", async ({ page }) => {
     const body = await page.evaluate(() => {
       const s = getComputedStyle(document.body);
       return { bg: s.backgroundColor, color: s.color, font: s.fontFamily };
     });
-    expect(body.bg).toBe("rgb(0, 0, 0)");
-    expect(body.color).toBe("rgb(245, 245, 247)");
+    expect(body.bg).toBe("rgb(2, 5, 12)");
+    expect(body.color).toBe("rgb(238, 243, 250)");
     expect(body.font).toMatch(/Geist/);
   });
 
-  test("chip 'domino' usa o sinal verde", async ({ page }) => {
+  test("chip 'domino' usa o acento", async ({ page }) => {
     const chip = page.getByTestId("ds-chips").locator('[data-level="proficient"]').first();
-    // #7CFF6B em rgb, ou em oklab quando o Tailwind aplica opacidade com color-mix.
-    await expect(chip).toHaveCSS("border-color", /124, 255, 107|oklab\(0\.89\d* -0\.17\d* 0\.13\d*/);
+    // accent-hi #9CC4FF em rgb, ou em oklab quando o Tailwind aplica opacidade com color-mix.
+    await expect(chip).toHaveCSS("border-color", /156, 196, 255|oklab\(0\.8\d* /);
   });
 
   test("foco visível por teclado no primeiro botão", async ({ page }) => {
@@ -115,8 +122,8 @@ test.describe("comportamento dos componentes", () => {
     await expect(stage.locator("nav[data-glass]")).toBeVisible();
   });
 
-  test("espécime tipográfico com os 5 níveis e 3 cards de luz", async ({ page }) => {
-    await expect(page.getByTestId("ds-type").locator("[data-type-level]")).toHaveCount(5);
+  test("espécime tipográfico com os 6 níveis (inclui serifa) e 3 cards de luz", async ({ page }) => {
+    await expect(page.getByTestId("ds-type").locator("[data-type-level]")).toHaveCount(6);
     await expect(page.getByTestId("ds-spotlight").locator("[data-spotlight]")).toHaveCount(3);
   });
 });
@@ -137,7 +144,7 @@ test("com 'reduzir movimento' a luz não segue o ponteiro", async ({ page, isMob
 test("vidro desfoca o fundo de verdade (backdrop-filter aplicado)", async ({ page }) => {
   await page.goto("/pt/design-system/");
   const filter = await page.getByTestId("ds-glass").locator("[data-glass]").first().evaluate((el) => getComputedStyle(el).backdropFilter);
-  expect(filter).toMatch(/blur\(18px\)/);
+  expect(filter).toMatch(/blur\(14px\)/);
 });
 
 test("borda do card de luz é só um anel (mask-composite exclude)", async ({ page }) => {

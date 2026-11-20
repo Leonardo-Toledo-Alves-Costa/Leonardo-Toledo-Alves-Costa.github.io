@@ -26,7 +26,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
     <>
       <a
         href="#conteudo"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:rounded-pill focus:bg-text focus:px-4 focus:py-3 focus:text-bg"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:rounded-pill focus:bg-ink focus:px-4 focus:py-3 focus:text-bg-abyss"
       >
         {dict.common.skipToContent}
       </a>

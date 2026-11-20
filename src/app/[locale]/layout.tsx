@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import { notFound } from "next/navigation";
 import { JsFlag } from "@/components/layout/JsFlag";
 import { profile } from "@/content/profile";
@@ -10,6 +10,8 @@ import "@/styles/globals.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
+// Só os grandes momentos (F1–F5); sem preload: as frases ficam abaixo da dobra.
+const instrumentSerif = Instrument_Serif({ weight: "400", style: "normal", subsets: ["latin"], variable: "--font-instrument-serif", display: "swap", preload: false });
 
 export const dynamicParams = false;
 
@@ -51,7 +53,7 @@ export default async function LocaleLayout({ children, params }: LayoutProps<"/[
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   return (
-    <html lang={htmlLang[locale]} className={`${geistSans.variable} ${geistMono.variable} antialiased`} suppressHydrationWarning>
+    <html lang={htmlLang[locale]} className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} antialiased`} suppressHydrationWarning>
       <head>
         {/* Marca que há JavaScript antes de pintar: efeitos que escondem texto só agem com JS (sem JS, tudo visível). */}
         <script dangerouslySetInnerHTML={{ __html: "document.documentElement.dataset.js=''" }} />

@@ -134,21 +134,21 @@ test("controles da barra da nav têm alvo de toque ≥ 44px", async ({ page, isM
   }
 });
 
-test("desktop: item ativo fica verde mesmo com o mouse em cima, e sai ao voltar ao topo", async ({ page, isMobile }) => {
+test("desktop: item ativo fica no acento mesmo com o mouse em cima, e sai ao voltar ao topo", async ({ page, isMobile }) => {
   test.skip(isMobile, "no celular a nav é um menu");
   await page.goto("/pt/");
   const stack = page.locator('nav a[href="#stack"]').first();
   await stack.click();
   await expect(stack).toHaveAttribute("aria-current", "true");
   await stack.hover();
-  await expect(stack).toHaveCSS("color", "rgb(124, 255, 107)");
+  await expect(stack).toHaveCSS("color", "rgb(156, 196, 255)");
   await page.getByTestId("site-nav").locator('a[href="#hero"]').click();
   await expect(page.locator("nav a[aria-current]")).toHaveCount(0);
 });
 
-test("seletor de idioma não usa o verde (reservado ao ativo e ao logo)", async ({ page }) => {
+test("seletor de idioma não usa o acento (reservado ao ativo e ao logo)", async ({ page }) => {
   await page.goto("/pt/");
-  await expect(page.getByTestId("locale-switch").first()).not.toHaveCSS("color", "rgb(124, 255, 107)");
+  await expect(page.getByTestId("locale-switch").first()).not.toHaveCSS("color", "rgb(156, 196, 255)");
 });
 
 test("mobile: a nav tem a mesma largura aberta e fechada", async ({ page, isMobile }) => {

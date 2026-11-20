@@ -13,7 +13,7 @@ type SectionLabelProps = {
 /** Rótulo de seção no estilo serigrafia de placa: "01 · SOBRE". */
 export function SectionLabel({ index, children, as: Tag = "p", id, className }: SectionLabelProps) {
   return (
-    <Tag id={id} className={cn("silkscreen text-signal", className)}>
+    <Tag id={id} className={cn("silkscreen text-accent-hi", className)}>
       <span aria-hidden>{index} · </span>
       {children}
     </Tag>

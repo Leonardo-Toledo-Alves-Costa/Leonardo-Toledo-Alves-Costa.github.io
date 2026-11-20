@@ -30,8 +30,8 @@ export function LocaleSwitch({ locale, label, className }: { locale: Locale; lab
       onClick={onClick}
       className={cn(
         // Cinza: o verde da nav é reservado ao logo e à seção ativa.
-        "inline-flex min-h-11 min-w-11 items-center justify-center rounded-pill font-mono text-xs font-medium text-text-2",
-        "transition-colors duration-200 hover:text-text",
+        "inline-flex min-h-11 min-w-11 items-center justify-center rounded-pill font-mono text-xs font-medium text-ink-dim",
+        "transition-colors duration-200 hover:text-ink",
         className,
       )}
     >

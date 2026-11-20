@@ -66,7 +66,7 @@ export function Nav({ locale, items, labels }: NavProps) {
         className={cn(
           "rounded-pill transition-colors duration-200",
           // O verde é o "LED" da seção atual: o hover não o apaga.
-          isActive ? "text-signal" : "text-text-2 hover:text-text",
+          isActive ? "text-accent-hi" : "text-ink-dim hover:text-ink",
           extra,
         )}
       >
@@ -93,7 +93,7 @@ export function Nav({ locale, items, labels }: NavProps) {
             onClick={close}
             // O nome acessível começa pelo texto visível (WCAG 2.5.3: quem usa voz diz "LT").
             aria-label="LT, Leonardo Tolêdo"
-            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-pill px-2 font-mono text-sm font-medium text-signal"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-pill px-2 font-mono text-sm font-medium text-accent-hi"
           >
             LT_
           </a>
@@ -114,7 +114,7 @@ export function Nav({ locale, items, labels }: NavProps) {
               aria-controls="menu-mobile"
               aria-label={open ? labels.close : labels.menu}
               onClick={() => setOpen((v) => !v)}
-              className="inline-flex size-11 items-center justify-center rounded-pill text-text md:hidden"
+              className="inline-flex size-11 items-center justify-center rounded-pill text-ink md:hidden"
             >
               <span aria-hidden className="relative block h-3 w-4">
                 <span

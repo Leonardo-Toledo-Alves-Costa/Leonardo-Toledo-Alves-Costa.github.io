@@ -37,7 +37,7 @@ export function BootSequence({ lines, status = "ok", className }: { lines: strin
   const starts = lines.map((_, i) => lines.slice(0, i).reduce((n, l) => n + l.length, 0));
 
   return (
-    <div data-boot="" data-state={state} className={cn("space-y-1.5 font-mono text-xs leading-relaxed text-text-2 sm:text-sm", className)}>
+    <div data-boot="" data-state={state} className={cn("space-y-1.5 font-mono text-xs leading-relaxed text-ink-dim sm:text-sm", className)}>
       {/* Leitores de tela recebem o texto completo de uma vez; a animação é só visual. */}
       <p className="sr-only">{lines.map((l) => `${l} ${status}`).join(". ")}</p>
       <div aria-hidden>
@@ -46,10 +46,10 @@ export function BootSequence({ lines, status = "ok", className }: { lines: strin
           const complete = visible === line.length;
           return (
             <p key={i} data-boot-line="" className="min-h-5 pl-4 -indent-4">
-              <span className="text-text-2/60">&gt; </span>
+              <span className="text-ink-dim/60">&gt; </span>
               {line.slice(0, visible)}
-              {complete && <span className="text-signal"> {status}</span>}
-              {!complete && visible > 0 && <span className="animate-pulse text-signal">▋</span>}
+              {complete && <span className="text-accent-hi"> {status}</span>}
+              {!complete && visible > 0 && <span className="animate-pulse text-accent-hi">▋</span>}
             </p>
           );
         })}

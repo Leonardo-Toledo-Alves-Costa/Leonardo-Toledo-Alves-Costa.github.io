@@ -9,7 +9,7 @@ import type { SectionProps } from "./types";
 export function About({ locale, dict }: SectionProps) {
   return (
     <Section tone="raised" id="about" index="02" label={dict.nav.about} title={dict.sections.about}>
-      <p className="mt-6 max-w-[60ch] text-lg leading-relaxed text-pretty text-text/90 sm:mt-8 sm:text-xl sm:leading-relaxed">
+      <p className="mt-6 max-w-[60ch] text-lg leading-relaxed text-pretty text-ink/90 sm:mt-8 sm:text-xl sm:leading-relaxed">
         {profile.bio[locale]}
       </p>
       <Reveal className="relative mt-10 sm:mt-14">
@@ -17,7 +17,7 @@ export function About({ locale, dict }: SectionProps) {
             com máscara radial: a placa some suave nas bordas, sem quina cortada. */}
         <div
           aria-hidden
-          className="absolute -inset-x-4 -inset-y-10 bg-[radial-gradient(ellipse_at_50%_50%,color-mix(in_srgb,var(--color-signal)_10%,transparent),transparent_65%)] [mask-image:radial-gradient(ellipse_at_50%_50%,#000_30%,transparent_70%)] sm:-inset-x-8"
+          className="absolute -inset-x-4 -inset-y-10 bg-[radial-gradient(ellipse_at_50%_50%,color-mix(in_srgb,var(--color-accent-hi)_10%,transparent),transparent_65%)] [mask-image:radial-gradient(ellipse_at_50%_50%,#000_30%,transparent_70%)] sm:-inset-x-8"
         />
         <div
           aria-hidden
@@ -29,7 +29,7 @@ export function About({ locale, dict }: SectionProps) {
             return (
               // Rótulo e valor principal alinhados no topo em todos os cards da fileira.
               <GlassPanel key={spec.label.en} data-spec="" className="flex flex-col gap-3 p-4 sm:gap-4 sm:p-6">
-                <dt className="silkscreen text-text/70">{spec.label[locale]}</dt>
+                <dt className="silkscreen text-ink/70">{spec.label[locale]}</dt>
                 <dd className="flex flex-1 flex-col">
                   <span data-spec-main="" className="block text-lg font-semibold leading-snug text-balance sm:text-xl">
                     {value.main}
@@ -38,7 +38,7 @@ export function About({ locale, dict }: SectionProps) {
                     <>
                       {/* Separador para leitores de tela (visualmente, a quebra de linha separa). */}
                       <span className="sr-only"> · </span>
-                      <span data-spec-sub="" className="mt-auto block pt-1 text-sm text-text-2">
+                      <span data-spec-sub="" className="mt-auto block pt-1 text-sm text-ink-dim">
                         {value.sub}
                       </span>
                     </>

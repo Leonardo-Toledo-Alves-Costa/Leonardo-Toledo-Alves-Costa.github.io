@@ -6,9 +6,9 @@ const REPO = "https://github.com/Leonardo-Toledo-Alves-Costa/Leonardo-Toledo-Alv
 export function Footer({ dict }: { dict: Dictionary }) {
   return (
     <footer className="border-t border-line py-10">
-      <Container className="flex flex-wrap items-center justify-between gap-4 font-mono text-xs text-text-2">
+      <Container className="flex flex-wrap items-center justify-between gap-4 font-mono text-xs text-ink-dim">
         <p>© {new Date().getFullYear()} Leonardo Tolêdo · {dict.footer.made}</p>
-        <a href={REPO} rel="noopener noreferrer" target="_blank" className="inline-flex min-h-11 items-center hover:text-text">
+        <a href={REPO} rel="noopener noreferrer" target="_blank" className="inline-flex min-h-11 items-center hover:text-ink">
           {dict.footer.code}
         </a>
       </Container>

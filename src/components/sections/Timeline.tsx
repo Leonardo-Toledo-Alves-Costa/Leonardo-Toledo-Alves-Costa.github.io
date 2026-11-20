@@ -11,7 +11,7 @@ export function Timeline({ locale, dict }: SectionProps) {
 
   return (
     <Section tone="raised" id="timeline" index="04" label={dict.nav.timeline} title={dict.sections.timeline}>
-      <p className="mt-6 max-w-[60ch] text-lg text-text-2">{dict.timeline.intro}</p>
+      <p className="mt-6 max-w-[60ch] text-lg text-ink-dim">{dict.timeline.intro}</p>
       <ol className="relative mt-12 ml-1">
         {entries.map((entry, i) => {
           const isHead = i === 0;
@@ -33,40 +33,40 @@ export function Timeline({ locale, dict }: SectionProps) {
                 className={cn(
                   "absolute top-1.5 -left-[4px] z-10 size-[9px] rounded-full border",
                   entry.highlight
-                    ? "border-signal bg-signal shadow-[0_0_10px_var(--color-signal)]"
+                    ? "border-accent-hi bg-accent-hi shadow-[0_0_10px_var(--color-accent-hi)]"
                     : isHead
-                      ? "border-led-dim bg-led-dim"
-                      : "border-text-2 bg-surface-2",
+                      ? "border-accent-hi bg-accent-hi"
+                      : "border-ink-dim bg-bg-deep",
                 )}
               />
               {/* Sequência real: cada commit entra no seu tempo. */}
               <Reveal delay={i * 0.06}>
                 <p data-meta="" className="flex flex-wrap items-baseline gap-x-3 gap-y-1 font-mono text-xs sm:text-sm">
-                  <span data-hash="" className="rounded bg-glass px-1.5 py-0.5 text-led-dim">
+                  <span data-hash="" className="rounded bg-glass px-1.5 py-0.5 text-accent-hi">
                     {shortHash(entry.id)}
                   </span>{" "}
                   {isHead && (
                     <>
-                      <span data-head="" className="rounded-pill border border-signal/35 bg-signal/10 px-2 py-0.5 text-signal">
+                      <span data-head="" className="rounded-pill border border-accent-hi/35 bg-accent-hi/10 px-2 py-0.5 text-accent-hi">
                         (HEAD)
                       </span>{" "}
                     </>
                   )}
-                  <span className="text-text-2">{formatPeriod(entry, locale)}</span>
+                  <span className="text-ink-dim">{formatPeriod(entry, locale)}</span>
                 </p>
                 <h3 className="mt-2 text-xl font-semibold tracking-[-0.01em] sm:text-2xl">
                   {entry.role[locale]}
-                  <span data-org="" className="font-normal whitespace-nowrap text-text-2">
+                  <span data-org="" className="font-normal whitespace-nowrap text-ink-dim">
                     {" "}
                     · {entry.org}
                   </span>
                 </h3>
                 {entry.highlight && (
-                  <p data-award="" className="silkscreen mt-2 text-signal">
+                  <p data-award="" className="silkscreen mt-2 text-accent-hi">
                     {dict.hero.awardLabel} · JEWC/ENEJ
                   </p>
                 )}
-                <p className="mt-2 max-w-[65ch] leading-relaxed text-pretty text-text/80">{entry.summary[locale]}</p>
+                <p className="mt-2 max-w-[65ch] leading-relaxed text-pretty text-ink/80">{entry.summary[locale]}</p>
               </Reveal>
             </li>
           );

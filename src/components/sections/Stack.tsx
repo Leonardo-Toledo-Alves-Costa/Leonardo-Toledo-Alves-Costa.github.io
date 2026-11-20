@@ -34,7 +34,7 @@ export function Stack({ locale, dict }: SectionProps) {
 
   return (
     <Section id="stack" index="03" label={dict.nav.stack} title={dict.sections.stack}>
-      <p className="mt-6 max-w-[60ch] text-lg text-text-2">{t.intro}</p>
+      <p className="mt-6 max-w-[60ch] text-lg text-ink-dim">{t.intro}</p>
       <div data-testid="stack-legend" aria-label={t.legend} role="group" className="mt-6 flex flex-wrap gap-2">
         {LEVELS.map((level) => (
           <Chip key={level} level={level}>

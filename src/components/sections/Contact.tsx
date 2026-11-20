@@ -12,10 +12,10 @@ const external = { target: "_blank", rel: "noopener noreferrer" } as const;
 function Line({ label, children }: { label: string; children: ReactNode }) {
   return (
     <li className="grid grid-cols-[auto_1fr] items-center gap-x-3 sm:grid-cols-[auto_7rem_1fr]">
-      <span aria-hidden className="text-signal">
+      <span aria-hidden className="text-accent-hi">
         ✓
       </span>
-      <span className="text-text-2">
+      <span className="text-ink-dim">
         {label}
         <span className="sr-only">: </span>
       </span>
@@ -25,7 +25,7 @@ function Line({ label, children }: { label: string; children: ReactNode }) {
 }
 
 // Quebra nos separadores (/ e -), nunca no meio de uma palavra.
-const link = "inline-flex min-h-11 items-center text-text underline decoration-text-2/60 underline-offset-4 [overflow-wrap:anywhere] hover:decoration-signal";
+const link = "inline-flex min-h-11 items-center text-ink underline decoration-ink-dim/60 underline-offset-4 [overflow-wrap:anywhere] hover:decoration-accent-hi";
 
 /** Contato como terminal: e-mail (copiar ou abrir), LinkedIn, GitHub e currículo quando houver. Sem telefone. */
 export function Contact({ locale, dict }: SectionProps) {
@@ -34,7 +34,7 @@ export function Contact({ locale, dict }: SectionProps) {
 
   return (
     <Section id="contact" index="07" label={dict.nav.contact} title={dict.sections.contact}>
-      <p className="mt-6 max-w-[60ch] text-lg text-text-2">{t.intro}</p>
+      <p className="mt-6 max-w-[60ch] text-lg text-ink-dim">{t.intro}</p>
       <Reveal className="mt-10 max-w-3xl">
         <Terminal command={t.command} className="rounded-panel p-5 sm:p-7">
           {/* Canais bem separados entre si no celular; juntos no desktop, onde ficam em colunas. */}
