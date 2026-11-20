@@ -156,8 +156,9 @@ test("borda do card de luz é só um anel (mask-composite exclude)", async ({ pa
 });
 
 test("GlassPanel com rounded-* próprio não recebe o raio padrão", async ({ page }) => {
-  await page.goto("/pt/");
-  const cls = await page.getByTestId("site-nav").getAttribute("class");
+  // A pílula de navegação de exemplo do bloco de vidro passa rounded-pill.
+  await page.goto("/pt/design-system/");
+  const cls = await page.getByTestId("ds-glass").locator("nav").first().getAttribute("class");
   expect(cls).not.toMatch(/(^|\s)rounded-panel(\s|$)/);
 });
 

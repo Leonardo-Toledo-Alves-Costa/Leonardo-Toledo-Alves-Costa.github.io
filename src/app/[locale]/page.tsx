@@ -8,7 +8,6 @@ import { Learning } from "@/components/sections/Learning";
 import { Projects } from "@/components/sections/Projects";
 import { Stack } from "@/components/sections/Stack";
 import { Timeline } from "@/components/sections/Timeline";
-import { learning } from "@/content/learning";
 import { isLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 
@@ -17,10 +16,8 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
   if (!isLocale(locale)) notFound();
   const dict = getDictionary(locale);
 
-  // "Agora" só aparece na navegação se houver estudo em andamento.
-  const items: NavItem[] = (["about", "stack", "timeline", "projects", "learning", "contact"] as const)
-    .filter((id) => id !== "learning" || learning.length > 0)
-    .map((id) => ({ id, label: dict.nav[id] }));
+  // Spec §5.1: Sobre, Trajetória, Projetos (rota própria) e Contato.
+  const items: NavItem[] = (["about", "timeline", "projects", "contact"] as const).map((id) => ({ id, label: dict.nav[id] }));
 
   return (
     <>
@@ -32,6 +29,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
       </a>
       <Nav
         locale={locale}
+        route="home"
         items={items}
         labels={{ nav: dict.nav.label, menu: dict.nav.menu, close: dict.nav.close, switchLanguage: dict.common.switchLanguage }}
       />
