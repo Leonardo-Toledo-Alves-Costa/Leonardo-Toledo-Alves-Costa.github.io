@@ -38,7 +38,7 @@ export default function GlobalNotFound() {
               <section lang="en">
                 <h2 className="text-2xl font-semibold">{en.notFound.title}</h2>
                 <p className="mt-2 text-ink-dim">{en.notFound.body}</p>
-                <Button href="/en/" variant="glass" className="mt-6">
+                <Button href="/en/" variant="ghost" className="mt-6">
                   {en.notFound.back}
                 </Button>
               </section>

@@ -1,5 +1,7 @@
+import type { ButtonVariant } from "@/components/ui/Button";
+
 export type HeroCtaKind = "cv" | "projects" | "linkedin" | "github" | "email";
-export type HeroCta = { kind: HeroCtaKind; variant: "primary" | "glass" | "signal"; href?: string };
+export type HeroCta = { kind: HeroCtaKind; variant: ButtonVariant; href?: string };
 
 /**
  * CTAs do hero, com um único primário: o currículo quando existir (PDF sem telefone),
@@ -9,10 +11,10 @@ export function heroCtas({ cvHref }: { cvHref: string | undefined }): HeroCta[] 
   const ctas: HeroCta[] = [];
   if (cvHref) ctas.push({ kind: "cv", variant: "primary", href: cvHref });
   ctas.push(
-    { kind: "projects", variant: cvHref ? "glass" : "primary", href: "#projects" },
-    { kind: "linkedin", variant: "glass" },
-    { kind: "github", variant: "glass" },
-    { kind: "email", variant: "signal" },
+    { kind: "projects", variant: cvHref ? "ghost" : "primary", href: "#projects" },
+    { kind: "linkedin", variant: "ghost" },
+    { kind: "github", variant: "ghost" },
+    { kind: "email", variant: "ghost" },
   );
   return ctas;
 }

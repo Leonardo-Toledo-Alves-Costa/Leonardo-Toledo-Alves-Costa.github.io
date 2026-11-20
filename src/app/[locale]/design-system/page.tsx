@@ -4,8 +4,11 @@ import type { ReactNode } from "react";
 import { Button } from "@/components/ui/Button";
 import { Chip } from "@/components/ui/Chip";
 import { Container } from "@/components/ui/Container";
+import { GlassCard } from "@/components/ui/GlassCard";
 import { GlassPanel } from "@/components/ui/GlassPanel";
+import { Pill } from "@/components/ui/Pill";
 import { SectionLabel } from "@/components/ui/SectionLabel";
+import { SerifStatement } from "@/components/ui/SerifStatement";
 import { SpotlightCard } from "@/components/ui/SpotlightCard";
 import { Terminal } from "@/components/ui/Terminal";
 import { BootSequence } from "@/components/motion/BootSequence";
@@ -21,6 +24,7 @@ import { isLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import { localize } from "@/lib/content";
 import { ChipToggle } from "./ChipToggle";
+import { PillToggle } from "./PillToggle";
 
 export const metadata: Metadata = { robots: { index: false, follow: false } };
 
@@ -107,8 +111,8 @@ export default async function DesignSystemPage({ params }: PageProps<"/[locale]/
             </div>
             <div data-type-level="serif">
               <dt className="font-mono text-xs text-ink-dim">{t.typeSerif}</dt>
-              <dd className="mt-2 font-serif text-[clamp(36px,5vw,72px)] leading-[1.05] tracking-normal">
-                {localize(profile.headline, locale)}
+              <dd className="mt-2">
+                <SerifStatement text={t.statementSample} />
               </dd>
             </div>
             <div data-type-level="section">
@@ -134,15 +138,50 @@ export default async function DesignSystemPage({ params }: PageProps<"/[locale]/
 
         <Block id="buttons" index="03" title={t.buttons}>
           <div className="flex flex-wrap items-center gap-3">
-            <Button href="#ds-buttons-title">{t.primary}</Button>
-            <Button variant="glass" href="#ds-spotlight-title">
+            <Button href="#ds-buttons-title" icon="arrow">
               {t.secondary}
             </Button>
-            <Button variant="signal">&gt; {t.signal}</Button>
+            <Button variant="ghost" href="#ds-pills-title">
+              {t.ghost}
+            </Button>
+            <Button variant="ghost" icon="arrow" href="#ds-cards-title">
+              {t.ghostArrow}
+            </Button>
           </div>
         </Block>
 
-        <Block id="chips" index="04" title={t.chips}>
+        <Block id="pills" index="04" title={t.pills}>
+          <div className="flex flex-wrap gap-2">
+            {examples.map((skill) => (
+              <Pill key={skill.id} level={skill.level} levelLabel={dict.levels[skill.level]}>
+                {localize(skill.name, locale)} <span aria-hidden className="text-ink-dim">· {dict.levels[skill.level]}</span>
+              </Pill>
+            ))}
+          </div>
+          <p className="mt-6 text-sm text-ink-dim">{t.pillsInteractive}</p>
+          <div className="mt-3">
+            <PillToggle
+              items={examples.map((s) => ({ id: s.id, label: localize(s.name, locale), level: s.level, levelLabel: dict.levels[s.level] }))}
+            />
+          </div>
+        </Block>
+
+        <Block id="cards" index="05" title={t.cards}>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {profile.specs.slice(0, 2).map((s, i) => (
+              <GlassCard key={localize(s.label, locale)}>
+                <SectionLabel index={String(i + 1).padStart(2, "0")}>{localize(s.label, locale)}</SectionLabel>
+                <p className="mt-3 text-lg text-ink">{localize(s.value, locale)}</p>
+              </GlassCard>
+            ))}
+          </div>
+        </Block>
+
+        <Block id="statement" index="06" title={t.statement}>
+          <SerifStatement text={t.statementSample} />
+        </Block>
+
+        <Block id="chips" index="07" title={t.chips}>
           <div className="flex flex-wrap gap-2">
             {examples.map((skill) => (
               <Chip key={skill.id} level={skill.level}>
@@ -156,7 +195,7 @@ export default async function DesignSystemPage({ params }: PageProps<"/[locale]/
           </div>
         </Block>
 
-        <Block id="glass" index="05" title={t.glass}>
+        <Block id="glass" index="08" title={t.glass}>
           <div className="relative min-h-[300px] overflow-hidden rounded-panel border border-line bg-[radial-gradient(circle_at_20%_30%,rgb(156_196_255/0.3),transparent_35%),radial-gradient(circle_at_80%_70%,rgb(160_170_255/0.22),transparent_40%)] p-4 sm:p-8">
             {/* Grade numa camada própria: o background-size dela não pode repetir os brilhos. */}
             <div aria-hidden className="pcb-grid absolute inset-0" />
@@ -189,7 +228,7 @@ export default async function DesignSystemPage({ params }: PageProps<"/[locale]/
           <p className="mt-4 max-w-[60ch] text-sm text-ink-dim">{t.glassBody}</p>
         </Block>
 
-        <Block id="spotlight" index="06" title={t.spotlight}>
+        <Block id="spotlight" index="09" title={t.spotlight}>
           <p className="mb-6 max-w-[60ch] text-sm text-ink-dim">{t.spotlightBody}</p>
           <div className="grid gap-4 md:grid-cols-3">
             {projects.slice(0, 3).map((project) => (
@@ -201,11 +240,11 @@ export default async function DesignSystemPage({ params }: PageProps<"/[locale]/
           </div>
         </Block>
 
-        <Block id="terminal" index="07" title={t.terminal}>
+        <Block id="terminal" index="10" title={t.terminal}>
           <Terminal className="max-w-md">connect --to leonardo</Terminal>
         </Block>
 
-        <Block id="motion" index="08" title={t.motion}>
+        <Block id="motion" index="11" title={t.motion}>
           <p className="max-w-[60ch] text-sm text-ink-dim">{t.motionNote}</p>
           <div className="relative mt-8 overflow-hidden rounded-panel border border-line bg-bg-abyss p-6 sm:p-10">
             <div aria-hidden className="pcb-grid absolute inset-0 [mask-image:radial-gradient(ellipse_at_60%_40%,#000_20%,transparent_70%)]" />

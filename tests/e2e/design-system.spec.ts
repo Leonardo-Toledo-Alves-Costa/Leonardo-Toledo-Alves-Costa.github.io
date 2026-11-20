@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-const SECTIONS = ["colors", "type", "buttons", "chips", "glass", "spotlight", "terminal", "motion"];
+const SECTIONS = ["colors", "type", "buttons", "pills", "cards", "statement", "chips", "glass", "spotlight", "terminal", "motion"];
 
 test.describe("página /design-system", () => {
   test.beforeEach(async ({ page }) => {
@@ -12,7 +12,7 @@ test.describe("página /design-system", () => {
   });
 
   test("amostra dos grandes momentos em Instrument Serif, em pé", async ({ page }) => {
-    const serif = page.locator('[data-type-level="serif"] dd');
+    const serif = page.locator('[data-type-level="serif"] [data-statement]');
     await expect(serif).toBeVisible();
     await expect(serif).toHaveCSS("font-family", /Instrument Serif/);
     await expect(serif).toHaveCSS("font-style", "normal");
@@ -159,4 +159,66 @@ test("GlassPanel com rounded-* próprio não recebe o raio padrão", async ({ pa
   await page.goto("/pt/");
   const cls = await page.getByTestId("site-nav").getAttribute("class");
   expect(cls).not.toMatch(/(^|\s)rounded-panel(\s|$)/);
+});
+
+// ---- Redesign Abissal (Task 4): componentes base ----
+test.describe("componentes base Abissal", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/pt/design-system/");
+  });
+
+  test("botão primário é pílula clara com ícone circular; ghost tem contorno", async ({ page }) => {
+    const primary = page.getByTestId("ds-buttons").locator('[data-variant="primary"]').first();
+    await expect(primary).toHaveCSS("background-color", "rgb(238, 243, 250)");
+    await expect(primary.locator("[data-icon]")).toBeVisible();
+    const ghost = page.getByTestId("ds-buttons").locator('[data-variant="ghost"]').first();
+    await expect(ghost).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+  });
+
+  test("botões e pílulas clicáveis têm alvo ≥ 44×44", async ({ page }) => {
+    const targets = page.locator('[data-testid="ds-buttons"] a, [data-testid="ds-buttons"] button, [data-testid="ds-pills"] button');
+    expect(await targets.count()).toBeGreaterThanOrEqual(3);
+    for (const el of await targets.all()) {
+      const box = await el.boundingBox();
+      expect(box?.width ?? 0).toBeGreaterThanOrEqual(44);
+      expect(box?.height ?? 0).toBeGreaterThanOrEqual(44);
+    }
+  });
+
+  test("pílula diz o nível em texto acessível, não só pela luz", async ({ page }) => {
+    // Na pílula-botão o nível só aparece como luz: o texto vem do .sr-only.
+    const learning = page.getByTestId("ds-pills").locator('button[data-level="learning"] .sr-only');
+    await expect(learning).toHaveText(/estudando/);
+    for (const level of ["learning", "used", "proficient"]) {
+      await expect(page.getByTestId("ds-pills").locator(`[data-level="${level}"] [data-dot]`).first()).toBeVisible();
+    }
+  });
+
+  test("pílula-botão informa o estado pressionado e acende a borda", async ({ page }) => {
+    const pills = page.getByTestId("ds-pills").locator("button[aria-pressed]");
+    await expect(pills.first()).toHaveAttribute("aria-pressed", "true");
+    await expect(pills.first()).toHaveCSS("border-color", "rgb(156, 196, 255)");
+    await expect(pills.nth(1)).toHaveAttribute("aria-pressed", "false");
+    await pills.nth(1).click();
+    await expect(pills.nth(1)).toHaveAttribute("aria-pressed", "true");
+    await expect(pills.first()).toHaveAttribute("aria-pressed", "false");
+  });
+
+  test("cartão de vidro usa o vidro Abissal", async ({ page }) => {
+    const card = page.getByTestId("ds-cards").locator("[data-glass-card]").first();
+    await expect(card).toBeVisible();
+    expect(await card.evaluate((el) => getComputedStyle(el).backdropFilter)).toMatch(/blur\(14px\)/);
+  });
+
+  test("rótulo de seção no formato '01 — Nome'", async ({ page }) => {
+    await expect(page.getByTestId("ds-cards").locator("[data-section-label]").first()).toHaveText(/^\d{2} — \S/);
+  });
+
+  test("frase serifada em pé, com trecho apagado e aceso", async ({ page }) => {
+    const statement = page.getByTestId("ds-statement").locator("[data-statement]");
+    await expect(statement).toHaveCSS("font-family", /Instrument Serif/);
+    await expect(statement).toHaveCSS("font-style", "normal");
+    await expect(statement.locator('[data-emphasis="dim"]')).toHaveCSS("color", "rgb(136, 151, 179)");
+    await expect(statement.locator('[data-emphasis="lit"]').first()).toHaveCSS("color", "rgb(238, 243, 250)");
+  });
 });

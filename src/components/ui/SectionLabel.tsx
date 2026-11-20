@@ -10,11 +10,11 @@ type SectionLabelProps = {
   className?: string;
 };
 
-/** Rótulo de seção no estilo serigrafia de placa: "01 · SOBRE". */
+/** Rótulo de seção em mono: "01 — Sobre" (spec §4.2). O número é decorativo para leitores de tela. */
 export function SectionLabel({ index, children, as: Tag = "p", id, className }: SectionLabelProps) {
   return (
-    <Tag id={id} className={cn("silkscreen text-accent-hi", className)}>
-      <span aria-hidden>{index} · </span>
+    <Tag id={id} data-section-label="" className={cn("font-mono text-xs tracking-[0.14em] text-ink-dim uppercase", className)}>
+      <span aria-hidden>{index} — </span>
       {children}
     </Tag>
   );
