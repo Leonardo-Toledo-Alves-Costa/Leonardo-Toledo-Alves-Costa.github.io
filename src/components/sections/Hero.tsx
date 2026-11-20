@@ -65,7 +65,7 @@ export function Hero({ locale, dict }: SectionProps) {
       <div aria-hidden className="pcb-grid absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_at_65%_45%,#000_15%,transparent_70%)]" />
       <div
         aria-hidden
-        className="absolute -top-40 right-[-10%] -z-10 size-[min(720px,90vw)] rounded-full bg-[radial-gradient(circle,color-mix(in_srgb,var(--color-signal)_16%,transparent),transparent_62%)] blur-[10px]"
+        className="absolute -top-40 right-[-10%] -z-10 size-[min(720px,90vw)] rounded-full bg-[radial-gradient(circle,color-mix(in_srgb,var(--color-accent-hi)_16%,transparent),transparent_62%)] blur-[10px]"
       />
       <CircuitTraces
         variant="hero"
@@ -84,15 +84,15 @@ export function Hero({ locale, dict }: SectionProps) {
           {profile.name}
         </ChromeText>
 
-        <p className="mt-6 max-w-[40ch] text-lg text-text-2 sm:text-xl">
+        <p className="mt-6 max-w-[40ch] text-lg text-ink-dim sm:text-xl">
           {headline.lead && <>{headline.lead} · </>}
-          <span className="whitespace-nowrap font-medium text-text">{headline.focus}</span>
+          <span className="whitespace-nowrap font-medium text-ink">{headline.focus}</span>
         </p>
 
         {/* Nível e o que busca, já na primeira dobra. O LED aceso = disponível.
             Sem borda de pílula: não é botão (a pílula com borda verde é o "> e-mail"). */}
-        <p data-status="" className="mt-5 flex items-baseline gap-2.5 font-mono text-xs text-text sm:text-sm">
-          <span aria-hidden className="size-1.5 shrink-0 translate-y-[-1px] rounded-full bg-signal shadow-[0_0_8px_var(--color-signal)]" />
+        <p data-status="" className="mt-5 flex items-baseline gap-2.5 font-mono text-xs text-ink sm:text-sm">
+          <span aria-hidden className="size-1.5 shrink-0 translate-y-[-1px] rounded-full bg-accent-hi shadow-[0_0_8px_var(--color-accent-hi)]" />
           {profile.status[locale]}
         </p>
 
@@ -100,10 +100,10 @@ export function Hero({ locale, dict }: SectionProps) {
           <div className="flex flex-wrap items-center gap-3">{heroCtas({ cvHref: profile.cv?.[locale] }).map(cta)}</div>
 
           <GlassPanel data-testid="hero-award" className="max-w-md px-5 py-4">
-            <p className="silkscreen text-signal">{t.awardLabel}</p>
+            <p className="silkscreen text-accent-hi">{t.awardLabel}</p>
             <p className="mt-1.5 text-base font-semibold leading-snug text-balance">{profile.award[locale]}</p>
             {awarded && (
-              <p className="mt-1 text-sm text-pretty text-text-2">
+              <p className="mt-1 text-sm text-pretty text-ink-dim">
                 {awarded.name} · {awarded.tagline[locale]}
               </p>
             )}

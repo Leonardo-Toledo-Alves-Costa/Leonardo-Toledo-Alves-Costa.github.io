@@ -65,9 +65,9 @@ test("seletor de idioma anuncia o idioma de destino", async ({ page }) => {
 test("nav desktop: âncora leva à seção e marca a ativa", async ({ page, isMobile }) => {
   test.skip(isMobile, "no celular a nav é um menu");
   await page.goto("/pt/");
-  await page.locator('nav a[href="#stack"]').first().click();
-  await expect(page.locator("#stack")).toBeInViewport();
-  await expect(page.locator('nav a[href="#stack"]').first()).toHaveAttribute("aria-current", "true");
+  await page.locator('nav a[href="#timeline"]').first().click();
+  await expect(page.locator("#timeline")).toBeInViewport();
+  await expect(page.locator('nav a[href="#timeline"]').first()).toHaveAttribute("aria-current", "true");
 });
 
 test("mobile: menu abre e fecha por teclado e devolve o foco", async ({ page, isMobile }) => {
@@ -90,18 +90,19 @@ test("mobile: escolher um item do menu fecha o menu e rola até a seção", asyn
   test.skip(!isMobile, "só no celular");
   await page.goto("/pt/");
   await page.getByTestId("menu-toggle").click();
-  await page.locator('#menu-mobile a[href="#projects"]').click();
+  await page.locator('#menu-mobile a[href="#contact"]').click();
   await expect(page.locator("#menu-mobile")).toBeHidden();
-  await expect(page.locator("#projects")).toBeInViewport();
+  await expect(page.locator("#contact")).toBeInViewport();
 });
 
-test("mobile: a nav não quebra linha (pílula compacta)", async ({ page, isMobile }) => {
+test("mobile: a barra da nav não quebra linha em 320px", async ({ page, isMobile }) => {
   test.skip(!isMobile, "só no celular");
   await page.setViewportSize({ width: 320, height: 700 });
   await page.goto("/pt/");
   const nav = page.getByTestId("site-nav");
   const box = await nav.boundingBox();
-  expect(box?.height ?? 999).toBeLessThanOrEqual(56);
+  // Uma linha = alvo de 44px + respiro vertical de 8px em cima e embaixo.
+  expect(box?.height ?? 999).toBeLessThanOrEqual(64);
 });
 
 test.describe("sem JavaScript", () => {
@@ -112,14 +113,6 @@ test.describe("sem JavaScript", () => {
       await expect(page.locator(`#${id} :is(h1, h2)`).first(), id).toBeVisible();
     }
   });
-});
-
-test("mobile: menu aberto vira painel (cantos não recortam o conteúdo)", async ({ page, isMobile }) => {
-  test.skip(!isMobile, "só no celular");
-  await page.goto("/pt/");
-  await page.getByTestId("menu-toggle").click();
-  const radius = await page.getByTestId("site-nav").evaluate((el) => parseFloat(getComputedStyle(el).borderTopLeftRadius));
-  expect(radius).toBeLessThanOrEqual(24);
 });
 
 test("controles da barra da nav têm alvo de toque ≥ 44px", async ({ page, isMobile }) => {
@@ -134,21 +127,21 @@ test("controles da barra da nav têm alvo de toque ≥ 44px", async ({ page, isM
   }
 });
 
-test("desktop: item ativo fica verde mesmo com o mouse em cima, e sai ao voltar ao topo", async ({ page, isMobile }) => {
+test("desktop: item ativo fica aceso (ink) mesmo com o mouse em cima, e sai ao voltar ao topo", async ({ page, isMobile }) => {
   test.skip(isMobile, "no celular a nav é um menu");
   await page.goto("/pt/");
-  const stack = page.locator('nav a[href="#stack"]').first();
-  await stack.click();
-  await expect(stack).toHaveAttribute("aria-current", "true");
-  await stack.hover();
-  await expect(stack).toHaveCSS("color", "rgb(124, 255, 107)");
+  const about = page.locator('nav a[href="#about"]').first();
+  await about.click();
+  await expect(about).toHaveAttribute("aria-current", "true");
+  await about.hover();
+  await expect(about).toHaveCSS("color", "rgb(238, 243, 250)");
   await page.getByTestId("site-nav").locator('a[href="#hero"]').click();
   await expect(page.locator("nav a[aria-current]")).toHaveCount(0);
 });
 
-test("seletor de idioma não usa o verde (reservado ao ativo e ao logo)", async ({ page }) => {
+test("seletor de idioma não usa o acento (reservado ao ativo e ao logo)", async ({ page }) => {
   await page.goto("/pt/");
-  await expect(page.getByTestId("locale-switch").first()).not.toHaveCSS("color", "rgb(124, 255, 107)");
+  await expect(page.getByTestId("locale-switch").first()).not.toHaveCSS("color", "rgb(156, 196, 255)");
 });
 
 test("mobile: a nav tem a mesma largura aberta e fechada", async ({ page, isMobile }) => {
@@ -178,28 +171,30 @@ test.describe("sem JavaScript: seletor de idioma funciona", () => {
   }
 });
 
-test("anel de foco dos controles da nav fica dentro do vidro (não é cortado)", async ({ page }) => {
+test("foco por teclado nos controles da nav é visível", async ({ page }) => {
   await page.goto("/pt/");
-  const logo = page.getByTestId("site-nav").locator('a[href="#hero"]');
-  await logo.focus();
-  const offset = await logo.evaluate((el) => parseFloat(getComputedStyle(el).outlineOffset));
-  expect(offset).toBeLessThan(0);
+  await page.keyboard.press("Tab"); // pular para o conteúdo
+  await page.keyboard.press("Tab"); // nome
+  const focused = page.locator(":focus");
+  await expect(focused).toHaveAttribute("href", "#hero");
+  await expect(focused).toHaveCSS("outline-style", "solid");
 });
 
-test("títulos das seções não repetem o rótulo de serigrafia", async ({ page }) => {
+test("títulos das seções não repetem o rótulo da seção", async ({ page }) => {
   await page.goto("/pt/");
   for (const id of ["about", "stack", "timeline", "projects", "learning", "contact"]) {
-    const label = (await page.locator(`#${id} .silkscreen`).first().textContent())?.replace(/^\d+ · /, "").trim().toLowerCase();
+    const label = (await page.locator(`#${id} [data-section-label]`).first().textContent())?.replace(/^\d+ — /, "").trim().toLowerCase();
     const title = (await page.locator(`#${id} h2`).first().textContent())?.trim().toLowerCase();
     expect(title, id).not.toBe(label);
   }
 });
 
-test("nome acessível do logo e da troca de idioma contém o texto visível (WCAG 2.5.3)", async ({ page }) => {
+test("nome acessível do nome do autor e da troca de idioma contém o texto visível (WCAG 2.5.3)", async ({ page }) => {
   await page.goto("/pt/");
   const nav = page.getByTestId("site-nav");
   for (const el of [nav.locator('a[href="#hero"]'), page.getByTestId("locale-switch").first()]) {
-    const { visible, label } = await el.evaluate((e) => ({ visible: (e.textContent ?? "").replace(/[^\p{L}\p{N}]/gu, ""), label: e.getAttribute("aria-label") ?? "" }));
+    // Sem aria-label, o nome acessível é o próprio texto visível.
+    const { visible, label } = await el.evaluate((e) => ({ visible: (e.textContent ?? "").replace(/[^\p{L}\p{N}]/gu, ""), label: e.getAttribute("aria-label") ?? e.textContent ?? "" }));
     expect(visible.length).toBeGreaterThan(0);
     expect(label.replace(/[^\p{L}\p{N}]/gu, "")).toContain(visible);
   }

@@ -16,7 +16,7 @@ export function Projects({ locale, dict }: SectionProps) {
 
   return (
     <Section id="projects" index="05" label={dict.nav.projects} title={dict.sections.projects}>
-      <p className="mt-6 max-w-[60ch] text-lg text-text-2">{t.intro}</p>
+      <p className="mt-6 max-w-[60ch] text-lg text-ink-dim">{t.intro}</p>
       {/* Um Reveal para a grade inteira: cards não são sequência. */}
       <Reveal className="mt-12">
         <ul className="grid gap-4 md:grid-flow-dense md:grid-cols-2 lg:grid-cols-3">
@@ -30,7 +30,7 @@ export function Projects({ locale, dict }: SectionProps) {
               <li
                 key={`slot-${i}`}
                 data-slot=""
-                className="flex min-h-48 flex-col items-center justify-center gap-2 rounded-card border border-dashed border-white/20 bg-surface-1/40 p-6 text-center font-mono text-xs text-text-2"
+                className="flex min-h-48 flex-col items-center justify-center gap-2 rounded-card border border-dashed border-white/20 bg-bg-deep/40 p-6 text-center font-mono text-xs text-ink-dim"
               >
                 <span className="tracking-[0.14em] uppercase">[ {t.slotTitle} ]</span>
                 <span>{t.slotBody}</span>

@@ -1,27 +1,33 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { GlassPanel } from "@/components/ui/GlassPanel";
+import { Container } from "@/components/ui/Container";
+import { profile } from "@/content/profile";
 import type { Locale } from "@/i18n/config";
 import { cn } from "@/lib/cn";
-import { LocaleSwitch } from "./LocaleSwitch";
+import { LocaleSwitch, type SiteRoute } from "./LocaleSwitch";
 
+/** Item da nav: uma seção da home (âncora) ou a rota de projetos (id "projects"). */
 export type NavItem = { id: string; label: string };
 
 type NavProps = {
   locale: Locale;
+  route: SiteRoute;
   items: NavItem[];
   labels: { nav: string; menu: string; close: string; switchLanguage: string };
 };
+
+const PROJECTS_ID = "projects";
 
 /**
  * Seção que cruza a faixa do meio da tela. O hero também é observado: no topo, nenhum item fica ativo.
  * A lista vira uma string para o efeito não reiniciar a cada renderização.
  */
-function useActiveSection(ids: string[]) {
+function useActiveSection(ids: string[], enabled: boolean) {
   const [active, setActive] = useState<string | null>(null);
   const key = ids.join(",");
   useEffect(() => {
+    if (!enabled) return;
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) if (entry.isIntersecting) setActive(entry.target.id);
@@ -33,13 +39,30 @@ function useActiveSection(ids: string[]) {
       if (el) observer.observe(el);
     }
     return () => observer.disconnect();
-  }, [key]);
+  }, [key, enabled]);
   return active === "hero" ? null : active;
 }
 
-/** Navegação em pílula de vidro, fixa no topo. No celular: pílula compacta (mesma largura aberta ou fechada) + menu. */
-export function Nav({ locale, items, labels }: NavProps) {
-  const active = useActiveSection(items.map((i) => i.id));
+/** Fundo só depois de sair do topo: no hero a barra fica transparente sobre o orbe (insp. Obelisk). */
+function useScrolled(threshold = 24) {
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > threshold);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [threshold]);
+  return scrolled;
+}
+
+/** Barra larga fixa: nome à esquerda, âncoras ao centro, idioma à direita (menu no celular). */
+export function Nav({ locale, route, items, labels }: NavProps) {
+  const onHome = route === "home";
+  const active = useActiveSection(
+    items.filter((i) => i.id !== PROJECTS_ID).map((i) => i.id),
+    onHome,
+  );
+  const scrolled = useScrolled();
   const [open, setOpen] = useState(false);
   const toggleRef = useRef<HTMLButtonElement>(null);
 
@@ -55,20 +78,18 @@ export function Nav({ locale, items, labels }: NavProps) {
   }, [open]);
 
   const close = () => setOpen(false);
+  const home = `/${locale}/`;
 
   const link = (item: NavItem, extra: string) => {
-    const isActive = active === item.id;
+    const isProjects = item.id === PROJECTS_ID;
+    const href = isProjects ? `${home}projetos/` : onHome ? `#${item.id}` : `${home}#${item.id}`;
+    const current = isProjects ? (route === "projects" ? "page" : undefined) : active === item.id ? "true" : undefined;
     return (
       <a
-        href={`#${item.id}`}
-        aria-current={isActive ? "true" : undefined}
+        href={href}
+        aria-current={current}
         onClick={close}
-        className={cn(
-          "rounded-pill transition-colors duration-200",
-          // O verde é o "LED" da seção atual: o hover não o apaga.
-          isActive ? "text-signal" : "text-text-2 hover:text-text",
-          extra,
-        )}
+        className={cn("transition-colors duration-200", current ? "font-medium text-ink" : "text-ink-dim hover:text-ink", extra)}
       >
         {item.label}
       </a>
@@ -76,36 +97,30 @@ export function Nav({ locale, items, labels }: NavProps) {
   };
 
   return (
-    <header className="pointer-events-none fixed inset-x-0 top-3 z-50 flex justify-center px-4">
-      {/* Celular: largura fixa nos dois estados; aberto vira painel (cantos de 22px) para não recortar o conteúdo. */}
-      <GlassPanel
-        as="nav"
-        aria-label={labels.nav}
-        data-testid="site-nav"
-        className={cn(
-          "pointer-events-auto w-full max-w-sm md:w-auto md:max-w-none",
-          open ? "max-md:rounded-panel md:rounded-pill" : "rounded-pill",
-        )}
-      >
-        <div className="flex items-center py-0.5 pr-1 pl-2">
+    <header
+      data-scrolled={scrolled || open ? "true" : "false"}
+      style={{ viewTransitionName: "site-header" }}
+      className={cn(
+        "fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color] duration-300 ease-abissal",
+        scrolled || open ? "border-line bg-bg-abyss/85 backdrop-blur-md" : "border-transparent bg-transparent",
+      )}
+    >
+      <nav aria-label={labels.nav} data-testid="site-nav">
+        <Container className="flex items-center gap-4 py-2 md:grid md:grid-cols-[1fr_auto_1fr]">
           <a
-            href="#hero"
+            href={onHome ? "#hero" : home}
             onClick={close}
-            // O nome acessível começa pelo texto visível (WCAG 2.5.3: quem usa voz diz "LT").
-            aria-label="LT, Leonardo Tolêdo"
-            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-pill px-2 font-mono text-sm font-medium text-signal"
+            className="inline-flex min-h-11 items-center md:justify-self-start text-sm font-medium tracking-[-0.01em] text-ink"
           >
-            LT_
+            {profile.name}
           </a>
-          {/* Desktop: itens em linha. */}
-          <ul className="ml-2 hidden items-center gap-5 pr-3 text-sm md:flex">
+          <ul data-nav-desktop="" className="hidden items-center gap-7 text-sm md:flex">
             {items.map((item) => (
               <li key={item.id}>{link(item, "inline-flex min-h-11 items-center")}</li>
             ))}
           </ul>
-          {/* Grupo da direita: idioma (+ menu no celular), sempre nas mesmas coordenadas. */}
-          <div className="ml-auto flex items-center border-l border-line pl-1 md:ml-0">
-            <LocaleSwitch locale={locale} label={labels.switchLanguage} />
+          <div className="ml-auto flex items-center gap-1 md:ml-0 md:justify-self-end">
+            <LocaleSwitch locale={locale} route={route} label={labels.switchLanguage} />
             <button
               ref={toggleRef}
               type="button"
@@ -114,7 +129,7 @@ export function Nav({ locale, items, labels }: NavProps) {
               aria-controls="menu-mobile"
               aria-label={open ? labels.close : labels.menu}
               onClick={() => setOpen((v) => !v)}
-              className="inline-flex size-11 items-center justify-center rounded-pill text-text md:hidden"
+              className="inline-flex size-11 items-center justify-center rounded-pill text-ink md:hidden"
             >
               <span aria-hidden className="relative block h-3 w-4">
                 <span
@@ -126,13 +141,13 @@ export function Nav({ locale, items, labels }: NavProps) {
               </span>
             </button>
           </div>
-        </div>
-        <ul id="menu-mobile" hidden={!open} className="grid gap-1 border-t border-line px-3 pt-2 pb-3 text-base md:hidden">
+        </Container>
+        <ul id="menu-mobile" hidden={!open} className="grid gap-1 border-t border-line px-4 pt-2 pb-4 text-base md:hidden">
           {items.map((item) => (
-            <li key={item.id}>{link(item, "flex min-h-11 items-center px-2")}</li>
+            <li key={item.id}>{link(item, "flex min-h-11 items-center")}</li>
           ))}
         </ul>
-      </GlassPanel>
+      </nav>
     </header>
   );
 }

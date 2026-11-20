@@ -1,6 +1,16 @@
 import type { Dictionary } from "../get-dictionary";
 
 export const en: Dictionary = {
+  statements: {
+    f1: "[PENDENTE] F1 — orb expansion statement",
+    f2: "[PENDENTE] F2 — timeline opening",
+    f3: "[PENDENTE] F3 — closing / contact",
+    f4: "[PENDENTE] F4 — /projects opening",
+    f5: "[PENDENTE] F5 — stack centre statement",
+  },
+  about: {
+    backdrop: "UNIFEI",
+  },
   meta: {
     title: "Leonardo Tolêdo — Computer Engineering (UNIFEI) · software and hardware",
     description:
@@ -93,15 +103,21 @@ export const en: Dictionary = {
     proficient: "proficient",
   },
   designSystem: {
-    title: "Design system — Silicon Glass",
+    title: "Design system — Abissal",
     intro: "The site's building blocks: colors, type, components and light effects. Reference page, outside the navigation.",
     colors: "Colors",
-    colorsNote: "Black, greys and white light. Green is an LED: it only lights up what is active.",
+    colorsNote: "Deep blue sinking into black, cobalt light from the orb. White lights up what matters; blue-grey is context.",
+    typeSerif: "Big moments — Instrument Serif 400, upright, normal tracking (the face is narrow), only in opening and transition statements",
     type: "Typography",
     buttons: "Buttons",
-    primary: "Download résumé",
     secondary: "See projects",
-    signal: "copy email",
+    ghost: "Get in touch",
+    ghostArrow: "See journey",
+    pills: "Technology pills",
+    pillsInteractive: "Clickable (shows the projects that use the technology, as on /projects):",
+    cards: "Glass card",
+    statement: "Big-moment statement",
+    statementSample: "{{From requirements}} to production.",
     chips: "Technology levels",
     chipsInteractive: "Clickable (selects, like on the stack board):",
     typeDisplay: "Display — Geist 700, tracking −0.045em, up to 132px",
@@ -114,7 +130,7 @@ export const en: Dictionary = {
     glass: "Glass",
     glassBody: "Move the pointer: the reflection follows.",
     spotlight: "Light card",
-    spotlightBody: "The border lights up green under the pointer. Base for project cards.",
+    spotlightBody: "The border lights up under the pointer. Base for project cards.",
     terminal: "Terminal",
     motion: "Motion",
     motionNote: "Light, not bounce: chrome sheen, typed boot and pulses along the traces. Everything stops with \"reduce motion\"; without JavaScript, text shows in full.",

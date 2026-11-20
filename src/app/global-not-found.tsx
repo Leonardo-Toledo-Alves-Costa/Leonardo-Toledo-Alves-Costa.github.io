@@ -25,20 +25,20 @@ export default function GlobalNotFound() {
           <div aria-hidden className="pcb-grid absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_at_50%_45%,#000_15%,transparent_70%)]" />
           {/* Bloco estreito e centralizado: o "404" fica sobre os dois idiomas, não só sobre o português. */}
           <div className="mx-auto w-full max-w-3xl">
-            <p className="silkscreen text-signal">&gt; route --resolve · exit 404</p>
+            <p className="silkscreen text-accent-hi">&gt; route --resolve · exit 404</p>
             <h1 className="mt-4 text-[clamp(64px,14vw,160px)] font-bold leading-none tracking-[-0.045em]">404</h1>
             <div className="mt-10 grid gap-10 border-t border-line pt-10 sm:grid-cols-2 sm:gap-8">
               <section lang="pt-BR">
                 <h2 className="text-2xl font-semibold">{pt.notFound.title}</h2>
-                <p className="mt-2 text-text-2">{pt.notFound.body}</p>
+                <p className="mt-2 text-ink-dim">{pt.notFound.body}</p>
                 <Button href="/pt/" className="mt-6">
                   {pt.notFound.back}
                 </Button>
               </section>
               <section lang="en">
                 <h2 className="text-2xl font-semibold">{en.notFound.title}</h2>
-                <p className="mt-2 text-text-2">{en.notFound.body}</p>
-                <Button href="/en/" variant="glass" className="mt-6">
+                <p className="mt-2 text-ink-dim">{en.notFound.body}</p>
+                <Button href="/en/" variant="ghost" className="mt-6">
                   {en.notFound.back}
                 </Button>
               </section>

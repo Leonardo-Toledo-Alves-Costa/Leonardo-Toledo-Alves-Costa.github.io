@@ -94,11 +94,11 @@ test("trilhas da placa terminam em pads (vias)", async ({ page }) => {
   await expect(page.getByTestId("ds-motion").locator('svg[data-variant="board"] circle[data-pad]')).toHaveCount(4);
 });
 
-test("CircuitTraces acende a trilha ativa em verde", async ({ page }) => {
+test("CircuitTraces acende a trilha ativa no acento", async ({ page }) => {
   await page.goto(URL);
   const active = page.getByTestId("ds-motion").locator('[data-trace-id="software"][data-active="true"]');
   await expect(active).toHaveCount(1);
-  await expect(active).toHaveCSS("stroke", "rgb(124, 255, 107)");
+  await expect(active).toHaveCSS("stroke", "rgb(156, 196, 255)");
   const idle = page.getByTestId("ds-motion").locator('[data-trace-id="cloud"]');
   await expect(idle).toHaveAttribute("data-active", "false");
 });

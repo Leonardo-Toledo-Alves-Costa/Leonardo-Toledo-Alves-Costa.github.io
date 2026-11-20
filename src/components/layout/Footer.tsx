@@ -1,4 +1,5 @@
 import { Container } from "@/components/ui/Container";
+import { profile } from "@/content/profile";
 import type { Dictionary } from "@/i18n/get-dictionary";
 
 const REPO = "https://github.com/Leonardo-Toledo-Alves-Costa/Leonardo-Toledo-Alves-Costa.github.io";
@@ -6,9 +7,9 @@ const REPO = "https://github.com/Leonardo-Toledo-Alves-Costa/Leonardo-Toledo-Alv
 export function Footer({ dict }: { dict: Dictionary }) {
   return (
     <footer className="border-t border-line py-10">
-      <Container className="flex flex-wrap items-center justify-between gap-4 font-mono text-xs text-text-2">
-        <p>© {new Date().getFullYear()} Leonardo Tolêdo · {dict.footer.made}</p>
-        <a href={REPO} rel="noopener noreferrer" target="_blank" className="inline-flex min-h-11 items-center hover:text-text">
+      <Container className="flex flex-wrap items-center justify-between gap-4 font-mono text-xs text-ink-dim">
+        <p>© {new Date().getFullYear()} {profile.name} · {dict.footer.made}</p>
+        <a href={REPO} rel="noopener noreferrer" target="_blank" className="inline-flex min-h-11 items-center hover:text-ink">
           {dict.footer.code}
         </a>
       </Container>

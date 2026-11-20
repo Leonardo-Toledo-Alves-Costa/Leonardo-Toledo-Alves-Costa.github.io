@@ -40,6 +40,7 @@ export const profile: Profile = {
     pt: "Estudante na UNIFEI · aberto a estágio em engenharia de software",
     en: "UNIFEI student · open to software engineering internships",
   },
+  statusShort: { pt: "Aberto a estágio", en: "Open to internships" },
   award: {
     pt: "Vencedor mundial JEWC/ENEJ — Projeto de Impacto",
     en: "Global Winner JEWC/ENEJ — Impact Project",

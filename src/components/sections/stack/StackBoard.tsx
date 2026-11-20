@@ -57,12 +57,12 @@ export function StackBoard({ zones, initialId, levelLabels, labels }: StackBoard
               style={{ order: i * 2 }}
               // Opaca: as trilhas não vazam por baixo dos chips.
               className={cn(
-                "rounded-panel border bg-surface-1 p-4 transition-colors duration-300 sm:p-5 lg:order-none",
+                "rounded-panel border bg-bg-deep p-4 transition-colors duration-300 sm:p-5 lg:order-none",
                 AREA[z.id],
-                isActive ? "border-signal/40" : "border-line",
+                isActive ? "border-accent-hi/40" : "border-line",
               )}
             >
-              <h3 className={cn("silkscreen", isActive ? "text-signal" : "text-text-2")}>[{z.label}]</h3>
+              <h3 className={cn("silkscreen", isActive ? "text-accent-hi" : "text-ink-dim")}>[{z.label}]</h3>
               <div className="mt-3 flex flex-wrap gap-x-2 gap-y-3">
                 {z.skills.map((s) => (
                   <Chip key={s.id} level={s.level} selected={s.id === skill?.id} onClick={() => setSelectedId(s.id)}>

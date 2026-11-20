@@ -23,7 +23,7 @@ export function Section({ id, index, label, title, tone = "base", className, chi
       id={id}
       aria-labelledby={`${id}-title`}
       className={cn(
-        "scroll-mt-24 overflow-x-clip border-t border-line py-16 sm:py-24 lg:py-32", tone === "raised" && "bg-surface-2", className)}
+        "scroll-mt-24 overflow-x-clip border-t border-line py-16 sm:py-24 lg:py-32", tone === "raised" && "bg-bg-deep", className)}
     >
       <Container>
         <SectionLabel index={index}>{label}</SectionLabel>

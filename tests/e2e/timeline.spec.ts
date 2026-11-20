@@ -19,13 +19,13 @@ test.describe("trajetória /pt/", () => {
     await expect(page.locator('#timeline [data-entry="ic-unifei"] [data-head]')).toHaveCount(1);
   });
 
-  test("destaque (prêmio): LED verde, selo e menção ao JEWC; título na cor de texto", async ({ page }) => {
+  test("destaque (prêmio): LED no acento, selo e menção ao JEWC; título na cor de texto", async ({ page }) => {
     const director = page.locator('#timeline [data-entry="asimov-director"]');
     await expect(director).toHaveAttribute("data-highlight", "true");
     await expect(director).toContainText("JEWC");
-    await expect(director.locator("[data-dot]")).toHaveCSS("background-color", "rgb(124, 255, 107)");
+    await expect(director.locator("[data-dot]")).toHaveCSS("background-color", "rgb(156, 196, 255)");
     await expect(director.locator("[data-award]")).toBeVisible();
-    await expect(director.locator("h3")).toHaveCSS("color", "rgb(245, 245, 247)");
+    await expect(director.locator("h3")).toHaveCSS("color", "rgb(238, 243, 250)");
   });
 
   test("é uma lista ordenada e cada commit tem seu Reveal (sequência)", async ({ page }) => {

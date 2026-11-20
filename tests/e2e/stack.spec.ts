@@ -74,7 +74,7 @@ test.describe("placa de stack (/pt/)", () => {
 
   test("zonas opacas (trilhas não vazam por baixo dos chips)", async ({ page }) => {
     const bg = await page.locator('#stack [data-zone="software"]').evaluate((e) => getComputedStyle(e).backgroundColor);
-    expect(bg).toBe("rgb(10, 11, 10)");
+    expect(bg).toBe("rgb(6, 18, 42)");
   });
 
   test("detalhe é anunciado (aria-live polite)", async ({ page }) => {

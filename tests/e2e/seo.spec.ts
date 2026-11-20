@@ -81,7 +81,7 @@ test("rota inexistente serve 404 estilizada com links PT/EN", async ({ page }) =
   await expect(page.locator('a[href="/pt/"]')).toBeVisible();
   await expect(page.locator('a[href="/en/"]')).toBeVisible();
   const bg = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
-  expect(bg).toBe("rgb(0, 0, 0)");
+  expect(bg).toBe("rgb(2, 5, 12)");
   // Exatamente um meta robots (o Next injeta noindex na 404; não duplicar).
   await expect(page.locator('meta[name="robots"]')).toHaveCount(1);
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);
@@ -93,10 +93,10 @@ test("página raiz (redirecionamento) não é indexada", async ({ request }) => 
   expect(html).toMatch(/<meta name="robots" content="noindex/);
 });
 
-test("theme-color preto e color-scheme escuro (barra do navegador no celular)", async ({ page }) => {
+test("theme-color abyss e color-scheme escuro (barra do navegador no celular)", async ({ page }) => {
   for (const path of ["/pt/", "/nao-existe/"]) {
     await page.goto(path);
-    await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute("content", "#000000");
+    await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute("content", "#02050C");
     await expect(page.locator('meta[name="color-scheme"]')).toHaveAttribute("content", "dark");
   }
 });

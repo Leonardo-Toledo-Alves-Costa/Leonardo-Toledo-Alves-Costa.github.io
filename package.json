@@ -1,6 +1,6 @@
 {
   "name": "portfolio",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -10,7 +10,8 @@
     "test": "vitest run",
     "test:e2e": "playwright test",
     "check": "npm run lint && npm run typecheck && npm test && npm run test:e2e",
-    "og": "next build && node scripts/generate-og.mjs"
+    "og": "next build && node scripts/generate-og.mjs",
+    "check:release": "next build && node scripts/check-release.mjs"
   },
   "dependencies": {
     "motion": "^14.7.1",

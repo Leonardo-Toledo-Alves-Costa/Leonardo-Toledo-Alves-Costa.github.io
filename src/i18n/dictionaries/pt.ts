@@ -1,5 +1,17 @@
 /** Textos de interface em português — o formato deste objeto é o contrato que o inglês precisa seguir. */
 export const pt = {
+  /** Frases dos grandes momentos (serifa, spec §7). "[PENDENTE]" = aguardando o autor; check:release bloqueia o deploy. */
+  statements: {
+    f1: "[PENDENTE] F1 — frase da expansão do orbe",
+    f2: "[PENDENTE] F2 — abertura da trajetória",
+    f3: "[PENDENTE] F3 — fechamento / contato",
+    f4: "[PENDENTE] F4 — abertura de /projetos",
+    f5: "[PENDENTE] F5 — frase central da stack",
+  },
+  about: {
+    /** Texto gigante vazado ao fundo do Sobre (D10, em avaliação pelo autor). */
+    backdrop: "UNIFEI",
+  },
   meta: {
     title: "Leonardo Tolêdo — Engenharia de Computação (UNIFEI) · software e hardware",
     description:
@@ -93,15 +105,21 @@ export const pt = {
     proficient: "domino",
   },
   designSystem: {
-    title: "Design system — Silicon Glass",
+    title: "Design system — Abissal",
     intro: "Peças base do site: cores, tipografia, componentes e efeitos de luz. Página de referência, fora da navegação.",
     colors: "Cores",
-    colorsNote: "Preto, cinzas e luz branca. O verde é um LED: só acende no que está ativo.",
+    colorsNote: "Azul profundo afundando no preto, luz cobalto do orbe. O branco acende o que importa; o cinza-azulado é contexto.",
+    typeSerif: "Grandes momentos — Instrument Serif 400, em pé, tracking normal (a fonte é estreita), só nas frases de abertura e transição",
     type: "Tipografia",
     buttons: "Botões",
-    primary: "Baixar currículo",
     secondary: "Ver projetos",
-    signal: "copiar e-mail",
+    ghost: "Falar comigo",
+    ghostArrow: "Ver trajetória",
+    pills: "Pílulas de tecnologia",
+    pillsInteractive: "Clicável (mostra os projetos que usam a tecnologia, como em /projetos):",
+    cards: "Cartão de vidro",
+    statement: "Frase dos grandes momentos",
+    statementSample: "{{Do requisito}} à entrega.",
     chips: "Níveis de tecnologia",
     chipsInteractive: "Clicável (seleciona, como na placa de stack):",
     typeDisplay: "Display — Geist 700, tracking −0.045em, até 132px",
@@ -114,7 +132,7 @@ export const pt = {
     glass: "Vidro",
     glassBody: "Passe o ponteiro: o reflexo acompanha.",
     spotlight: "Card com luz",
-    spotlightBody: "A borda acende em verde sob o ponteiro. Base dos cards de projeto.",
+    spotlightBody: "A borda acende sob o ponteiro. Base dos cards de projeto.",
     terminal: "Terminal",
     motion: "Movimento",
     motionNote: "Luz, não pulo: reflexo cromado, boot digitado e pulsos nas trilhas. Tudo para com \"reduzir movimento\"; sem JavaScript, o texto aparece completo.",

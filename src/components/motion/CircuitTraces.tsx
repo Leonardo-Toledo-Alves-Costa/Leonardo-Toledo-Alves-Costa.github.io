@@ -28,7 +28,7 @@ function Pad({ d, active }: { d: string; active: boolean }) {
   // Toda trilha começa com "M<x> <y>".
   const [, x, y] = /^M(\d+) (\d+)/.exec(d) ?? [];
   if (!x || !y) return null;
-  return <circle data-pad="" cx={x} cy={y} r={5} className={active ? "fill-signal" : "fill-signal/30"} />;
+  return <circle data-pad="" cx={x} cy={y} r={5} className={active ? "fill-accent-hi" : "fill-accent-hi/30"} />;
 }
 
 type CircuitTracesProps = {
@@ -65,8 +65,8 @@ export function CircuitTraces({ variant, activeIds = [], className }: CircuitTra
                 strokeWidth={1.2}
                 vectorEffect="non-scaling-stroke"
                 className={cn(
-                  "transition-[stroke,filter] duration-300 ease-out-ui",
-                  active ? "stroke-signal drop-shadow-[0_0_6px_rgb(124_255_107/0.8)]" : "stroke-signal/25",
+                  "transition-[stroke,filter] duration-300 ease-abissal",
+                  active ? "stroke-accent-hi drop-shadow-[0_0_6px_rgb(156_196_255/0.8)]" : "stroke-accent-hi/25",
                 )}
               />
               {pulsing && (
@@ -77,7 +77,7 @@ export function CircuitTraces({ variant, activeIds = [], className }: CircuitTra
                   strokeWidth={2}
                   strokeDasharray="8 92"
                   vectorEffect="non-scaling-stroke"
-                  className="stroke-signal drop-shadow-[0_0_4px_rgb(124_255_107/0.9)]"
+                  className="stroke-accent-hi drop-shadow-[0_0_4px_rgb(156_196_255/0.9)]"
                   style={{ animation: `trace-pulse ${3.2 + i * 0.6}s linear ${i * 0.7}s infinite` }}
                 />
               )}
