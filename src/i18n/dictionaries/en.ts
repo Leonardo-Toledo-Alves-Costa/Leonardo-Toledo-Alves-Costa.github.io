@@ -118,6 +118,8 @@ export const en: Dictionary = {
     cards: "Glass card",
     statement: "Big-moment statement",
     statementSample: "{{From requirements}} to production.",
+    orb: "Orb",
+    orbNote: "Mini, hero and halo. This is the CSS layer: it shows without JavaScript, with “reduce motion” and when WebGL fails. The shader goes on top of it.",
     chips: "Technology levels",
     chipsInteractive: "Clickable (selects, like on the stack board):",
     typeDisplay: "Display — Geist 700, tracking −0.045em, up to 132px",

@@ -120,6 +120,8 @@ export const pt = {
     cards: "Cartão de vidro",
     statement: "Frase dos grandes momentos",
     statementSample: "{{Do requisito}} à entrega.",
+    orb: "Orbe",
+    orbNote: "Mini, hero e halo. Esta é a camada em CSS: aparece sem JavaScript, com “reduzir movimento” e quando o WebGL falha. O shader entra por cima dela.",
     chips: "Níveis de tecnologia",
     chipsInteractive: "Clicável (seleciona, como na placa de stack):",
     typeDisplay: "Display — Geist 700, tracking −0.045em, até 132px",
