@@ -14,6 +14,7 @@ import { Terminal } from "@/components/ui/Terminal";
 import { BootSequence } from "@/components/motion/BootSequence";
 import { ChromeText } from "@/components/motion/ChromeText";
 import { CircuitTraces } from "@/components/motion/CircuitTraces";
+import { Orb } from "@/components/motion/Orb";
 import { Reveal } from "@/components/motion/Reveal";
 import { learning } from "@/content/learning";
 import { profile } from "@/content/profile";
@@ -181,7 +182,26 @@ export default async function DesignSystemPage({ params }: PageProps<"/[locale]/
           <SerifStatement text={t.statementSample} />
         </Block>
 
-        <Block id="chips" index="07" title={t.chips}>
+        <Block id="orb" index="07" title={t.orb}>
+          {/* Respiro de sobra: o halo vaza 45% do tamanho para cada lado e não pode ser cortado pelo painel. */}
+          <div className="grid place-items-center gap-y-20 overflow-hidden rounded-panel border border-line px-8 py-20 sm:grid-cols-3">
+            {(
+              [
+                ["mini", "w-16"],
+                ["hero", "w-36 sm:w-40"],
+                ["halo", "w-40 sm:w-44"],
+              ] as const
+            ).map(([variant, size]) => (
+              <figure key={variant} className="grid h-72 grid-rows-[1fr_auto] place-items-center">
+                <Orb variant={variant} size={size} />
+                <figcaption className="font-mono text-xs text-ink-dim">{variant}</figcaption>
+              </figure>
+            ))}
+          </div>
+          <p className="mt-4 text-sm text-ink-dim">{t.orbNote}</p>
+        </Block>
+
+        <Block id="chips" index="08" title={t.chips}>
           <div className="flex flex-wrap gap-2">
             {examples.map((skill) => (
               <Chip key={skill.id} level={skill.level}>
@@ -195,7 +215,7 @@ export default async function DesignSystemPage({ params }: PageProps<"/[locale]/
           </div>
         </Block>
 
-        <Block id="glass" index="08" title={t.glass}>
+        <Block id="glass" index="09" title={t.glass}>
           <div className="relative min-h-[300px] overflow-hidden rounded-panel border border-line bg-[radial-gradient(circle_at_20%_30%,rgb(156_196_255/0.3),transparent_35%),radial-gradient(circle_at_80%_70%,rgb(160_170_255/0.22),transparent_40%)] p-4 sm:p-8">
             {/* Grade numa camada própria: o background-size dela não pode repetir os brilhos. */}
             <div aria-hidden className="pcb-grid absolute inset-0" />
@@ -228,7 +248,7 @@ export default async function DesignSystemPage({ params }: PageProps<"/[locale]/
           <p className="mt-4 max-w-[60ch] text-sm text-ink-dim">{t.glassBody}</p>
         </Block>
 
-        <Block id="spotlight" index="09" title={t.spotlight}>
+        <Block id="spotlight" index="10" title={t.spotlight}>
           <p className="mb-6 max-w-[60ch] text-sm text-ink-dim">{t.spotlightBody}</p>
           <div className="grid gap-4 md:grid-cols-3">
             {projects.slice(0, 3).map((project) => (
@@ -240,11 +260,11 @@ export default async function DesignSystemPage({ params }: PageProps<"/[locale]/
           </div>
         </Block>
 
-        <Block id="terminal" index="10" title={t.terminal}>
+        <Block id="terminal" index="11" title={t.terminal}>
           <Terminal className="max-w-md">connect --to leonardo</Terminal>
         </Block>
 
-        <Block id="motion" index="11" title={t.motion}>
+        <Block id="motion" index="12" title={t.motion}>
           <p className="max-w-[60ch] text-sm text-ink-dim">{t.motionNote}</p>
           <div className="relative mt-8 overflow-hidden rounded-panel border border-line bg-bg-abyss p-6 sm:p-10">
             <div aria-hidden className="pcb-grid absolute inset-0 [mask-image:radial-gradient(ellipse_at_60%_40%,#000_20%,transparent_70%)]" />

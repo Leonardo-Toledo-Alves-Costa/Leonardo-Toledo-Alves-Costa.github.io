@@ -88,6 +88,51 @@
       0 30px 60px -30px rgb(0 0 0 / 0.8);
   }
 
+  /* ---------- Orbe (camada CSS, sempre presente — spec §4.3) ---------- */
+  /* Halo: luz cobalto que nasce na borda da esfera (o raio dela é ~52% do raio desta caixa, que tem
+     -inset 45%). Coroa curta e intensa + halo atmosférico largo; o centro fica vazio, então nada
+     "acende" atrás de uma esfera translúcida. */
+  .orb-halo {
+    background: radial-gradient(
+      closest-side,
+      transparent 46%,
+      color-mix(in srgb, var(--color-accent) 80%, transparent) 52%,
+      color-mix(in srgb, var(--color-accent) 38%, transparent) 62%,
+      color-mix(in srgb, var(--color-accent) 12%, transparent) 80%,
+      transparent 100%
+    );
+  }
+
+  /* Esfera: uma só direção de luz (alto à esquerda). Brilho especular largo integrado ao hemisfério
+     iluminado, corpo accent → glow → deep → abyss e fresnel difuso (sem contorno duro). */
+  .orb-sphere {
+    background:
+      radial-gradient(
+        circle at 32% 28%,
+        color-mix(in srgb, var(--color-accent-hi) 55%, transparent) 0%,
+        color-mix(in srgb, var(--color-accent) 30%, transparent) 24%,
+        transparent 52%
+      ),
+      radial-gradient(
+        circle at 36% 32%,
+        color-mix(in srgb, var(--color-accent) 35%, var(--color-bg-glow)) 0%,
+        var(--color-bg-glow) 28%,
+        var(--color-bg-deep) 60%,
+        var(--color-bg-abyss) 92%
+      );
+    box-shadow:
+      inset 0 0 20px color-mix(in srgb, var(--color-accent-hi) 22%, transparent),
+      inset 0 0 56px color-mix(in srgb, var(--color-accent) 55%, transparent),
+      inset -18px -28px 68px color-mix(in srgb, var(--color-bg-abyss) 85%, transparent);
+  }
+
+  /* Grão monocromático (feColorMatrix zera a saturação): matéria sem confete colorido. */
+  .orb-grain {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+    opacity: 0.22;
+  }
+
   /* Grade de PCB: linhas de sinal a 5%, passo de 28px. */
   .pcb-grid {
     background-image:
