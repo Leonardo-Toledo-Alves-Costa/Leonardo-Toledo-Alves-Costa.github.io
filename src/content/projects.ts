@@ -1,6 +1,7 @@
 import type { Project } from "./types";
 
 // Fonte: currículos (out/2026). Projetos de cliente/pesquisa: código privado, sem links; textos só do currículo (decisão do Leonardo).
+// Papel (role): tirado da trajetória (timeline.ts). ArborizAI: pendente do autor — sem role, o cartão não aparece.
 // Stacks confirmadas pelo Leonardo (27/10/2026): Asimov = Flutter + Riverpod; ArborizAI usa WebGIS e LiDAR do iOS.
 export const projects: Project[] = [
   {
@@ -24,6 +25,7 @@ export const projects: Project[] = [
       en: "Flutter/Dart app integrated with REST APIs and Firebase: financial module (contracts, receivables and taxes) and complete customer workflows.",
     },
     skills: ["flutter", "riverpod", "firebase"],
+    role: { pt: "Desenvolvedor Mobile", en: "Mobile Software Developer" },
     visibility: "private",
   },
   {
@@ -35,6 +37,7 @@ export const projects: Project[] = [
       en: "Critical debugging, QA stabilization and final production delivery; role-based access control (RBAC), dynamic database-driven forms and PDF dashboard export.",
     },
     skills: ["flutter", "riverpod"],
+    role: { pt: "Desenvolvedor Mobile", en: "Mobile Software Developer" },
     visibility: "private",
   },
   {
@@ -46,6 +49,7 @@ export const projects: Project[] = [
       en: "Designed, containerized and deployed on Google Cloud (Docker, Linux, Traefik) the clinical training and decision-support platform for healthcare professionals.",
     },
     skills: ["gcp", "docker", "linux", "traefik"],
+    role: { pt: "Pesquisador de Iniciação Científica", en: "Undergraduate Research Fellow" },
     visibility: "private",
   },
 ];

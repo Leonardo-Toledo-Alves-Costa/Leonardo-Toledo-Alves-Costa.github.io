@@ -5,6 +5,9 @@ import { projects } from "@/content/projects";
 import { skills } from "@/content/skills";
 import { timeline } from "@/content/timeline";
 import type { Project, TimelineEntry } from "@/content/types";
+import { en } from "@/i18n/dictionaries/en";
+import { pt } from "@/i18n/dictionaries/pt";
+import { splitEmphasis } from "@/lib/emphasis";
 import { formatPeriod, formatProgressBar, localize, projectSlots, shortHash, skillsByCategory, slotsToFillGrid, splitSpec } from "@/lib/content";
 
 const p1 = { id: "p1" } as Project;
@@ -151,4 +154,41 @@ test("formatProgressBar: células cheias/vazias e percentual com limite 0..100",
   expect(formatProgressBar(150)).toEqual({ filled: 20, empty: 0, percent: 100 });
   expect(formatProgressBar(-5)).toEqual({ filled: 0, empty: 20, percent: 0 });
   expect(formatProgressBar(50, 10)).toEqual({ filled: 5, empty: 5, percent: 50 });
+});
+
+// ---- Redesign Abissal (Task 3): campos novos e destaque aceso/apagado ----
+
+test("status curto da telemetria resume o status existente", () => {
+  expect(profile.statusShort).toEqual({ pt: "Aberto a estágio", en: "Open to internships" });
+});
+
+test("papel por projeto só com fonte real (trajetória); ArborizAI pendente do autor", () => {
+  const role = (id: string) => projects.find((p) => p.id === id)?.role;
+  expect(role("dip-mobile")).toEqual({ pt: "Desenvolvedor Mobile", en: "Mobile Software Developer" });
+  expect(role("softcare-mobile")).toEqual({ pt: "Desenvolvedor Mobile", en: "Mobile Software Developer" });
+  expect(role("teccurar-infra")).toEqual({ pt: "Pesquisador de Iniciação Científica", en: "Undergraduate Research Fellow" });
+  expect(role("arborizai")).toBeUndefined();
+});
+
+test("papéis dos projetos existem na trajetória (nada inventado)", () => {
+  const roles = timeline.map((t) => JSON.stringify(t.role));
+  for (const p of projects) if (p.role) expect(roles, p.id).toContain(JSON.stringify(p.role));
+});
+
+test("nenhum projeto tem imagem enquanto não houver print/design real", () => {
+  expect(projects.every((p) => p.media === undefined)).toBe(true);
+  expect(projects.some((p) => "image" in p)).toBe(false);
+});
+
+function collectStrings(value: unknown): string[] {
+  if (typeof value === "string") return [value];
+  if (Array.isArray(value)) return value.flatMap(collectStrings);
+  if (value && typeof value === "object") return Object.values(value).flatMap(collectStrings);
+  return [];
+}
+
+test("todo texto do conteúdo e dos dicionários tem marcação {{ }} válida", () => {
+  for (const s of collectStrings([profile, projects, timeline, learning, skills, pt, en])) {
+    expect(() => splitEmphasis(s), s).not.toThrow();
+  }
 });

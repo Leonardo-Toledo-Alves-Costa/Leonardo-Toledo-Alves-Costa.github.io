@@ -36,3 +36,14 @@ test("getDictionary devolve o dicionário do idioma", () => {
   expect(getDictionary("pt")).toBe(pt);
   expect(getDictionary("en")).toBe(en);
 });
+
+test("frases dos grandes momentos (F1–F5) existem e seguem pendentes até o autor aprovar", () => {
+  for (const d of [pt, en]) {
+    for (const k of ["f1", "f2", "f3", "f4", "f5"] as const) expect(d.statements[k]).toMatch(/^\[PENDENTE\] /);
+  }
+});
+
+test("texto vazado de fundo do Sobre = UNIFEI (D10)", () => {
+  expect(pt.about.backdrop).toBe("UNIFEI");
+  expect(en.about.backdrop).toBe("UNIFEI");
+});

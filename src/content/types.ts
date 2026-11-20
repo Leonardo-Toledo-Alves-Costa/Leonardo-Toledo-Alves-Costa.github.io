@@ -35,7 +35,17 @@ export interface Project {
   award?: Localized;
   visibility: "public" | "private";
   links?: { repo?: string; demo?: string };
-  image?: string;
+  /** Papel do Leonardo no projeto — só com fonte real (trajetória/currículo). Sem ele, o cartão não aparece. */
+  role?: Localized;
+  /** Print ou design autorizado. Sem ele, nada é desenhado no lugar (spec §6.3). */
+  media?: ProjectMedia;
+}
+
+export interface ProjectMedia {
+  /** Caminho em public/ (ex.: "/projects/dip-mobile.webp"). */
+  src: string;
+  alt: Localized;
+  kind: "screenshot" | "design";
 }
 
 export interface LearningItem {
@@ -58,5 +68,7 @@ export interface Profile {
   specs: { label: Localized; value: Localized }[];
   /** Situação atual, mostrada na primeira dobra (nível + o que busca). */
   status: Localized;
+  /** Resumo curto do status para a telemetria do hero ("Aberto a estágio"). */
+  statusShort: Localized;
   award: Localized;
 }

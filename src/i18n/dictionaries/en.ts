@@ -1,6 +1,16 @@
 import type { Dictionary } from "../get-dictionary";
 
 export const en: Dictionary = {
+  statements: {
+    f1: "[PENDENTE] F1 — orb expansion statement",
+    f2: "[PENDENTE] F2 — timeline opening",
+    f3: "[PENDENTE] F3 — closing / contact",
+    f4: "[PENDENTE] F4 — /projects opening",
+    f5: "[PENDENTE] F5 — stack centre statement",
+  },
+  about: {
+    backdrop: "UNIFEI",
+  },
   meta: {
     title: "Leonardo Tolêdo — Computer Engineering (UNIFEI) · software and hardware",
     description:
