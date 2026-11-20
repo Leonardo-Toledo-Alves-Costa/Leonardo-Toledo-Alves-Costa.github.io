@@ -29,8 +29,9 @@ const L = {
 async function settled(page: Page) {
   await page.evaluate(() =>
     Promise.all(
-      (document.querySelector("#hero")?.getAnimations({ subtree: true }) ?? [])
-        .filter((a) => a.effect?.getComputedTiming().endTime !== Infinity)
+      (document.querySelector("[data-opening]")?.getAnimations({ subtree: true }) ?? [])
+        // Só animações de tempo (as guiadas por rolagem, ScrollTimeline, nunca "terminam").
+        .filter((a) => a.timeline === document.timeline && a.effect?.getComputedTiming().endTime !== Infinity)
         .map((a) => a.finished.catch(() => undefined)),
     ),
   );
@@ -53,7 +54,7 @@ async function inFirstFold(page: Page, selector: string) {
 /** Nenhum item da telemetria encosta na esfera (o retângulo não intersecta o círculo). */
 async function telemetryOutsideSphere(page: Page) {
   await settled(page);
-  const sphere = await page.locator('#hero [data-orb][data-variant="hero"]').boundingBox();
+  const sphere = await page.locator('[data-opening] [data-orb][data-variant="hero"]').boundingBox();
   expect(sphere).not.toBeNull();
   const cx = (sphere?.x ?? 0) + (sphere?.width ?? 0) / 2;
   const cy = (sphere?.y ?? 0) + (sphere?.height ?? 0) / 2;
@@ -113,7 +114,7 @@ for (const locale of ["pt", "en"] as const) {
 
 test("orbe do hero é decorativo e não captura cliques", async ({ page }) => {
   await page.goto("/pt/");
-  const orb = page.locator('#hero [data-orb][data-variant="hero"]');
+  const orb = page.locator('[data-opening] [data-orb][data-variant="hero"]');
   await expect(orb).toHaveAttribute("aria-hidden", "true");
   await expect(orb).toHaveCSS("pointer-events", "none");
 });
@@ -156,7 +157,7 @@ test.describe("sem JavaScript", () => {
 test("reduzir movimento: abertura sem animação", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/pt/");
-  for (const sel of ["#hero [data-telemetry] li", "#hero [data-hero-title]", "#hero [data-hero-cta]", '#hero [data-orb][data-variant="hero"]']) {
+  for (const sel of ["#hero [data-telemetry] li", "#hero [data-hero-title]", "#hero [data-hero-cta]", '[data-opening] [data-orb][data-variant="hero"]']) {
     expect(await page.locator(sel).first().evaluate((el) => getComputedStyle(el).animationName), sel).toBe("none");
   }
 });

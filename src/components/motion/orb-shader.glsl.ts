@@ -52,7 +52,8 @@ float fbm(vec3 p) {
 void main() {
   vec2 uv = (gl_FragCoord.xy / uRes) * 2.0 - 1.0;
   float d = length(uv);
-  float aa = 3.0 / uRes.x;
+  // Borda nítida mesmo com o contêiner ampliado na expansão (~1–1,5 px reais).
+  float aa = (2.0 / uRes.x) / (1.0 + 2.5 * uExpand);
   float alpha = (1.0 - smoothstep(1.0 - aa, 1.0, d)) * uIntro;
   if (alpha <= 0.0) {
     gl_FragColor = vec4(0.0);
@@ -71,8 +72,12 @@ void main() {
   col += uHi * pow(clamp(dot(reflect(-light, n), vec3(0.0, 0.0, 1.0)), 0.0, 1.0), 18.0) * 0.55;
   col += uAccent * pow(1.0 - n.z, 2.5) * 0.9;
   col += uHi * smoothstep(0.62, 0.9, f) * 0.25 * dif;
-  col = mix(col, uGlow * 0.15 + mix(uDeep, uAbyss, 0.5) + uAccent * 0.05 * f, smoothstep(0.15, 0.7, uExpand));
-  col += (hash(vec3(gl_FragCoord.xy, uTime)) - 0.5) * 0.02;
+  // Eclipse: miolo escuro (texto legível por cima), mas com volume — fresnel cobalto na borda
+  // e um resto de luz difusa — em vez de cor chapada.
+  vec3 eclipse = uGlow * 0.12 + mix(uDeep, uAbyss, 0.6) + uAccent * (0.05 * f + 0.24 * pow(1.0 - n.z, 3.0)) + uHi * 0.06 * dif;
+  col = mix(col, eclipse, smoothstep(0.15, 0.85, uExpand));
+  // Grão some na expansão: ampliado, viraria quadriculado.
+  col += (hash(vec3(gl_FragCoord.xy, uTime)) - 0.5) * 0.02 * (1.0 - uExpand);
 
   // Alfa pré-multiplicado só é válido com rgb ≤ alfa: limita antes de multiplicar.
   col = clamp(col, 0.0, 1.0);

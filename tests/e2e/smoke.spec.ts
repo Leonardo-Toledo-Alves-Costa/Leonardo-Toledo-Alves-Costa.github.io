@@ -6,7 +6,7 @@ for (const locale of ["pt", "en"] as const) {
   test.describe(`/${locale}/`, () => {
     test("7 seções presentes na ordem", async ({ page }) => {
       await page.goto(`/${locale}/`);
-      const ids = await page.locator("main > section[id]").evaluateAll((els) => els.map((e) => e.id));
+      const ids = await page.locator("main section[id]").evaluateAll((els) => els.map((e) => e.id));
       expect(ids).toEqual(SECTIONS);
     });
 

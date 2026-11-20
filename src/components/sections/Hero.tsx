@@ -1,4 +1,3 @@
-import { Orb } from "@/components/motion/Orb";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Emphasis } from "@/components/ui/Emphasis";
@@ -36,11 +35,9 @@ export function Hero({ locale, dict }: SectionProps) {
     <section
       id="hero"
       aria-labelledby="hero-title"
-      className="relative isolate flex min-h-svh flex-col justify-end overflow-hidden pt-24 pb-10 [--orb:min(30vh,56vw)] xl:[--orb:min(36vh,62vw)] lg:min-h-[max(100svh,680px)] lg:pb-16"
+      // O orbe e a variável --orb vêm do OpeningStage (camada fixa que atravessa hero + expansão).
+      className="relative isolate flex min-h-svh flex-col justify-end overflow-hidden pt-24 pb-10 lg:min-h-[max(100svh,680px)] lg:pb-16"
     >
-      <div className="absolute top-[22%] left-1/2 -z-10 -translate-x-1/2 -translate-y-1/2 xl:top-[42%]">
-        <Orb variant="hero" size="w-(--orb)" className="animate-orb-in [animation-delay:200ms] motion-reduce:animate-none" />
-      </div>
 
       <Container className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
         <div className="lg:max-w-[52%]">

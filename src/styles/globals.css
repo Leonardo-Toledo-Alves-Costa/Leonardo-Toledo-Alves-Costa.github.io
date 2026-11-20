@@ -125,6 +125,10 @@
       color-mix(in srgb, var(--color-accent) 12%, transparent) 82%,
       transparent 100%
     );
+    /* Na expansão a coroa abraça o disco: o halo encolhe e apaga um pouco, e os cantos da tela
+       continuam no preto abissal (como no protótipo do eclipse). */
+    transform: scale(calc(1 - 0.22 * var(--orb-expand, 0)));
+    opacity: calc(1 - 0.35 * var(--orb-expand, 0));
   }
 
   /* Esfera: uma só direção de luz (alto à esquerda). Brilho especular largo integrado ao hemisfério
@@ -148,13 +152,16 @@
       inset 0 0 20px color-mix(in srgb, var(--color-accent-hi) 22%, transparent),
       inset 0 0 56px color-mix(in srgb, var(--color-accent) 55%, transparent),
       inset -18px -28px 68px color-mix(in srgb, var(--color-bg-abyss) 85%, transparent);
+    /* Na expansão o centro escurece até virar o disco escuro do eclipse; a coroa (halo) continua. */
+    filter: brightness(calc(1 - 0.82 * var(--orb-expand, 0)));
   }
 
   /* Grão monocromático (feColorMatrix zera a saturação): matéria sem confete colorido. */
   .orb-grain {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     mix-blend-mode: overlay;
-    opacity: 0.22;
+    /* Some na expansão (--orb-expand): ampliado, o grão viraria quadriculado. */
+    opacity: calc(0.22 * (1 - var(--orb-expand, 0)));
   }
 
   /* Grade de PCB: linhas de sinal a 5%, passo de 28px. */
