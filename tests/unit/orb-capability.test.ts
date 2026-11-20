@@ -59,3 +59,10 @@ test("guarda de fps: janela boa reinicia a medição e a seguinte, ruim, falha",
   run(guard, 30, 2200, end);
   expect(onFail).toHaveBeenCalledTimes(1);
 });
+
+test("congelado: atributo no <html> ou flag global de teste (a hidratação apaga o atributo)", async () => {
+  const { isOrbFrozen } = await import("@/lib/orb-capability");
+  expect(isOrbFrozen({ hasAttribute: () => false }, {})).toBe(false);
+  expect(isOrbFrozen({ hasAttribute: (n) => n === "data-orb-frozen" }, {})).toBe(true);
+  expect(isOrbFrozen({ hasAttribute: () => false }, { __orbFrozen: true })).toBe(true);
+});

@@ -245,3 +245,14 @@
 html:not([data-js]) [data-requires-js] {
   display: none;
 }
+
+/* Orbe: quando o shader assume, a esfera e o grão CSS saem (sem soma de camadas); o halo continua.
+   Fora de @layer de propósito: precisa vencer a utilitária de opacidade da variante (ex.: opacity-60). */
+[data-orb][data-renderer="shader"] .orb-sphere,
+[data-orb][data-renderer="shader"] .orb-grain {
+  opacity: 0;
+  transition: opacity 700ms var(--ease-abissal);
+}
+html[data-orb-frozen] [data-orb][data-renderer="shader"] :is(.orb-sphere, .orb-grain) {
+  transition: none;
+}

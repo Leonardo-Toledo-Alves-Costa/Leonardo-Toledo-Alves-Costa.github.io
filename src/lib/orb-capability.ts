@@ -60,3 +60,15 @@ export function detectOrbEnv(): OrbEnv {
     saveData: connection?.saveData === true,
   };
 }
+
+/**
+ * Modo congelado (screenshots e testes): `html[data-orb-frozen]` ou `window.__orbFrozen`.
+ * A flag global existe porque a hidratação do React reescreve os atributos do <html> e apaga o
+ * atributo posto antes do carregamento; o shader o recoloca depois (para o CSS também valer).
+ */
+export function isOrbFrozen(
+  html: Pick<Element, "hasAttribute"> = document.documentElement,
+  scope: { __orbFrozen?: boolean } = window as Window & { __orbFrozen?: boolean },
+): boolean {
+  return html.hasAttribute("data-orb-frozen") || scope.__orbFrozen === true;
+}
