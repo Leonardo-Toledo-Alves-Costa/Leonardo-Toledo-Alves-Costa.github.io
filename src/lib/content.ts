@@ -1,4 +1,4 @@
-import type { Localized, Project, Skill, SkillCategory, TimelineEntry } from "@/content/types";
+import type { Localized, Skill, SkillCategory, TimelineEntry } from "@/content/types";
 import type { Locale } from "@/i18n/config";
 
 export const skillCategories: readonly SkillCategory[] = ["software", "cloud", "engineering", "hardware-ai"];
@@ -8,13 +8,6 @@ export function skillsByCategory(skills: readonly Skill[]): Record<SkillCategory
   const grouped = Object.fromEntries(skillCategories.map((c) => [c, [] as Skill[]])) as Record<SkillCategory, Skill[]>;
   for (const skill of skills) grouped[skill.category].push(skill);
   return grouped;
-}
-
-/** Completa a lista com `null` ("slot livre") até `minSlots`; nunca corta projetos. */
-export function projectSlots(projects: readonly Project[], minSlots = 3): (Project | null)[] {
-  const slots: (Project | null)[] = [...projects];
-  while (slots.length < minSlots) slots.push(null);
-  return slots;
 }
 
 const MONTHS: Record<Locale, readonly string[]> = {
@@ -45,30 +38,4 @@ export function localize(text: string | Localized, locale: Locale): string {
 export function splitSpec(text: string): { main: string; sub?: string } {
   const at = text.lastIndexOf(" · ");
   return at < 0 ? { main: text } : { main: text.slice(0, at), sub: text.slice(at + 3) };
-}
-
-/** Hash curto estilo git (7 hex) e determinístico para um id — FNV-1a de 32 bits. */
-export function shortHash(id: string): string {
-  let h = 0x811c9dc5;
-  for (let i = 0; i < id.length; i++) {
-    h ^= id.charCodeAt(i);
-    h = Math.imul(h, 0x01000193);
-  }
-  return (h >>> 0).toString(16).padStart(8, "0").slice(0, 7);
-}
-
-/**
- * Quantos itens (projetos + slots livres) completam a última linha da grade.
- * `extraCells` = células a mais ocupadas por destaques (ex.: um card que ocupa 2 colunas soma 1).
- */
-export function slotsToFillGrid(projectCount: number, cols: number, extraCells: number): number {
-  const cells = Math.max(cols, Math.ceil((projectCount + extraCells) / cols) * cols);
-  return cells - extraCells;
-}
-
-/** Barra de build em células: progresso limitado a 0..100. */
-export function formatProgressBar(progress: number, cells = 20): { filled: number; empty: number; percent: number } {
-  const percent = Math.min(100, Math.max(0, Math.round(progress)));
-  const filled = Math.round((percent / 100) * cells);
-  return { filled, empty: cells - filled, percent };
 }

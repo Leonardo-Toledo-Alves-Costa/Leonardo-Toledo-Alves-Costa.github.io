@@ -32,7 +32,7 @@ export function Reveal({ delay = 0, className, children }: { delay?: number; cla
       initial={false}
       animate={hidden ? { opacity: 0, y: 16 } : { opacity: 1, y: 0 }}
       // Esconder é instantâneo; só a entrada anima.
-      transition={{ duration: hidden ? 0 : 0.7, ease: [0.2, 0.8, 0.2, 1], delay: hidden ? 0 : delay }}
+      transition={{ duration: hidden ? 0 : 0.7, ease: [0.2, 0.7, 0.2, 1] /* --ease-abissal */, delay: hidden ? 0 : delay }}
     >
       {children}
     </motion.div>

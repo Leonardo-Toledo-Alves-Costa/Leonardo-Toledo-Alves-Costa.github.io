@@ -49,7 +49,11 @@ test("favicon próprio (não o padrão do Next)", async ({ page, request }) => {
   expect(href).toMatch(/icon/);
   const res = await request.get(href!);
   expect(res.status()).toBe(200);
-  expect(await res.text()).toContain("LT_");
+  const svg = await res.text();
+  // Identidade Abissal: orbe cobalto sobre o abissal, sem o "LT_" de terminal da linha Silicon.
+  expect(svg).not.toContain("LT_");
+  expect(svg).toContain("#02050C");
+  expect(svg).toMatch(/#2F7BFF|#9CC4FF/i);
 });
 
 test("design-system tem noindex (PT e EN)", async ({ page }) => {
@@ -80,6 +84,10 @@ test("rota inexistente serve 404 estilizada com links PT/EN", async ({ page }) =
   await expect(page.locator("h1")).toContainText("404");
   await expect(page.locator('a[href="/pt/"]')).toBeVisible();
   await expect(page.locator('a[href="/en/"]')).toBeVisible();
+  // Identidade Abissal: mini-orbe, sem grade de PCB nem rótulo de terminal da linha Silicon.
+  await expect(page.locator('[data-orb][data-variant="mini"]')).toHaveCount(1);
+  await expect(page.locator(".pcb-grid, .silkscreen")).toHaveCount(0);
+  await expect(page.locator("main")).not.toContainText("route --resolve");
   const bg = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
   expect(bg).toBe("rgb(2, 5, 12)");
   // Exatamente um meta robots (o Next injeta noindex na 404; não duplicar).

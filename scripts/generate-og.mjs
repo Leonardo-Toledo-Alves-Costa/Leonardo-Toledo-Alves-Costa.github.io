@@ -1,4 +1,4 @@
-// Gera public/og.png (1200×630) fotografando o hero do build estático.
+// Gera public/og.png (1200×630) fotografando a abertura (hero com o orbe congelado) do build estático.
 // Uso: npm run og  (faz o build antes). A imagem acompanha o design em vez de ser um arquivo feito à mão.
 import { execSync, spawn } from "node:child_process";
 import { setTimeout as wait } from "node:timers/promises";
@@ -39,20 +39,28 @@ try {
   await waitForServer();
   const browser = await chromium.launch();
   try {
-    const page = await browser.newPage({ viewport: { width: 1200, height: 630 }, reducedMotion: "reduce", deviceScaleFactor: 1 });
-    await page.goto(`http://localhost:${PORT}/pt/`);
-    // Sem a nav fixa e sem o recuo que existe só para ela: a imagem é a assinatura
-    // (boot, nome cromado, headline, prêmio) centralizada nos 630px, com margem igual em cima e embaixo
-    // (redes sociais sobrepõem selos e cantos na base da prévia).
-    await page.addStyleTag({
-      content: "body > header{display:none!important} #hero{min-height:630px!important;align-items:center!important;padding-top:0!important;padding-bottom:0!important}",
-    });
-    await page.waitForSelector('#hero [data-boot][data-state="done"]');
-    // As linhas do boot ficam visíveis um instante depois do estado "done" (hidratação).
-    await page.waitForFunction(() =>
-      [...document.querySelectorAll("#hero [data-boot-line]")].every((el) => getComputedStyle(el).visibility === "visible"),
+    // 1600×840 a 0,75× = 1200×630: a prévia sai no layout largo (telemetria em volta do orbe, ≥ 1280px).
+    const page = await browser.newPage({ viewport: { width: 1600, height: 840 }, deviceScaleFactor: 0.75 });
+    // Orbe congelado (tempo fixo): a imagem não depende do instante da captura.
+    await page.addInitScript(() => Object.assign(window, { __orbFrozen: true }));
+    await page.goto(`http://localhost:${PORT}/pt/`, { waitUntil: "load" });
+    // Sem a nav fixa nem o "role ↓": a imagem é a abertura (orbe, telemetria, nome, headline).
+    await page.addStyleTag({ content: "body > header,[data-scroll-hint]{display:none!important}" });
+    // Shader assume após o load + ocioso; sem WebGL no ambiente, fica a camada CSS (também vale).
+    await page
+      .waitForSelector('#hero [data-orb][data-renderer="shader"], [data-opening] [data-orb][data-renderer="shader"]', { timeout: 8000 })
+      .catch(() => console.warn("shader não assumiu: og.png com o orbe em CSS"));
+    // Espera a abertura assentar (só animações de tempo finitas; as de rolagem nunca terminam).
+    await page.evaluate(() =>
+      Promise.all(
+        document
+          .getAnimations()
+          .filter((a) => a.timeline === document.timeline && a.effect?.getComputedTiming().endTime !== Infinity)
+          .map((a) => a.finished.catch(() => undefined)),
+      ),
     );
-    await page.screenshot({ path: "public/og.png", clip: { x: 0, y: 0, width: 1200, height: 630 } });
+    await page.waitForTimeout(800);
+    await page.screenshot({ path: "public/og.png" });
     console.log("public/og.png gerado (1200×630)");
   } finally {
     await browser.close();

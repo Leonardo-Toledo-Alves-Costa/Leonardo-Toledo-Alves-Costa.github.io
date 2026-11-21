@@ -1,115 +1,88 @@
-import { BootSequence } from "@/components/motion/BootSequence";
-import { ChromeText } from "@/components/motion/ChromeText";
-import { CircuitTraces } from "@/components/motion/CircuitTraces";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
-import { GlassPanel } from "@/components/ui/GlassPanel";
+import { Emphasis } from "@/components/ui/Emphasis";
 import { profile } from "@/content/profile";
-import { projects } from "@/content/projects";
-import { heroCtas, splitHeadline, type HeroCta } from "@/lib/hero";
+import type { Locale } from "@/i18n/config";
+import { localize } from "@/lib/content";
+import { cn } from "@/lib/cn";
 import type { SectionProps } from "./types";
 
-const external = { target: "_blank", rel: "noopener noreferrer" } as const;
+/** Formação e Liderança vêm das specs do perfil; o status curto fecha a telemetria (spec §5.1). */
+function telemetry(locale: Locale, statusLabel: string) {
+  const pick = (pt: string) => profile.specs.find((s) => s.label.pt === pt);
+  const items = [pick("Formação"), pick("Liderança")]
+    .filter((s) => s !== undefined)
+    .map((s) => ({ label: localize(s.label, locale), value: localize(s.value, locale) }));
+  return [...items, { label: statusLabel, value: localize(profile.statusShort, locale) }];
+}
 
 /**
- * Primeira dobra: em ~5s, quem é (nome), o que faz (headline), por que se destaca (prêmio) e como seguir (CTAs).
- * Assinatura visual: nome gigante com reflexo cromado sobre uma placa com trilhas vivas.
+ * Posição de cada rótulo em volta do orbe no desktop (insp. Obelisk): acima, à esquerda e à direita,
+ * sempre fora da esfera (--orb é o diâmetro). No celular viram uma lista acima do título.
  */
+const AROUND = [
+  "xl:left-1/2 xl:-translate-x-1/2 xl:top-[calc(42%-var(--orb)/2-5.5rem)] xl:text-center",
+  "xl:right-[calc(50%+var(--orb)/2+2.75rem)] xl:top-[42%] xl:-translate-y-1/2 xl:text-right",
+  "xl:left-[calc(50%+var(--orb)/2+2.75rem)] xl:top-[42%] xl:-translate-y-1/2",
+];
+// Tudo termina em ≤ 2,5 s (delay + duração).
+const DELAY = ["[animation-delay:900ms]", "[animation-delay:1050ms]", "[animation-delay:1200ms]"];
+
+/** Abertura: orbe ao centro, telemetria em volta, nome + título embaixo à esquerda, status + ação à direita. */
 export function Hero({ locale, dict }: SectionProps) {
   const t = dict.hero;
-  const awarded = projects.find((p) => p.award);
-  const headline = splitHeadline(profile.headline[locale]);
-
-  const cta = (c: HeroCta) => {
-    switch (c.kind) {
-      case "cv":
-        return (
-          <Button key={c.kind} variant={c.variant} href={c.href} download>
-            {t.ctaCv}
-          </Button>
-        );
-      case "projects":
-        return (
-          <Button key={c.kind} variant={c.variant} href={c.href}>
-            {t.ctaProjects}
-          </Button>
-        );
-      case "linkedin":
-        return (
-          <Button key={c.kind} variant={c.variant} href={profile.links.linkedin} {...external}>
-            LinkedIn
-          </Button>
-        );
-      case "github":
-        return (
-          <Button key={c.kind} variant={c.variant} href={profile.links.github} {...external}>
-            GitHub
-          </Button>
-        );
-      case "email":
-        return (
-          <Button key={c.kind} variant={c.variant} href={`mailto:${profile.email}`}>
-            &gt; {t.ctaEmail}
-          </Button>
-        );
-    }
-  };
-
   return (
     <section
       id="hero"
       aria-labelledby="hero-title"
-      className="relative isolate flex min-h-svh items-end overflow-hidden pt-28 pb-12 lg:pt-36 lg:pb-20"
+      // O orbe e a variável --orb vêm do OpeningStage (camada fixa que atravessa hero + expansão).
+      className="relative isolate flex min-h-svh flex-col justify-end overflow-hidden pt-24 pb-10 lg:min-h-[max(100svh,680px)] lg:pb-16"
     >
-      {/* Fundo: grade de PCB, brilho ambiente e trilhas com pulsos (tudo decorativo). */}
-      <div aria-hidden className="pcb-grid absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_at_65%_45%,#000_15%,transparent_70%)]" />
-      <div
-        aria-hidden
-        className="absolute -top-40 right-[-10%] -z-10 size-[min(720px,90vw)] rounded-full bg-[radial-gradient(circle,color-mix(in_srgb,var(--color-accent-hi)_16%,transparent),transparent_62%)] blur-[10px]"
-      />
-      <CircuitTraces
-        variant="hero"
-        className="absolute inset-0 -z-10 opacity-70 [mask-image:radial-gradient(ellipse_at_75%_40%,#000_25%,transparent_78%)]"
-      />
 
-      <Container>
-        <BootSequence lines={[t.boot1, t.boot2, t.boot3]} status={t.bootStatus} />
+      <Container className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+        <div className="lg:max-w-[52%]">
+          <ul data-telemetry="" aria-label={t.telemetryLabel} className="mb-8 grid gap-2 xl:mb-0">
+            {telemetry(locale, t.statusLabel).map((item, i) => (
+              <li
+                key={item.label}
+                className={cn("animate-rise motion-reduce:animate-none xl:absolute xl:whitespace-nowrap", AROUND[i], DELAY[i])}
+              >
+                <dl className="flex flex-wrap items-baseline gap-x-2 text-sm xl:block">
+                  <dt className="text-ink-dim">{item.label}</dt>
+                  <dd className="text-ink xl:mt-0.5">{item.value}</dd>
+                </dl>
+              </li>
+            ))}
+          </ul>
 
-        {/* Entrelinha maior enquanto o nome quebra em 2 linhas: folga para o circunflexo de "Tolêdo". */}
-        <ChromeText
-          as="h1"
-          id="hero-title"
-          className="mt-6 text-[clamp(56px,11vw,132px)] font-bold leading-[1.04] tracking-[-0.045em] lg:leading-[0.92]"
-        >
-          {profile.name}
-        </ChromeText>
+          <h1 id="hero-title" className="text-base font-medium tracking-[-0.01em] text-ink">
+            {profile.name}
+          </h1>
+          <p
+            data-hero-title=""
+            className="mt-3 animate-settle text-[clamp(40px,4.4vw,64px)] leading-[1.02] font-normal tracking-[-0.035em] [animation-delay:400ms] motion-reduce:animate-none [&>[data-emphasis=dim]]:block"
+          >
+            <Emphasis text={localize(profile.headline, locale)} />
+          </p>
+        </div>
 
-        <p className="mt-6 max-w-[40ch] text-lg text-ink-dim sm:text-xl">
-          {headline.lead && <>{headline.lead} · </>}
-          <span className="whitespace-nowrap font-medium text-ink">{headline.focus}</span>
-        </p>
-
-        {/* Nível e o que busca, já na primeira dobra. O LED aceso = disponível.
-            Sem borda de pílula: não é botão (a pílula com borda verde é o "> e-mail"). */}
-        <p data-status="" className="mt-5 flex items-baseline gap-2.5 font-mono text-xs text-ink sm:text-sm">
-          <span aria-hidden className="size-1.5 shrink-0 translate-y-[-1px] rounded-full bg-accent-hi shadow-[0_0_8px_var(--color-accent-hi)]" />
-          {profile.status[locale]}
-        </p>
-
-        <div className="mt-10 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-          <div className="flex flex-wrap items-center gap-3">{heroCtas({ cvHref: profile.cv?.[locale] }).map(cta)}</div>
-
-          <GlassPanel data-testid="hero-award" className="max-w-md px-5 py-4">
-            <p className="silkscreen text-accent-hi">{t.awardLabel}</p>
-            <p className="mt-1.5 text-base font-semibold leading-snug text-balance">{profile.award[locale]}</p>
-            {awarded && (
-              <p className="mt-1 text-sm text-pretty text-ink-dim">
-                {awarded.name} · {awarded.tagline[locale]}
-              </p>
-            )}
-          </GlassPanel>
+        <div data-hero-cta="" className="max-w-sm animate-rise [animation-delay:1500ms] motion-reduce:animate-none lg:text-right">
+          <p data-status="" className="text-base leading-relaxed text-balance text-ink-dim">
+            {localize(profile.status, locale)}
+          </p>
+          <Button href={`/${locale}/projetos/`} icon="arrow" className="mt-5">
+            {t.ctaProjects}
+          </Button>
         </div>
       </Container>
+
+      <p
+        aria-hidden
+        data-scroll-hint=""
+        className="absolute bottom-5 left-1/2 hidden -translate-x-1/2 animate-rise font-mono text-xs tracking-[0.14em] text-ink-dim uppercase [animation-delay:1700ms] motion-reduce:animate-none lg:block"
+      >
+        {t.scrollHint} ↓
+      </p>
     </section>
   );
 }

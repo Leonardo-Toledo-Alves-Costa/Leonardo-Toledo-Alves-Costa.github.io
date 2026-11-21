@@ -1,60 +1,36 @@
-import { Reveal } from "@/components/motion/Reveal";
+import { Orb } from "@/components/motion/Orb";
+import { GlassCard } from "@/components/ui/GlassCard";
 import { learning } from "@/content/learning";
-import { formatProgressBar } from "@/lib/content";
+import { localize } from "@/lib/content";
 import { Section } from "./Section";
 import type { SectionProps } from "./types";
 
-/** "Agora compilando…": o que está em estudo, como um build em andamento. Some se não houver estudo. */
+/**
+ * Agora estudando (spec §5.6): bloco curto de vidro com o brilho de um mini-orbe (só CSS, sem shader)
+ * e o estudo atual — tópico e porquê. Some se não houver estudo.
+ */
 export function Learning({ locale, dict }: SectionProps) {
   if (learning.length === 0) return null;
-  const t = dict.learning;
 
   return (
-    <Section tone="raised" id="learning" index="06" label={dict.nav.learning} title={dict.sections.learning}>
-      <p className="mt-6 max-w-[60ch] text-lg text-ink-dim">{t.intro}</p>
-      {/* Mesma medida do terminal de contato: status perto do tópico. */}
-      <Reveal className="mt-10 max-w-3xl">
-        <ul className="grid gap-4">
-          {learning.map((item) => {
-            const bar = item.progress === undefined ? undefined : formatProgressBar(item.progress);
-            return (
-              <li key={item.id} data-learning={item.id} className="rounded-panel border border-white/12 bg-bg-deep p-5 font-mono sm:p-6">
-                <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
-                  <h3 className="text-xl font-semibold tracking-[-0.01em] text-ink sm:text-2xl">
-                    <span aria-hidden className="mr-2 text-ink-dim">
-                      $
-                    </span>
-                    {item.topic[locale]}
-                  </h3>
-                  {bar === undefined ? (
-                    <span className="text-sm text-accent-hi">
-                      <span
-                        aria-hidden
-                        data-pulse-dot=""
-                        className="mr-1.5 inline-block size-1.5 animate-pulse rounded-full bg-accent-hi align-middle shadow-[0_0_8px_var(--color-accent-hi)] motion-reduce:animate-none"
-                      />
-                      {t.compiling}
-                    </span>
-                  ) : (
-                    <span
-                      role="progressbar"
-                      aria-label={`${t.progress}: ${item.topic[locale]}`}
-                      aria-valuemin={0}
-                      aria-valuemax={100}
-                      aria-valuenow={bar.percent}
-                      className="text-sm text-ink-dim"
-                    >
-                      [<span className="text-accent-hi">{"#".repeat(bar.filled)}</span>
-                      {"-".repeat(bar.empty)}] {bar.percent}%
-                    </span>
-                  )}
-                </div>
-                <p className="mt-3 max-w-[65ch] font-sans leading-relaxed text-pretty text-ink/80">{item.why[locale]}</p>
-              </li>
-            );
-          })}
-        </ul>
-      </Reveal>
+    <Section id="learning" index="04" label={dict.nav.learning} title={dict.sections.learning}>
+      <ul className="mt-12 grid max-w-3xl gap-4">
+        {learning.map((item, i) => (
+          <GlassCard
+            as="li"
+            key={item.id}
+            data-learning={item.id}
+            className="flex flex-col gap-8 p-6 sm:flex-row sm:items-center sm:gap-10 sm:p-8"
+          >
+            {/* Um mini-orbe só (no primeiro estudo); o halo pede respiro antes do texto. */}
+            {i === 0 && <Orb variant="mini" size="w-14 sm:w-16" className="mx-3 mt-3 shrink-0 sm:mx-4 sm:mt-0" />}
+            <div>
+              <h3 className="text-xl font-normal tracking-[-0.015em] text-ink sm:text-2xl">{localize(item.topic, locale)}</h3>
+              <p className="mt-2 max-w-[60ch] leading-relaxed text-pretty text-ink-dim">{localize(item.why, locale)}</p>
+            </div>
+          </GlassCard>
+        ))}
+      </ul>
     </Section>
   );
 }

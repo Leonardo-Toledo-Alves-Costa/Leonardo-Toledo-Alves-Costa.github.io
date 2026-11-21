@@ -25,6 +25,30 @@
 
   --ease-abissal: cubic-bezier(0.2, 0.7, 0.2, 1);
 
+  /* Abertura (≤ 2,5 s): o orbe nasce do escuro; o resto sobe. O título só desliza (sem opacidade),
+     para não atrasar o LCP — o texto existe desde o primeiro desenho. */
+  --animate-orb-in: orb-in 1.6s var(--ease-abissal) both;
+  --animate-rise: rise 0.7s var(--ease-abissal) both;
+  --animate-settle: settle 1.1s var(--ease-abissal) both;
+
+  @keyframes orb-in {
+    from {
+      opacity: 0;
+      transform: scale(0.82);
+    }
+  }
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  }
+  @keyframes settle {
+    from {
+      transform: translateY(14px);
+    }
+  }
+
   --radius-pill: 999px;
   --radius-panel: 22px;
   --radius-card: 18px;
@@ -39,17 +63,26 @@
   /* Fundo Abissal em CSS (não no shader): azul em volta do topo, afundando no preto (spec §4.3). */
   body {
     background-color: var(--color-bg-abyss);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* A luz fica presa à tela numa camada fixa (não background-attachment: fixed, que o Safari do iOS
+     ignora e que no celular repinta a página inteira a cada rolagem). Atrás de tudo: z-index bem abaixo
+     das camadas decorativas das seções (-z-10). */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -50;
+    pointer-events: none;
     background-image: radial-gradient(
       60% 55% at 50% 30%,
       var(--color-bg-glow) 0%,
       var(--color-bg-deep) 45%,
       var(--color-bg-abyss) 100%
     );
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-    color: var(--color-ink);
-    font-family: var(--font-sans);
-    -webkit-font-smoothing: antialiased;
   }
 
   /* Toque: sem o atraso de duplo toque para zoom em links e botões. */
@@ -61,11 +94,6 @@
   ::selection {
     background: rgb(47 123 255 / 0.4);
     color: var(--color-ink);
-  }
-
-  /* Dentro do vidro (overflow-hidden), o anel vai para dentro do controle para não ser cortado. */
-  [data-glass] :focus-visible {
-    outline-offset: -2px;
   }
 
   /* Foco por teclado sempre visível: anel de sinal com folga. */
@@ -96,11 +124,15 @@
     background: radial-gradient(
       closest-side,
       transparent 46%,
-      color-mix(in srgb, var(--color-accent) 80%, transparent) 52%,
-      color-mix(in srgb, var(--color-accent) 38%, transparent) 62%,
-      color-mix(in srgb, var(--color-accent) 12%, transparent) 80%,
+      color-mix(in srgb, var(--color-accent) 66%, transparent) 52%,
+      color-mix(in srgb, var(--color-accent) 36%, transparent) 65%,
+      color-mix(in srgb, var(--color-accent) 12%, transparent) 82%,
       transparent 100%
     );
+    /* Na expansão a coroa abraça o disco: o halo encolhe e apaga um pouco, e os cantos da tela
+       continuam no preto abissal (como no protótipo do eclipse). */
+    transform: scale(calc(1 - 0.22 * var(--orb-expand, 0)));
+    opacity: calc(1 - 0.35 * var(--orb-expand, 0));
   }
 
   /* Esfera: uma só direção de luz (alto à esquerda). Brilho especular largo integrado ao hemisfério
@@ -124,113 +156,20 @@
       inset 0 0 20px color-mix(in srgb, var(--color-accent-hi) 22%, transparent),
       inset 0 0 56px color-mix(in srgb, var(--color-accent) 55%, transparent),
       inset -18px -28px 68px color-mix(in srgb, var(--color-bg-abyss) 85%, transparent);
+    /* Na expansão o centro escurece até virar o disco escuro do eclipse; a coroa (halo) continua. */
+    filter: brightness(calc(1 - 0.82 * var(--orb-expand, 0)));
   }
 
   /* Grão monocromático (feColorMatrix zera a saturação): matéria sem confete colorido. */
   .orb-grain {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     mix-blend-mode: overlay;
-    opacity: 0.22;
-  }
-
-  /* Grade de PCB: linhas de sinal a 5%, passo de 28px. */
-  .pcb-grid {
-    background-image:
-      linear-gradient(rgb(156 196 255 / 0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgb(156 196 255 / 0.05) 1px, transparent 1px);
-    background-size: 28px 28px;
-  }
-
-  /* Serigrafia de PCB: rótulos técnicos em mono, caixa alta, espaçados. A cor vem de quem usa. */
-  .silkscreen {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-  }
-}
-
-/* Anel de 1px: mostra só a faixa de padding. `mask` vem antes de `mask-composite`
-   (o atalho `mask` zera o composite; com classes arbitrárias a ordem não era garantida — pego por teste).
-   Declarado com @utility para aceitar variantes como `before:`. */
-@utility ring-mask {
-  padding: 1px;
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-}
-
-/* ---------- Motion: luz, não pulo ---------- */
-
-/* Reflexo cromado passando pelo título (assinatura do hero, ref. Apple iPhone 18 Pro). */
-/* Percurso de 85% a 32%: a faixa verde (54% do gradiente, fundo 2,5× o texto) fica sempre sobre o nome. */
-@keyframes chrome-sheen {
-  from {
-    background-position: 85% 0;
-  }
-  to {
-    background-position: 32% 0;
-  }
-}
-
-/* w-fit: o gradiente é dimensionado pelo texto (não pelo container), então o verde passa sobre o nome. */
-@utility chrome-text {
-  width: fit-content;
-  background-image: linear-gradient(
-    100deg,
-    var(--color-ink-dim) 0%,
-    var(--color-ink) 18%,
-    #8d8d93 32%,
-    #ffffff 48%,
-    var(--color-accent-hi) 54%,
-    var(--color-accent-hi) 60%,
-    #8d8d93 80%,
-    var(--color-ink) 100%
-  );
-  background-size: 250% 100%;
-  background-clip: text;
-  color: transparent;
-  animation: chrome-sheen 6s ease-in-out infinite alternate;
-}
-
-/* Pulso de energia correndo pela trilha (ref. 21st Circuit Board #18245): traço curto em pathLength=100. */
-@keyframes trace-pulse {
-  from {
-    stroke-dashoffset: 100;
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-/* Com JS ativo, o boot fica invisível até começar a digitar (sem JS, o texto completo aparece). */
-[data-js] [data-boot][data-state="pending"] {
-  visibility: hidden;
-}
-
-@media (forced-colors: active) {
-  .chrome-text {
-    color: CanvasText;
-    background: none;
+    /* Some na expansão (--orb-expand): ampliado, o grão viraria quadriculado. */
+    opacity: calc(0.22 * (1 - var(--orb-expand, 0)));
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  /* Desliga de verdade (não só encurta) os efeitos contínuos; o reflexo verde fica parado sobre o nome. */
-  .chrome-text {
-    animation: none;
-    /* Fundo 2,5× a largura do texto: 40% põe a faixa verde (54% do gradiente) sobre o sobrenome. */
-    background-position: 40% 0;
-  }
-  [data-pulse] {
-    display: none;
-  }
-
   *,
   *::before,
   *::after {
