@@ -27,8 +27,14 @@ export function CopyEmail({ email, labels }: { email: string; labels: { copy: st
 
   return (
     <>
-      <Button variant="ghost" data-testid="copy-email" data-requires-js="" onClick={onClick} className="px-4">
-        <span aria-hidden>{copied ? "✓" : ">"}</span> {copied ? labels.copied : labels.copy}
+      <Button variant="ghost" data-testid="copy-email" data-requires-js="" onClick={onClick}>
+        {copied ? (
+          <>
+            <span aria-hidden>✓</span> {labels.copied}
+          </>
+        ) : (
+          labels.copy
+        )}
       </Button>
       {/* Fora do botão: anuncia só a confirmação, sem duplicar o nome acessível do botão. */}
       <span className="sr-only" aria-live="polite">
