@@ -1,6 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <title>LT_</title>
-  <rect width="64" height="64" rx="14" fill="#000"/>
-  <rect x="1.5" y="1.5" width="61" height="61" rx="12.5" fill="none" stroke="#9CC4FF" stroke-opacity=".75" stroke-width="3"/>
-  <text x="32" y="41" text-anchor="middle" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="24" font-weight="700" fill="#9CC4FF">LT_</text>
+  <title>Leonardo Tolêdo</title>
+  <defs>
+    <!-- Mesma luz do orbe do site: coroa cobalto colada à esfera, esfera escura com brilho no alto à esquerda. -->
+    <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+      <stop offset="0.5" stop-color="#2F7BFF" stop-opacity="0"/>
+      <stop offset="0.58" stop-color="#2F7BFF" stop-opacity="0.8"/>
+      <stop offset="0.78" stop-color="#2F7BFF" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#2F7BFF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="sphere" cx="36%" cy="32%" r="78%">
+      <stop offset="0" stop-color="#9CC4FF"/>
+      <stop offset="0.38" stop-color="#0E2A5A"/>
+      <stop offset="1" stop-color="#02050C"/>
+    </radialGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="#02050C"/>
+  <circle cx="32" cy="32" r="30" fill="url(#halo)"/>
+  <circle cx="32" cy="32" r="17" fill="url(#sphere)"/>
 </svg>

@@ -112,3 +112,10 @@ test("celular: o letreiro de fundo não vaza para a seção seguinte", async ({ 
   await page.goto("/pt/");
   expect(await page.locator("#about").evaluate((e) => getComputedStyle(e).overflowY)).toBe("clip");
 });
+
+test("tablet (768px): cartões em 2 colunas, sem quebra apertada", async ({ page }) => {
+  await page.setViewportSize({ width: 768, height: 1024 });
+  await page.goto("/pt/#about");
+  const lefts = await page.locator("#about [data-spec]").evaluateAll((els) => els.map((e) => Math.round(e.getBoundingClientRect().left)));
+  expect(new Set(lefts).size).toBe(2);
+});

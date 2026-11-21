@@ -116,7 +116,7 @@ export function Nav({ locale, route, items, labels }: NavProps) {
           </a>
           <ul data-nav-desktop="" className="hidden items-center gap-7 text-sm md:flex">
             {items.map((item) => (
-              <li key={item.id}>{link(item, "inline-flex min-h-11 items-center")}</li>
+              <li key={item.id}>{link(item, "inline-flex min-h-11 min-w-11 items-center justify-center")}</li>
             ))}
           </ul>
           <div className="ml-auto flex items-center gap-1 md:ml-0 md:justify-self-end">

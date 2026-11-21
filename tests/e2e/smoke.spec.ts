@@ -1,10 +1,10 @@
 import { expect, test } from "@playwright/test";
 
-const SECTIONS = ["hero", "about", "highlight", "stack", "timeline", "projects", "learning", "contact"];
+const SECTIONS = ["hero", "about", "highlight", "timeline", "learning", "contact"];
 
 for (const locale of ["pt", "en"] as const) {
   test.describe(`/${locale}/`, () => {
-    test("8 seções presentes na ordem", async ({ page }) => {
+    test("6 seções presentes na ordem", async ({ page }) => {
       await page.goto(`/${locale}/`);
       const ids = await page.locator("main section[id]").evaluateAll((els) => els.map((e) => e.id));
       expect(ids).toEqual(SECTIONS);
@@ -49,10 +49,10 @@ test("troca de idioma mantém a página", async ({ page }) => {
 });
 
 test("troca de idioma preserva a âncora", async ({ page }) => {
-  await page.goto("/pt/#stack");
+  await page.goto("/pt/#timeline");
   await page.getByTestId("locale-switch").first().click();
-  await expect(page).toHaveURL(/\/en\/#stack$/);
-  await expect(page.locator("#stack")).toBeInViewport();
+  await expect(page).toHaveURL(/\/en\/#timeline$/);
+  await expect(page.locator("#timeline")).toBeInViewport();
 });
 
 test("seletor de idioma anuncia o idioma de destino", async ({ page }) => {
@@ -182,7 +182,7 @@ test("foco por teclado nos controles da nav é visível", async ({ page }) => {
 
 test("títulos das seções não repetem o rótulo da seção", async ({ page }) => {
   await page.goto("/pt/");
-  for (const id of ["about", "highlight", "stack", "timeline", "projects", "learning", "contact"]) {
+  for (const id of ["about", "highlight", "timeline", "learning", "contact"]) {
     const label = (await page.locator(`#${id} [data-section-label]`).first().textContent())?.replace(/^\d+ — /, "").trim().toLowerCase();
     const title = (await page.locator(`#${id} h2`).first().textContent())?.trim().toLowerCase();
     expect(title, id).not.toBe(label);

@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-const SECTIONS = ["colors", "type", "buttons", "pills", "cards", "statement", "orb", "chips", "glass", "spotlight", "terminal", "motion"];
+const SECTIONS = ["colors", "type", "buttons", "pills", "cards", "statement", "orb", "motion"];
 
 test.describe("página /design-system", () => {
   test.beforeEach(async ({ page }) => {
@@ -26,12 +26,6 @@ test.describe("página /design-system", () => {
     expect(body.bg).toBe("rgb(2, 5, 12)");
     expect(body.color).toBe("rgb(238, 243, 250)");
     expect(body.font).toMatch(/Geist/);
-  });
-
-  test("chip 'domino' usa o acento", async ({ page }) => {
-    const chip = page.getByTestId("ds-chips").locator('[data-level="proficient"]').first();
-    // accent-hi #9CC4FF em rgb, ou em oklab quando o Tailwind aplica opacidade com color-mix.
-    await expect(chip).toHaveCSS("border-color", /156, 196, 255|oklab\(0\.8\d* /);
   });
 
   test("foco visível por teclado no primeiro botão", async ({ page }) => {
@@ -80,86 +74,10 @@ test.describe("comportamento dos componentes", () => {
     expect(ring).toMatchObject({ style: "solid", width: "2px" });
   });
 
-  test("chip interativo é botão com aria-pressed e alvo de toque ≥ 44px", async ({ page }) => {
-    const chip = page.getByTestId("ds-chips").locator("button[data-level]").first();
-    await expect(chip).toHaveAttribute("aria-pressed", "false");
-    await chip.click();
-    await expect(chip).toHaveAttribute("aria-pressed", "true");
-    const hit = await chip.evaluate((el) => {
-      const after = getComputedStyle(el, "::after");
-      return el.getBoundingClientRect().height - parseFloat(after.top) - parseFloat(after.bottom);
-    });
-    expect(hit).toBeGreaterThanOrEqual(44);
+  test("espécime tipográfico com os 5 níveis Abissal (inclui serifa, sem o código de terminal)", async ({ page }) => {
+    await expect(page.getByTestId("ds-type").locator("[data-type-level]")).toHaveCount(5);
+    await expect(page.getByTestId("ds-type").locator('[data-type-level="code"]')).toHaveCount(0);
   });
-
-  test("luz do card visível em repouso (celular não tem hover) e borda não recortada", async ({ page }) => {
-    const card = page.getByTestId("ds-spotlight").locator("[data-spotlight]").first();
-    const before = await card.evaluate((el) => {
-      const s = getComputedStyle(el, "::before");
-      return { opacity: Number(s.opacity), top: s.top, left: s.left };
-    });
-    expect(before.opacity).toBeGreaterThan(0);
-    expect(before).toMatchObject({ top: "0px", left: "0px" });
-  });
-
-  test("ponteiro sobre o vidro define --mx/--my", async ({ page, isMobile }) => {
-    test.skip(isMobile, "sem ponteiro no celular");
-    // A preferência do sistema operacional vaza para o navegador de teste: fixamos explicitamente.
-    await page.emulateMedia({ reducedMotion: "no-preference" });
-    await page.reload();
-    const panel = page.getByTestId("ds-glass").locator("[data-glass]").first();
-    await panel.scrollIntoViewIfNeeded();
-  const box = await panel.boundingBox();
-    if (!box) throw new Error("painel sem caixa");
-    await page.mouse.move(box.x + 40, box.y + 20);
-    await page.mouse.move(box.x + 60, box.y + 30);
-    await expect(panel).toHaveAttribute("style", /--mx: ?\d/);
-  });
-
-  test("palco do vidro tem trilhas de circuito decorativas e a pílula de navegação", async ({ page }) => {
-    const stage = page.getByTestId("ds-glass");
-    await expect(stage.locator('svg[aria-hidden="true"] path').first()).toBeAttached();
-    await expect(stage.locator("nav[data-glass]")).toBeVisible();
-  });
-
-  test("espécime tipográfico com os 6 níveis (inclui serifa) e 3 cards de luz", async ({ page }) => {
-    await expect(page.getByTestId("ds-type").locator("[data-type-level]")).toHaveCount(6);
-    await expect(page.getByTestId("ds-spotlight").locator("[data-spotlight]")).toHaveCount(3);
-  });
-});
-
-test("com 'reduzir movimento' a luz não segue o ponteiro", async ({ page, isMobile }) => {
-  test.skip(isMobile, "sem ponteiro no celular");
-  await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.goto("/pt/design-system/");
-  const panel = page.getByTestId("ds-glass").locator("[data-glass]").first();
-  await panel.scrollIntoViewIfNeeded();
-  const box = await panel.boundingBox();
-  if (!box) throw new Error("painel sem caixa");
-  await page.mouse.move(box.x + 40, box.y + 20);
-  await page.mouse.move(box.x + 60, box.y + 30);
-  await expect(panel).not.toHaveAttribute("style", /--mx/);
-});
-
-test("vidro desfoca o fundo de verdade (backdrop-filter aplicado)", async ({ page }) => {
-  await page.goto("/pt/design-system/");
-  const filter = await page.getByTestId("ds-glass").locator("[data-glass]").first().evaluate((el) => getComputedStyle(el).backdropFilter);
-  expect(filter).toMatch(/blur\(14px\)/);
-});
-
-test("borda do card de luz é só um anel (mask-composite exclude)", async ({ page }) => {
-  await page.goto("/pt/design-system/");
-  const composite = await page.getByTestId("ds-spotlight").locator("[data-spotlight]").first()
-    .evaluate((el) => getComputedStyle(el, "::before").maskComposite);
-  // Um valor por camada da máscara: "exclude, exclude". Antes da correção vinha "add, add".
-  expect(composite).toMatch(/^exclude(, exclude)*$/);
-});
-
-test("GlassPanel com rounded-* próprio não recebe o raio padrão", async ({ page }) => {
-  // A pílula de navegação de exemplo do bloco de vidro passa rounded-pill.
-  await page.goto("/pt/design-system/");
-  const cls = await page.getByTestId("ds-glass").locator("nav").first().getAttribute("class");
-  expect(cls).not.toMatch(/(^|\s)rounded-panel(\s|$)/);
 });
 
 // ---- Redesign Abissal (Task 4): componentes base ----

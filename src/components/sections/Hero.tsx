@@ -78,6 +78,7 @@ export function Hero({ locale, dict }: SectionProps) {
 
       <p
         aria-hidden
+        data-scroll-hint=""
         className="absolute bottom-5 left-1/2 hidden -translate-x-1/2 animate-rise font-mono text-xs tracking-[0.14em] text-ink-dim uppercase [animation-delay:1700ms] motion-reduce:animate-none lg:block"
       >
         {t.scrollHint} ↓

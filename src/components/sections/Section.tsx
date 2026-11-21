@@ -9,8 +9,6 @@ type SectionProps = {
   index: string;
   label: string;
   title: ReactNode;
-  /** Legado da linha Silicon (fundo alternado); no Abissal as seções não alternam fundo. Sai na Task 15. */
-  tone?: "base" | "raised";
   className?: string;
   children?: ReactNode;
 };

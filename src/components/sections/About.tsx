@@ -16,8 +16,9 @@ const CARD_SPEED = [0.18, 0.32, 0.12, 0.26];
  */
 export function About({ locale, dict }: SectionProps) {
   return (
-    // No celular só o fundo anda (parallax para baixo): recorte vertical para o letreiro não invadir o Destaque.
-    <Section id="about" index="01" label={dict.nav.about} title={dict.sections.about} className="relative max-md:overflow-clip">
+    // Abaixo de 1024px o letreiro fica ancorado no fim da seção e desce com o parallax: recorte vertical
+    // para ele não invadir o Destaque.
+    <Section id="about" index="01" label={dict.nav.about} title={dict.sections.about} className="relative max-lg:overflow-clip">
       {/* Fundo: texto vazado (contorno na cor das linhas), decorativo. No desktop ocupa o vazio à
           esquerda da bio; no celular fica no respiro do fim da seção, sem cruzar texto. */}
       <Parallax
@@ -41,7 +42,7 @@ export function About({ locale, dict }: SectionProps) {
         mobile={false}
         className="pointer-events-none absolute inset-y-0 left-6 -z-10 hidden w-px bg-line md:block xl:left-[calc(50%-600px+1.5rem)]"
       />
-      <Parallax speed={0.05} mobile={false} className="pointer-events-none absolute inset-x-0 top-[60%] -z-10 hidden h-px bg-line md:block" />
+      <Parallax speed={0.05} mobile={false} className="pointer-events-none absolute inset-x-0 top-[60%] -z-10 hidden h-px bg-line lg:block" />
 
       <Parallax speed={0.08} mobile={false} className="mt-12 sm:mt-16 lg:ml-auto lg:max-w-[40rem]">
         <p data-bio="" className="text-[clamp(20px,2.2vw,30px)] leading-[1.35] tracking-[-0.015em] text-pretty">
@@ -49,7 +50,7 @@ export function About({ locale, dict }: SectionProps) {
         </p>
       </Parallax>
 
-      <dl className="mt-16 grid gap-4 md:grid-cols-4 md:items-start md:gap-5">
+      <dl className="mt-16 grid gap-4 md:grid-cols-2 md:items-start md:gap-5 lg:grid-cols-4">
         {profile.specs.map((spec, i) => {
           const value = splitSpec(localize(spec.value, locale));
           return (
@@ -58,8 +59,8 @@ export function About({ locale, dict }: SectionProps) {
               speed={CARD_SPEED[i] ?? 0.15}
               mobile={false}
               data-spec=""
-              // Cartões desencontrados no desktop (2º e 4º mais baixos): profundidade de camadas.
-              className={cn("glass flex flex-col gap-3 rounded-card p-5 sm:p-6", i % 2 === 1 && "md:mt-12")}
+              // Cartões desencontrados no desktop (2º e 4º mais baixos): profundidade de camadas. No tablet, 2 colunas.
+              className={cn("glass flex flex-col gap-3 rounded-card p-5 sm:p-6", i % 2 === 1 && "lg:mt-12")}
             >
               <dt className="font-mono text-xs tracking-[0.14em] text-ink-dim uppercase">
                 <span aria-hidden className="mr-2 inline-block size-1.5 translate-y-[-1px] rounded-full bg-ink shadow-[0_0_10px_var(--color-accent)]" />
