@@ -12,12 +12,15 @@ const used = (id: string) => projects.some((p) => p.skills.includes(id));
 
 /** Rola até o meio da batida `i` (progresso do palco = (i + 0,5) / 4). */
 async function toBeat(page: Page, i: number) {
+  // Só depois da hidratação o palco vira animado (antes é o layout estático, bem mais alto).
+  await page.locator('[data-beat][data-state="active"]').first().waitFor({ state: "attached" });
   await page.evaluate((beat) => {
     const stage = document.querySelector<HTMLElement>("[data-stack-stage]");
     if (!stage) throw new Error("sem palco");
     const top = stage.getBoundingClientRect().top + scrollY;
     scrollTo({ top: top + (stage.offsetHeight - innerHeight) * ((beat + 0.5) / 4), behavior: "instant" });
   }, i);
+  await expect(page.locator(`[data-beat="${BEATS[i]}"]`)).toHaveAttribute("data-state", "active");
   // Espera a batida assentar (transição de 700 ms + escalonamento das pílulas).
   await page.waitForTimeout(1100);
 }

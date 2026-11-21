@@ -21,6 +21,9 @@ export const en: Dictionary = {
     description: "Leonardo Tolêdo’s Computer Engineering projects — Flutter apps, cloud infrastructure and ArborizAI, a JEWC/ENEJ winner — and the technologies behind each.",
     backHome: "← Back to home",
     stackLabel: "stack",
+    roleLabel: "role",
+    deliveryLabel: "delivered",
+    awardLabel: "award",
     chaptersLabel: "projects",
   },
   meta: {

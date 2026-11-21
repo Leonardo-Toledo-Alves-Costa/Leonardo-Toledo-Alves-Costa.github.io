@@ -22,6 +22,9 @@ export const pt = {
     description: "Projetos de Leonardo Tolêdo em Engenharia de Computação — apps em Flutter, infraestrutura em nuvem e o ArborizAI, vencedor do JEWC/ENEJ — e as tecnologias usadas em cada um.",
     backHome: "← Voltar ao início",
     stackLabel: "stack",
+    roleLabel: "papel",
+    deliveryLabel: "entregas",
+    awardLabel: "prêmio",
     chaptersLabel: "projetos",
   },
   meta: {

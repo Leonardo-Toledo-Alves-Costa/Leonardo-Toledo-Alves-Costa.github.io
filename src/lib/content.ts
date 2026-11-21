@@ -16,6 +16,15 @@ export function projectsBySkill(skillId: string, list: readonly Project[] = allP
   return list.filter((p) => p.skills.includes(skillId));
 }
 
+/**
+ * O que ocupa o espaço visual do capítulo (spec §6.3): a imagem real tem prioridade; sem ela, o diagrama
+ * abstrato; sem os dois, nada (nenhum espaço vazio ou placeholder).
+ */
+export function chapterVisual(project: Project, hasDiagram: boolean): "media" | "diagram" | "none" {
+  if (project.media) return "media";
+  return hasDiagram ? "diagram" : "none";
+}
+
 const MONTHS: Record<Locale, readonly string[]> = {
   pt: ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"],
   en: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],

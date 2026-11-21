@@ -8,7 +8,7 @@ import type { TimelineEntry } from "@/content/types";
 import { en } from "@/i18n/dictionaries/en";
 import { pt } from "@/i18n/dictionaries/pt";
 import { splitEmphasis } from "@/lib/emphasis";
-import { formatPeriod, localize, projectsBySkill, skillsByCategory, splitSpec } from "@/lib/content";
+import { chapterVisual, formatPeriod, localize, projectsBySkill, skillsByCategory, splitSpec } from "@/lib/content";
 
 
 test("skillsByCategory retorna as 4 categorias, mesmo vazias", () => {
@@ -162,4 +162,13 @@ test("projectsBySkill: projetos que usam a skill, na ordem do conteúdo", () => 
   expect(projectsBySkill("docker").map((p) => p.id)).toEqual(["teccurar-infra"]);
   expect(projectsBySkill("python")).toEqual([]);
   expect(projectsBySkill("x", [])).toEqual([]);
+});
+
+test("chapterVisual: imagem tem prioridade; sem imagem nem diagrama, nada", () => {
+  const p = projects[0]!;
+  const media = { src: "/x.png", alt: { pt: "x", en: "x" }, kind: "screenshot" as const };
+  expect(chapterVisual({ ...p, media }, false)).toBe("media");
+  expect(chapterVisual({ ...p, media }, true)).toBe("media");
+  expect(chapterVisual({ ...p, media: undefined }, true)).toBe("diagram");
+  expect(chapterVisual({ ...p, media: undefined }, false)).toBe("none");
 });
