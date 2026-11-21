@@ -1,81 +1,123 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 import { timeline } from "../../src/content/timeline";
-import { formatPeriod, shortHash } from "../../src/lib/content";
+import { en } from "../../src/i18n/dictionaries/en";
+import { pt } from "../../src/i18n/dictionaries/pt";
+import { formatPeriod } from "../../src/lib/content";
+import { splitEmphasis } from "../../src/lib/emphasis";
 
-test.describe("trajetória /pt/", () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto("/pt/#timeline");
+// Redesign Abissal — Trajetória com nós de luz (spec §5.5, insp. Lunetra: linhas finas com nós).
+
+/** Rola até o marco ficar com o topo na fração `f` da altura da tela. */
+async function placeEntry(page: Page, id: string, f: number) {
+  await page.evaluate(
+    ([sel, frac]) => {
+      const el = document.querySelector(sel);
+      if (!el) throw new Error(`sem ${sel}`);
+      scrollTo({ top: el.getBoundingClientRect().top + scrollY - innerHeight * Number(frac), behavior: "instant" });
+    },
+    [`#timeline [data-entry="${id}"]`, String(f)] as const,
+  );
+}
+
+const lit = (page: Page, id: string) => page.locator(`#timeline [data-entry="${id}"]`).getAttribute("data-lit");
+const first = timeline[0]!.id;
+const last = timeline.at(-1)!.id;
+
+for (const locale of ["pt", "en"] as const) {
+  test(`/${locale}/: 5 marcos na ordem do conteúdo, com cargo, organização e período`, async ({ page }) => {
+    await page.goto(`/${locale}/`);
+    const ids = await page.locator("#timeline ol > li[data-entry]").evaluateAll((els) => els.map((e) => e.getAttribute("data-entry")));
+    expect(ids).toEqual(timeline.map((t) => t.id));
+    for (const entry of timeline) {
+      const el = page.locator(`#timeline [data-entry="${entry.id}"]`);
+      await expect(el.locator("h3")).toHaveText(entry.role[locale]);
+      await expect(el.locator("[data-meta]")).toHaveText(`${entry.org} · ${formatPeriod(entry, locale)}`);
+      // Texto completo no DOM (o corte a 2 linhas no celular é só visual).
+      await expect(el.locator("[data-summary]")).toHaveText(entry.summary[locale]);
+    }
   });
 
-  test("entradas em ordem decrescente de início", async ({ page }) => {
-    const ids = await page.locator("#timeline [data-entry]").evaluateAll((els) => els.map((e) => e.getAttribute("data-entry")));
-    expect(ids).toEqual([...timeline].sort((a, b) => b.start.localeCompare(a.start)).map((t) => t.id));
-    expect(ids[0]).toBe("ic-unifei");
-    expect(ids.at(-1)).toBe("ambev");
+  test(`/${locale}/: abre com a frase F2 em serifa`, async ({ page }) => {
+    await page.goto(`/${locale}/`);
+    const statement = page.locator("#timeline [data-statement]");
+    const f2 = (locale === "pt" ? pt : en).statements.f2;
+    await expect(statement).toHaveText(splitEmphasis(f2).map((s) => s.text).join(""));
+    expect(await statement.evaluate((e) => getComputedStyle(e).fontFamily)).toMatch(/Instrument Serif/);
   });
+}
 
-  test("só a entrada mais recente tem HEAD", async ({ page }) => {
-    await expect(page.locator("#timeline [data-head]")).toHaveCount(1);
-    await expect(page.locator('#timeline [data-entry="ic-unifei"] [data-head]')).toHaveCount(1);
+test("cargo aceso; organização e período apagados", async ({ page }) => {
+  await page.goto("/pt/");
+  const entry = page.locator(`#timeline [data-entry="${first}"]`);
+  await expect(entry.locator("h3")).toHaveCSS("color", "rgb(238, 243, 250)");
+  await expect(entry.locator("[data-meta]")).toHaveCSS("color", "rgb(136, 151, 179)");
+  // Dois tons só (spec §4.2): o resumo também é contexto.
+  await expect(entry.locator("[data-summary]")).toHaveCSS("color", "rgb(136, 151, 179)");
+});
+
+test("trilha de 1px liga os nós e termina dentro do último", async ({ page }) => {
+  await page.goto("/pt/");
+  const { railEnd, dotTop, dotBottom, lastHasRail, width } = await page.evaluate(() => {
+    const items = [...document.querySelectorAll<HTMLLIElement>("#timeline li[data-entry]")];
+    const penult = items.at(-2)!;
+    const last = items.at(-1)!;
+    const before = getComputedStyle(penult, "::before");
+    const top = penult.getBoundingClientRect().top + parseFloat(before.top);
+    const dot = last.querySelector("[data-node]")!.getBoundingClientRect();
+    return {
+      railEnd: top + parseFloat(before.height),
+      dotTop: dot.top,
+      dotBottom: dot.bottom,
+      lastHasRail: !["none", "normal"].includes(getComputedStyle(last, "::before").content),
+      width: before.width,
+    };
   });
+  expect(width).toBe("1px");
+  expect(lastHasRail).toBe(false);
+  expect(railEnd).toBeGreaterThanOrEqual(dotTop);
+  expect(railEnd).toBeLessThanOrEqual(dotBottom);
+});
 
-  test("destaque (prêmio): LED no acento, selo e menção ao JEWC; título na cor de texto", async ({ page }) => {
-    const director = page.locator('#timeline [data-entry="asimov-director"]');
-    await expect(director).toHaveAttribute("data-highlight", "true");
-    await expect(director).toContainText("JEWC");
-    await expect(director.locator("[data-dot]")).toHaveCSS("background-color", "rgb(156, 196, 255)");
-    await expect(director.locator("[data-award]")).toBeVisible();
-    await expect(director.locator("h3")).toHaveCSS("color", "rgb(238, 243, 250)");
-  });
+test("nó acende quando o marco passa de 60% da tela, e apaga ao voltar", async ({ page }) => {
+  await page.goto("/pt/");
+  await placeEntry(page, first, 0.8);
+  await expect.poll(() => lit(page, first)).toBe("false");
+  await placeEntry(page, first, 0.4);
+  await expect.poll(() => lit(page, first)).toBe("true");
+  // Os de baixo continuam apagados até a vez deles.
+  expect(await lit(page, last)).toBe("false");
+  await placeEntry(page, first, 0.9);
+  await expect.poll(() => lit(page, first)).toBe("false");
+});
 
-  test("é uma lista ordenada e cada commit tem seu Reveal (sequência)", async ({ page }) => {
-    await expect(page.locator("#timeline ol > li[data-entry]")).toHaveCount(timeline.length);
-    await expect(page.locator("#timeline ol > li[data-entry] [data-reveal]")).toHaveCount(timeline.length);
-  });
+test("nó aceso fica visível (camada de luz com opacidade 1)", async ({ page }) => {
+  await page.goto("/pt/");
+  await placeEntry(page, first, 0.3);
+  const glow = page.locator(`#timeline [data-entry="${first}"] [data-node-glow]`);
+  await expect.poll(() => glow.evaluate((e) => Number(getComputedStyle(e).opacity))).toBe(1);
+});
 
-  test("trilha do grafo termina dentro do último ponto", async ({ page }) => {
-    await expect(page.locator("#timeline ol")).toHaveCSS("border-left-width", "0px");
-    // Medidas no mesmo frame (a rolagem suave até a âncora muda o viewport entre chamadas).
-    const { railEnd, dotTop, dotBottom, lastHasRail } = await page.evaluate(() => {
-      const items = [...document.querySelectorAll<HTMLLIElement>("#timeline li[data-entry]")];
-      const penult = items[items.length - 2]!;
-      const last = items[items.length - 1]!;
-      const before = getComputedStyle(penult, "::before");
-      const top = penult.getBoundingClientRect().top + parseFloat(before.top);
-      const dot = last.querySelector("[data-dot]")!.getBoundingClientRect();
-      return {
-        railEnd: top + parseFloat(before.height),
-        dotTop: dot.top,
-        dotBottom: dot.bottom,
-        lastHasRail: !["none", "normal"].includes(getComputedStyle(last, "::before").content),
-      };
-    });
-    expect(lastHasRail).toBe(false);
-    expect(railEnd).toBeGreaterThanOrEqual(dotTop);
-    expect(railEnd).toBeLessThanOrEqual(dotBottom);
-  });
+test("celular corta o resumo em 2 linhas; desktop mostra inteiro", async ({ page, isMobile }) => {
+  await page.goto("/pt/");
+  const clamp = await page.locator("#timeline [data-summary]").first().evaluate((e) => getComputedStyle(e).webkitLineClamp);
+  expect(clamp).toBe(isMobile ? "2" : "none");
+});
 
-  test("tokens do commit não colam no texto (hash, HEAD, período)", async ({ page }) => {
-    const text = await page.locator('#timeline [data-entry="ic-unifei"] [data-meta]').textContent();
-    expect(text).toMatch(/^[0-9a-f]{7} \(HEAD\) abr 2026/);
-  });
-
-  test("organização não fica separada do ' · ' na quebra de linha", async ({ page }) => {
-    for (const org of await page.locator("#timeline [data-org]").all()) {
-      await expect(org).toHaveCSS("white-space", "nowrap");
+test.describe("sem JavaScript", () => {
+  test.use({ javaScriptEnabled: false });
+  test("todos os nós acesos e marcos visíveis", async ({ page }) => {
+    await page.goto("/pt/");
+    for (const entry of timeline) {
+      expect(await lit(page, entry.id)).toBe("true");
+      await expect(page.locator(`#timeline [data-entry="${entry.id}"] h3`)).toBeVisible();
     }
   });
 });
 
-for (const locale of ["pt", "en"] as const) {
-  test(`todas as entradas com hash, período, cargo e organização exatos (/${locale}/)`, async ({ page }) => {
-    await page.goto(`/${locale}/#timeline`);
-    for (const entry of timeline) {
-      const el = page.locator(`#timeline [data-entry="${entry.id}"]`);
-      await expect(el.locator("[data-hash]")).toHaveText(shortHash(entry.id));
-      await expect(el).toContainText(formatPeriod(entry, locale));
-      await expect(el).toContainText(entry.role[locale]);
-      await expect(el).toContainText(entry.org);
-    }
+test.describe("reduzir movimento", () => {
+  test.use({ reducedMotion: "reduce" });
+  test("todos os nós acesos, sem esperar a rolagem", async ({ page }) => {
+    await page.goto("/pt/");
+    for (const entry of timeline) expect(await lit(page, entry.id)).toBe("true");
   });
-}
+});

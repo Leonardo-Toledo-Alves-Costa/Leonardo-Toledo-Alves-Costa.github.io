@@ -3,10 +3,10 @@ export const pt = {
   /** Frases dos grandes momentos (serifa, spec §7). "[PENDENTE]" = aguardando o autor; check:release bloqueia o deploy. */
   statements: {
     f1: "{{[PENDENTE] F1 —}} frase da expansão do orbe",
-    f2: "[PENDENTE] F2 — abertura da trajetória",
-    f3: "[PENDENTE] F3 — fechamento / contato",
-    f4: "[PENDENTE] F4 — abertura de /projetos",
-    f5: "[PENDENTE] F5 — frase central da stack",
+    f2: "{{[PENDENTE] F2 —}} abertura da trajetória",
+    f3: "{{[PENDENTE] F3 —}} fechamento / contato",
+    f4: "{{[PENDENTE] F4 —}} abertura de /projetos",
+    f5: "{{[PENDENTE] F5 —}} frase central da stack",
   },
   about: {
     /** Texto gigante vazado ao fundo do Sobre (D10, em avaliação pelo autor). */
