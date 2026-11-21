@@ -16,7 +16,8 @@ const CARD_SPEED = [0.18, 0.32, 0.12, 0.26];
  */
 export function About({ locale, dict }: SectionProps) {
   return (
-    <Section id="about" index="01" label={dict.nav.about} title={dict.sections.about} className="relative">
+    // No celular só o fundo anda (parallax para baixo): recorte vertical para o letreiro não invadir o Destaque.
+    <Section id="about" index="01" label={dict.nav.about} title={dict.sections.about} className="relative max-md:overflow-clip">
       {/* Fundo: texto vazado (contorno na cor das linhas), decorativo. No desktop ocupa o vazio à
           esquerda da bio; no celular fica no respiro do fim da seção, sem cruzar texto. */}
       <Parallax

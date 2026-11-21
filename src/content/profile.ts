@@ -43,7 +43,7 @@ export const profile: Profile = {
   },
   statusShort: { pt: "Aberto a estágio", en: "Open to internships" },
   award: {
-    pt: "Vencedor mundial JEWC/ENEJ — Projeto de Impacto",
-    en: "Global Winner JEWC/ENEJ — Impact Project",
+    pt: "Vencedor mundial {{JEWC/ENEJ —}} Projeto de Impacto",
+    en: "Global Winner {{JEWC/ENEJ —}} Impact Project",
   },
 };

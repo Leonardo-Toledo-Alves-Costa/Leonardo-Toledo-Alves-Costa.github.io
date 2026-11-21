@@ -5,6 +5,7 @@ import { About } from "@/components/sections/About";
 import { Contact } from "@/components/sections/Contact";
 import { Expansion } from "@/components/sections/Expansion";
 import { Hero } from "@/components/sections/Hero";
+import { Highlight } from "@/components/sections/Highlight";
 import { OpeningStage } from "@/components/sections/OpeningStage";
 import { Learning } from "@/components/sections/Learning";
 import { Projects } from "@/components/sections/Projects";
@@ -38,6 +39,7 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
       <main id="conteudo" tabIndex={-1} className="outline-none">
         <OpeningStage hero={<Hero locale={locale} dict={dict} />} expansion={<Expansion text={dict.statements.f1} />} />
         <About locale={locale} dict={dict} />
+        <Highlight locale={locale} dict={dict} />
         <Stack locale={locale} dict={dict} />
         <Timeline locale={locale} dict={dict} />
         <Projects locale={locale} dict={dict} />

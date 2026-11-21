@@ -12,6 +12,10 @@ export const pt = {
     /** Texto gigante vazado ao fundo do Sobre (D10, em avaliação pelo autor). */
     backdrop: "UNIFEI",
   },
+  highlight: {
+    label: "destaque",
+    cta: "Ver projetos e stack",
+  },
   meta: {
     title: "Leonardo Tolêdo — Engenharia de Computação (UNIFEI) · software e hardware",
     description:

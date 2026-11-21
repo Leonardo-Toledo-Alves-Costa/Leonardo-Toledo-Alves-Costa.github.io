@@ -106,3 +106,9 @@ test("celular: só o fundo anda; bio e cartões ficam parados (máx. 2 camadas)"
     expect(await card.evaluate((e) => getComputedStyle(e).transform)).toBe("none");
   }
 });
+
+test("celular: o letreiro de fundo não vaza para a seção seguinte", async ({ page, isMobile }) => {
+  test.skip(!isMobile, "regra do celular (no desktop o letreiro fica dentro da seção)");
+  await page.goto("/pt/");
+  expect(await page.locator("#about").evaluate((e) => getComputedStyle(e).overflowY)).toBe("clip");
+});

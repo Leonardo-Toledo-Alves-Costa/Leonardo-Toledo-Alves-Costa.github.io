@@ -1,10 +1,10 @@
 import { expect, test } from "@playwright/test";
 
-const SECTIONS = ["hero", "about", "stack", "timeline", "projects", "learning", "contact"];
+const SECTIONS = ["hero", "about", "highlight", "stack", "timeline", "projects", "learning", "contact"];
 
 for (const locale of ["pt", "en"] as const) {
   test.describe(`/${locale}/`, () => {
-    test("7 seções presentes na ordem", async ({ page }) => {
+    test("8 seções presentes na ordem", async ({ page }) => {
       await page.goto(`/${locale}/`);
       const ids = await page.locator("main section[id]").evaluateAll((els) => els.map((e) => e.id));
       expect(ids).toEqual(SECTIONS);
@@ -182,7 +182,7 @@ test("foco por teclado nos controles da nav é visível", async ({ page }) => {
 
 test("títulos das seções não repetem o rótulo da seção", async ({ page }) => {
   await page.goto("/pt/");
-  for (const id of ["about", "stack", "timeline", "projects", "learning", "contact"]) {
+  for (const id of ["about", "highlight", "stack", "timeline", "projects", "learning", "contact"]) {
     const label = (await page.locator(`#${id} [data-section-label]`).first().textContent())?.replace(/^\d+ — /, "").trim().toLowerCase();
     const title = (await page.locator(`#${id} h2`).first().textContent())?.trim().toLowerCase();
     expect(title, id).not.toBe(label);

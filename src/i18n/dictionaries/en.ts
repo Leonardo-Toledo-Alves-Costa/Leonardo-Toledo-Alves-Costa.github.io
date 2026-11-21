@@ -11,6 +11,10 @@ export const en: Dictionary = {
   about: {
     backdrop: "UNIFEI",
   },
+  highlight: {
+    label: "highlight",
+    cta: "See projects and stack",
+  },
   meta: {
     title: "Leonardo Tolêdo — Computer Engineering (UNIFEI) · software and hardware",
     description:
