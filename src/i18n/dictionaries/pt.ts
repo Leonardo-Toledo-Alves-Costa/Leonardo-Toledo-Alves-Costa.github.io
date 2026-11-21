@@ -75,6 +75,7 @@ export const pt = {
     intro: "Cada tecnologia acende conforme o nível. Selecione uma para ver onde foi usada.",
     legend: "Legenda dos níveis",
     level: "Nível",
+    hint: "mostra onde foi usada",
     usedIn: "Usado em",
     noProjects: "Sem projeto listado aqui ainda.",
     categories: {

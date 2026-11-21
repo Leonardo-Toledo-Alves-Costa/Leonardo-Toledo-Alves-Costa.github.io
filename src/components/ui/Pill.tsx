@@ -2,8 +2,8 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 import type { SkillLevel } from "@/content/types";
 import { cn } from "@/lib/cn";
 
-/** Ponto de luz do nível: contorno = estudando, meio aceso = usei, cheio com brilho = domino. */
-const DOT: Record<SkillLevel, string> = {
+/** Ponto de luz do nível: contorno = estudando, meio aceso = usei, cheio com brilho = domino. Também usado nas legendas. */
+export const LEVEL_DOT: Record<SkillLevel, string> = {
   learning: "border border-ink-dim bg-transparent",
   used: "border border-accent-hi bg-[linear-gradient(90deg,var(--color-accent-hi)_50%,transparent_50%)]",
   proficient: "bg-accent-hi shadow-[0_0_10px_var(--color-accent)]",
@@ -21,8 +21,8 @@ type PillProps = {
   children: ReactNode;
   className?: string;
 } & (
-  | { as?: "span" }
-  | ({ as: "button"; pressed?: boolean } & Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className" | "children">)
+  | ({ as?: "span" } & Record<`data-${string}`, string | undefined>)
+  | ({ as: "button"; pressed?: boolean; /** Aparência acesa sem aria-pressed (ex.: painel aberto, que usa aria-expanded). */ lit?: boolean } & Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className" | "children">)
 );
 
 /** Pílula de vidro (tecnologia, tag). Interativa só quando `as="button"`. */
@@ -30,13 +30,13 @@ export function Pill(props: PillProps) {
   const { level, levelLabel, children, className } = props;
   const body = (
     <>
-      {level && <span data-dot="" aria-hidden className={cn("size-2 shrink-0 rounded-full", DOT[level])} />}
+      {level && <span data-dot="" aria-hidden className={cn("size-2 shrink-0 rounded-full", LEVEL_DOT[level])} />}
       <span>{children}</span>
       {level && levelLabel && <span className="sr-only">, {levelLabel}</span>}
     </>
   );
   if (props.as === "button") {
-    const { as: _as, level: _l, levelLabel: _ll, children: _c, className: _cn, pressed, type = "button", ...rest } = props;
+    const { as: _as, level: _l, levelLabel: _ll, children: _c, className: _cn, pressed, lit, type = "button", ...rest } = props;
     return (
       <button
         data-level={level}
@@ -45,7 +45,7 @@ export function Pill(props: PillProps) {
         className={cn(
           base,
           "min-w-11 cursor-pointer transition-[border-color,background-color,box-shadow] duration-200 ease-abissal",
-          pressed ? active : cn(idle, "hover:border-ink-dim"),
+          pressed || lit ? active : cn(idle, "hover:border-ink-dim"),
           className,
         )}
         {...rest}
@@ -54,8 +54,9 @@ export function Pill(props: PillProps) {
       </button>
     );
   }
+  const { as: _as, level: _l, levelLabel: _ll, children: _c, className: _cn, ...data } = props;
   return (
-    <span data-level={level} className={cn(base, idle, className)}>
+    <span data-level={level} className={cn(base, idle, className)} {...data}>
       {body}
     </span>
   );

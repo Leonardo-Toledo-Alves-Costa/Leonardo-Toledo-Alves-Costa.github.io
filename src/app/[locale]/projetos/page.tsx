@@ -4,8 +4,8 @@ import { Footer } from "@/components/layout/Footer";
 import { Nav, type NavItem } from "@/components/layout/Nav";
 import { ProjectsIntro } from "@/components/projects/ProjectsIntro";
 import { ProjectsOutro } from "@/components/projects/ProjectsOutro";
+import { StackBeats, type StackGroup } from "@/components/projects/StackBeats";
 import { Container } from "@/components/ui/Container";
-import { Pill } from "@/components/ui/Pill";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { profile } from "@/content/profile";
 import { projects } from "@/content/projects";
@@ -13,7 +13,7 @@ import { skills } from "@/content/skills";
 import type { SkillCategory } from "@/content/types";
 import { isLocale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
-import { localize, skillCategories, skillsByCategory } from "@/lib/content";
+import { localize, projectsBySkill, skillCategories, skillsByCategory } from "@/lib/content";
 
 const CATEGORY_KEY: Record<SkillCategory, "software" | "cloud" | "engineering" | "hardwareAi"> = {
   software: "software",
@@ -51,7 +51,7 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/projetos
 
 /**
  * /projetos (spec §6): abertura com halo + F4, stack e projetos, fechamento com contato.
- * Esqueleto da Task 16 — a stack em batidas (Task 17) e os capítulos (Tasks 18–19) substituem o miolo.
+ * Stack em 4 batidas (Task 17); os capítulos dos projetos (Tasks 18–19) substituem a lista simples.
  */
 export default async function ProjectsPage({ params }: PageProps<"/[locale]/projetos">) {
   const { locale } = await params;
@@ -59,6 +59,17 @@ export default async function ProjectsPage({ params }: PageProps<"/[locale]/proj
   const dict = getDictionary(locale);
   const items: NavItem[] = (["about", "timeline", "projects", "contact"] as const).map((id) => ({ id, label: dict.nav[id] }));
   const grouped = skillsByCategory(skills);
+  // Dados prontos para a ilha cliente: nome no idioma e nomes dos projetos que usam cada skill.
+  const groups: StackGroup[] = skillCategories.map((category) => ({
+    category,
+    label: dict.stack.categories[CATEGORY_KEY[category]],
+    skills: grouped[category].map((skill) => ({
+      id: skill.id,
+      name: localize(skill.name, locale),
+      level: skill.level,
+      projects: projectsBySkill(skill.id).map((p) => p.name),
+    })),
+  }));
 
   return (
     <>
@@ -77,28 +88,20 @@ export default async function ProjectsPage({ params }: PageProps<"/[locale]/proj
       <main id="conteudo" tabIndex={-1} className="outline-none">
         <ProjectsIntro dict={dict} />
 
-        <section id="stack" aria-labelledby="stack-title" className="py-20 sm:py-28">
+        <section id="stack" aria-labelledby="stack-title" className="pt-20 sm:pt-28">
           <Container>
             <SectionLabel index="01" as="h2" id="stack-title">
               {dict.projectsPage.stackLabel}
             </SectionLabel>
-            <div className="mt-10 grid gap-10 md:grid-cols-2">
-              {skillCategories.map((category) => (
-                <div key={category}>
-                  <h3 className="text-xl font-normal tracking-[-0.015em] text-ink">{dict.stack.categories[CATEGORY_KEY[category]]}</h3>
-                  <ul className="mt-4 flex flex-wrap gap-2">
-                    {grouped[category].map((skill) => (
-                      <li key={skill.id}>
-                        <Pill level={skill.level} levelLabel={dict.levels[skill.level]}>
-                          {localize(skill.name, locale)}
-                        </Pill>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
           </Container>
+          <StackBeats
+            groups={groups}
+            statement={dict.statements.f5}
+            levels={dict.levels}
+            legendLabel={dict.stack.legend}
+            usedInLabel={dict.stack.usedIn}
+            hint={dict.stack.hint}
+          />
         </section>
 
         <section id="chapters" aria-labelledby="chapters-title" className="py-20 sm:py-28">

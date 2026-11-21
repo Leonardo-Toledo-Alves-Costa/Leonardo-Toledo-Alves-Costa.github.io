@@ -1,8 +1,9 @@
 "use client";
 
 import { type MotionValue, useMotionValue, useScroll } from "motion/react";
-import { type CSSProperties, type ReactNode, useEffect, useRef, useState } from "react";
+import { type CSSProperties, type ReactNode, useEffect, useRef } from "react";
 import { cn } from "@/lib/cn";
+import { useMediaQuery } from "@/lib/use-media-query";
 import { usePrefersReducedMotion } from "@/lib/use-prefers-reduced-motion";
 
 type ScrollStageProps = {
@@ -13,8 +14,8 @@ type ScrollStageProps = {
   /** "always" = tela fixa no celular e no desktop; "desktop" = no celular vira bloco normal. */
   sticky?: "always" | "desktop";
   className?: string;
-  /** Recebe o progresso do palco (0 = topo, 1 = fim). */
-  children: (progress: MotionValue<number>) => ReactNode;
+  /** Recebe o progresso do palco (0 = topo, 1 = fim) e se o palco está animado (JS, sem reduzir movimento e, com sticky="desktop", ≥ 768px). */
+  children: (progress: MotionValue<number>, animated: boolean) => ReactNode;
 } & Record<`data-${string}`, string | undefined>;
 
 /**
@@ -28,14 +29,8 @@ export function ScrollStage({ heightVh, mobileHeightVh, sticky = "always", class
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
   const progress = useMotionValue(1);
   // Com sticky="desktop", abaixo de 768px o palco é um bloco normal: progresso 1, como sem JS.
-  const [desktop, setDesktop] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia("(min-width: 768px)");
-    const update = () => setDesktop(mq.matches);
-    update();
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
-  }, []);
+  // Só escuta a largura quando precisa (sticky="always" não depende dela).
+  const desktop = useMediaQuery(sticky === "desktop" ? "(min-width: 768px)" : null) === true;
   const animated = reduce === false && (sticky === "always" || desktop);
 
   useEffect(() => {
@@ -65,7 +60,7 @@ export function ScrollStage({ heightVh, mobileHeightVh, sticky = "always", class
           "flex flex-col justify-center",
         )}
       >
-        {children(progress)}
+        {children(progress, animated)}
       </div>
     </div>
   );

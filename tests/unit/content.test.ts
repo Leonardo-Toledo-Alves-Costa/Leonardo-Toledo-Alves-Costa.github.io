@@ -8,7 +8,7 @@ import type { TimelineEntry } from "@/content/types";
 import { en } from "@/i18n/dictionaries/en";
 import { pt } from "@/i18n/dictionaries/pt";
 import { splitEmphasis } from "@/lib/emphasis";
-import { formatPeriod, localize, skillsByCategory, splitSpec } from "@/lib/content";
+import { formatPeriod, localize, projectsBySkill, skillsByCategory, splitSpec } from "@/lib/content";
 
 
 test("skillsByCategory retorna as 4 categorias, mesmo vazias", () => {
@@ -155,4 +155,11 @@ test("todo texto do conteúdo e dos dicionários tem marcação {{ }} válida", 
   for (const s of collectStrings([profile, projects, timeline, learning, skills, pt, en])) {
     expect(() => splitEmphasis(s), s).not.toThrow();
   }
+});
+
+test("projectsBySkill: projetos que usam a skill, na ordem do conteúdo", () => {
+  expect(projectsBySkill("flutter").map((p) => p.id)).toEqual(["dip-mobile", "softcare-mobile"]);
+  expect(projectsBySkill("docker").map((p) => p.id)).toEqual(["teccurar-infra"]);
+  expect(projectsBySkill("python")).toEqual([]);
+  expect(projectsBySkill("x", [])).toEqual([]);
 });

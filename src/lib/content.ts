@@ -1,4 +1,5 @@
-import type { Localized, Skill, SkillCategory, TimelineEntry } from "@/content/types";
+import { projects as allProjects } from "@/content/projects";
+import type { Localized, Project, Skill, SkillCategory, TimelineEntry } from "@/content/types";
 import type { Locale } from "@/i18n/config";
 
 export const skillCategories: readonly SkillCategory[] = ["software", "cloud", "engineering", "hardware-ai"];
@@ -8,6 +9,11 @@ export function skillsByCategory(skills: readonly Skill[]): Record<SkillCategory
   const grouped = Object.fromEntries(skillCategories.map((c) => [c, [] as Skill[]])) as Record<SkillCategory, Skill[]>;
   for (const skill of skills) grouped[skill.category].push(skill);
   return grouped;
+}
+
+/** Projetos que usam a skill, na ordem do conteúdo (vazio = a skill não vira botão em /projetos). */
+export function projectsBySkill(skillId: string, list: readonly Project[] = allProjects): Project[] {
+  return list.filter((p) => p.skills.includes(skillId));
 }
 
 const MONTHS: Record<Locale, readonly string[]> = {

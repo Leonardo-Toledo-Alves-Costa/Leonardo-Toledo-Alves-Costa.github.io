@@ -73,6 +73,7 @@ export const en: Dictionary = {
     intro: "Each technology lights up by level. Select one to see where it was used.",
     legend: "Level legend",
     level: "Level",
+    hint: "shows where it was used",
     usedIn: "Used in",
     noProjects: "No project listed here yet.",
     categories: {
