@@ -16,6 +16,14 @@ export const pt = {
     label: "destaque",
     cta: "Ver projetos e stack",
   },
+  projectsPage: {
+    metaTitle: "Projetos e stack — Leonardo Tolêdo",
+    title: "Projetos e stack",
+    description: "Projetos de Leonardo Tolêdo em Engenharia de Computação — apps em Flutter, infraestrutura em nuvem e o ArborizAI, vencedor do JEWC/ENEJ — e as tecnologias usadas em cada um.",
+    backHome: "← Voltar ao início",
+    stackLabel: "stack",
+    chaptersLabel: "projetos",
+  },
   meta: {
     title: "Leonardo Tolêdo — Engenharia de Computação (UNIFEI) · software e hardware",
     description:

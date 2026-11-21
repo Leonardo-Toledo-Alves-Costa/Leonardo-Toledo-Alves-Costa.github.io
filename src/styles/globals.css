@@ -174,9 +174,28 @@
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* Frases com palavras que entram uma a uma (SerifStatement words): só com JS; sem JS ficam paradas e visíveis.
+   Começa em opacidade 0,15 (não 0): texto com opacidade 0 não conta como pintado e atrasaria o LCP.
+   Com "reduzir movimento", nenhuma animação (a regra global só encurta a duração, não o atraso inline). */
+@keyframes word-in {
+  from {
+    opacity: 0.15;
+    transform: translateY(0.3em);
+  }
+}
+[data-js] [data-word] {
+  animation: word-in 0.7s var(--ease-abissal) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-js] [data-word] {
+    animation: none;
   }
 }
 
